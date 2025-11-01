@@ -5,7 +5,8 @@ export { default as Loading } from "./atoms/Loading";
 export { default as LanguageSwitcher } from "./atoms/LanguageSwitcher";
 
 // Molecules
-// Export molecules here when created
+export { WizardProgress } from "./molecules";
+export type { WizardStep, WizardProgressProps, StepStatus } from "./molecules";
 
 // Organisms
 // Export organisms here when created

@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 /**
  * Custom hook for managing RTL layout and language switching.
  * Automatically updates document direction and lang attributes.
+ * Persists language selection to localStorage.
  */
 export const useRTL = () => {
   const { i18n } = useTranslation();
@@ -26,6 +27,7 @@ export const useRTL = () => {
   }, [i18n.language]);
 
   const switchLanguage = (language: "en" | "ar") => {
+    // Change language and automatically persist to localStorage via i18next
     i18n.changeLanguage(language);
   };
 

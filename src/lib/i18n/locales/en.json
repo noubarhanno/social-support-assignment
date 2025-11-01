@@ -1,8 +1,30 @@
 {
+    "common": {
+        "socialSupport": "Social Support"
+    },
+    "wizard": {
+        "steps": {
+            "personalInfo": "Personal Information",
+            "familyFinancial": "Family & Financial Info",
+            "situationDesc": "Situation Descriptions"
+        }
+    },
     "pages": {
         "step1": {
-            "title": "Step 1",
-            "description": "This is the first step of the wizard form. Content will be implemented later."
+            "title": "Personal Information",
+            "description": "Please provide your basic personal details including name, identification, contact information, and address."
+        },
+        "step2": {
+            "title": "Family & Financial Information",
+            "description": "Please provide information about your family situation and financial circumstances."
+        },
+        "step3": {
+            "title": "Situation Descriptions",
+            "description": "Please describe your current situation in detail. AI assistance is available to help you articulate your circumstances effectively."
+        },
+        "summary": {
+            "title": "Social Support Application Complete!",
+            "description": "Thank you for completing your social support application. We have received your personal information, family & financial details, and situation descriptions."
         }
     }
 }
