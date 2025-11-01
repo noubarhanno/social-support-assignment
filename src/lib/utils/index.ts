@@ -2,4 +2,5 @@
 export * from "./constants";
 export * from "./storage";
 
-// Additional utilities will be exported here as they are created
+// shadcn/ui utility function
+export { cn } from "./cn";
