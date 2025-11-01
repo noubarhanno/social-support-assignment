@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Header from "../organisms/Header";
 import WizardProgress, { WizardStep } from "../molecules/WizardProgress";
@@ -31,6 +31,15 @@ const Template: React.FC<TemplateProps> = ({
   contentClassName = "",
 }) => {
   const { t } = useTranslation();
+
+  // Save current step to localStorage whenever it changes
+  useEffect(() => {
+    try {
+      localStorage.setItem("wizard-current-step", currentStep.toString());
+    } catch (error) {
+      console.warn("Failed to save current step to localStorage:", error);
+    }
+  }, [currentStep]);
 
   // Generate wizard steps with proper statuses based on currentStep
   const getWizardSteps = (): WizardStep[] => [

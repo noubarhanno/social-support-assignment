@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import { useTranslation } from "react-i18next";
-import Template from "../components/templates/Template";
+import Template from "../templates/Template";
 
 /**
  * Step 3 page component for the wizard form.
