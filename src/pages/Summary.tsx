@@ -1,20 +1,42 @@
 import type { FC } from "react";
+import { useTranslation } from "react-i18next";
+import Template from "../components/templates/Template";
 
 /**
  * Summary page component that displays the final results.
- * This page will show a summary of all form submissions.
+ * Shows a summary of all form submissions after completion.
  */
 const Summary: FC = () => {
+  const { t } = useTranslation();
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold text-gray-900 mb-6">Summary</h1>
-        <p className="text-gray-600">
-          This is the summary page showing the form results. Content will be
-          implemented later.
-        </p>
+    <Template currentStep={3}>
+      <div className="space-y-6">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-primary mb-4">
+            {t("pages.summary.title")}
+          </h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            {t("pages.summary.description")}
+          </p>
+        </div>
+
+        {/* Summary content will go here */}
+        <div className="mt-8">
+          <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+            <h2 className="text-lg font-semibold text-green-800 mb-2">
+              What happens next?
+            </h2>
+            <ul className="text-green-700 space-y-1">
+              <li>
+                • We will review your application within 2-3 business days
+              </li>
+              <li>• You will receive an email confirmation shortly</li>
+              <li>• Our support team will contact you to discuss next steps</li>
+            </ul>
+          </div>
+        </div>
       </div>
-    </div>
+    </Template>
   );
 };
 
