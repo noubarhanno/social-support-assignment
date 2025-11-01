@@ -1,0 +1,8 @@
+{
+    "pages": {
+        "step1": {
+            "title": "Step 1",
+            "description": "This is the first step of the wizard form. Content will be implemented later."
+        }
+    }
+}
