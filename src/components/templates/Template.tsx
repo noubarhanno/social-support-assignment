@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import Header from "../organisms/Header";
-import WizardProgress, { WizardStep } from "../molecules/WizardProgress";
+import { Header } from "../organisms";
+import { WizardProgress, WizardStep } from "../molecules";
 
 interface TemplateProps {
   /** The current step in the wizard (0-based index) */

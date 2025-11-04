@@ -1,8 +1,7 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ErrorBoundary from "./ErrorBoundary";
-import Loading from "../components/atoms/Loading";
-import WizardRedirect from "../components/atoms/WizardRedirect";
+import { Loading, WizardRedirect } from "../components/atoms";
 import { useRTL } from "../lib/hooks/useRTL";
 
 // Lazy load pages for better performance

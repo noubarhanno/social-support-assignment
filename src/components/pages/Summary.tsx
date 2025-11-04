@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import { useTranslation } from "react-i18next";
-import Template from "../templates/Template";
+import { Template } from "../templates";
 
 /**
  * Summary page component that displays the final results.
