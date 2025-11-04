@@ -4,11 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Button } from "../atoms/button";
 import { Loader2, ArrowRight } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Template } from "../templates";
+import { StepHeader } from "../atoms";
 import { FormProvider } from "react-hook-form";
 import { PersonalInfoFormElements, PersonalInfoFormData } from "../organisms";
 import { getWizardGenerator } from "../../lib/hooks/useWizardGenerator";
+import { useWizardNavigation } from "../../lib/contexts";
 import toast, { Toaster } from "react-hot-toast";
 
 /**
@@ -18,6 +20,12 @@ const Step1: FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { setWizardStep, nextStep } = useWizardNavigation();
+
+  // Set wizard step to 0 when component mounts
+  useEffect(() => {
+    setWizardStep(0);
+  }, [setWizardStep]);
 
   // Initialize form with react-hook-form
   const methods = useForm<PersonalInfoFormData>({
@@ -55,10 +63,10 @@ const Step1: FC = () => {
           toast.success("Personal information saved!", {
             duration: 2000,
             position: "top-right",
-            icon: "✅",
           });
 
-          // Navigate to next step
+          // Navigate to next step using both ConfigContext and react-router
+          nextStep();
           navigate("/step2");
         } else {
           // Wizard completed (shouldn't happen from step 1)
@@ -75,18 +83,14 @@ const Step1: FC = () => {
   );
 
   return (
-    <Template currentStep={0}>
+    <Template>
       <Toaster />
 
       <div className="space-y-6">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
-            {t("pages.step1.title")}
-          </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            {t("pages.step1.description")}
-          </p>
-        </div>
+        <StepHeader
+          title={t("pages.step1.title")}
+          description={t("pages.step1.description")}
+        />
 
         {/* Simple form with generator-powered navigation */}
         <div className="max-w-4xl mx-auto">

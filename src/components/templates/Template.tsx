@@ -2,10 +2,9 @@ import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Header } from "../organisms";
 import { WizardProgress, WizardStep } from "../molecules";
+import { useWizardNavigation } from "../../lib/contexts";
 
 interface TemplateProps {
-  /** The current step in the wizard (0-based index) */
-  currentStep: number;
   /** Content to be rendered in the main container */
   children: React.ReactNode;
   /** Optional additional classes for the main content container */
@@ -26,55 +25,33 @@ interface TemplateProps {
  * @returns {JSX.Element} The template layout component
  */
 const Template: React.FC<TemplateProps> = ({
-  currentStep,
   children,
   contentClassName = "",
 }) => {
   const { t } = useTranslation();
+  const { wizardStep } = useWizardNavigation();
 
-  // Save current step to localStorage whenever it changes
-  useEffect(() => {
-    try {
-      localStorage.setItem("wizard-current-step", currentStep.toString());
-    } catch (error) {
-      console.warn("Failed to save current step to localStorage:", error);
-    }
-  }, [currentStep]);
-
-  // Generate wizard steps with proper statuses based on currentStep
+  // Generate wizard steps with proper statuses based on wizardStep
   const getWizardSteps = (): WizardStep[] => [
     {
       id: "personal-info",
       title: t("wizard.steps.personalInfo"),
       status:
-        currentStep > 0
-          ? "completed"
-          : currentStep === 0
-          ? "active"
-          : "inactive",
+        wizardStep > 0 ? "completed" : wizardStep === 0 ? "active" : "inactive",
     },
     {
       id: "family-financial",
       title: t("wizard.steps.familyFinancial"),
       status:
-        currentStep > 1
-          ? "completed"
-          : currentStep === 1
-          ? "active"
-          : "inactive",
+        wizardStep > 1 ? "completed" : wizardStep === 1 ? "active" : "inactive",
     },
     {
-      id: "situation-desc",
-      title: t("wizard.steps.situationDesc"),
+      id: "situation",
+      title: t("wizard.steps.situation"),
       status:
-        currentStep > 2
-          ? "completed"
-          : currentStep === 2
-          ? "active"
-          : "inactive",
+        wizardStep > 2 ? "completed" : wizardStep === 2 ? "active" : "inactive",
     },
   ];
-
   const steps = getWizardSteps();
   return (
     <div className="min-h-screen bg-gray-50">
