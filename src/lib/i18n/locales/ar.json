@@ -1,6 +1,83 @@
 {
     "common": {
-        "socialSupport": "الدعم الاجتماعي"
+        "socialSupport": "الدعم الاجتماعي",
+        "buttons": {
+            "continue": "الانتقال للخطوة 2",
+            "saving": "جاري حفظ المعلومات الشخصية...",
+            "submit": "إرسال",
+            "cancel": "إلغاء",
+            "submitting": "جاري الإرسال...",
+            "completeApplication": "إنهاء الطلب",
+            "continueToStep": "الانتقال للخطوة {{step}}",
+            "completing": "جاري الإنهاء...",
+            "savingAndContinuing": "جاري الحفظ والمتابعة..."
+        },
+        "messages": {
+            "formSubmittedSuccessfully": "تم إرسال النموذج بنجاح!",
+            "applicationCompletedSuccessfully": "تم إنهاء الطلب بنجاح!",
+            "stepCompletedMovingToNext": "تم إنهاء الخطوة {{step}}! الانتقال للخطوة التالية..."
+        },
+        "accessibility": {
+            "wizardForm": "نموذج المعالج",
+            "form": "نموذج"
+        }
+    },
+    "forms": {
+        "personalInfo": {
+            "title": "المعلومات الشخصية",
+            "description": "يرجى تقديم تفاصيلك الشخصية. الحقول المعلمة بـ * مطلوبة.",
+            "fields": {
+                "fullName": {
+                    "label": "الاسم الكامل",
+                    "placeholder": "أدخل اسمك الكامل"
+                },
+                "nationalId": {
+                    "label": "الهوية الوطنية",
+                    "placeholder": "أدخل رقم هويتك الوطنية"
+                },
+                "dateOfBirth": {
+                    "label": "تاريخ الميلاد",
+                    "placeholder": "اختر تاريخ ميلادك"
+                },
+                "gender": {
+                    "label": "الجنس",
+                    "placeholder": "اختر جنسك"
+                },
+                "address": {
+                    "label": "العنوان",
+                    "placeholder": "أدخل عنوانك الكامل"
+                },
+                "country": {
+                    "label": "البلد",
+                    "placeholder": "اختر بلدك"
+                },
+                "state": {
+                    "label": "الولاية/المحافظة",
+                    "placeholder": "اختر ولايتك/محافظتك",
+                    "placeholderSelectCountry": "اختر البلد أولاً"
+                },
+                "city": {
+                    "label": "المدينة",
+                    "placeholder": "اختر مدينتك",
+                    "placeholderSelectCountry": "اختر البلد أولاً",
+                    "placeholderSelectState": "اختر الولاية أولاً"
+                },
+                "phoneNumber": {
+                    "label": "رقم الهاتف",
+                    "placeholder": "أدخل رقم هاتفك"
+                },
+                "email": {
+                    "label": "عنوان البريد الإلكتروني",
+                    "placeholder": "أدخل عنوان بريدك الإلكتروني"
+                }
+            },
+            "genderOptions": {
+                "male": "ذكر",
+                "female": "أنثى",
+                "other": "آخر",
+                "preferNotToSay": "أفضل عدم الإفصاح"
+            }
+        }
     },
     "wizard": {
         "steps": {
@@ -12,7 +89,8 @@
     "pages": {
         "step1": {
             "title": "المعلومات الشخصية",
-            "description": "يرجى تقديم تفاصيلك الشخصية الأساسية بما في ذلك الاسم والهوية ومعلومات الاتصال والعنوان."
+            "description": "يرجى تقديم تفاصيلك الشخصية الأساسية بما في ذلك الاسم والهوية ومعلومات الاتصال والعنوان.",
+            "successMessage": "تم حفظ المعلومات الشخصية بنجاح! الانتقال للخطوة التالية..."
         },
         "step2": {
             "title": "معلومات الأسرة والشؤون المالية",

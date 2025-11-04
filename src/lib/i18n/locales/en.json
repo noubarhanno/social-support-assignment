@@ -1,6 +1,83 @@
 {
     "common": {
-        "socialSupport": "Social Support"
+        "socialSupport": "Social Support",
+        "buttons": {
+            "continue": "Continue to Step 2",
+            "saving": "Saving Personal Info...",
+            "submit": "Submit",
+            "cancel": "Cancel",
+            "submitting": "Submitting...",
+            "completeApplication": "Complete Application",
+            "continueToStep": "Continue to Step {{step}}",
+            "completing": "Completing...",
+            "savingAndContinuing": "Saving & Continuing..."
+        },
+        "messages": {
+            "formSubmittedSuccessfully": "Form submitted successfully!",
+            "applicationCompletedSuccessfully": "Application completed successfully!",
+            "stepCompletedMovingToNext": "Step {{step}} completed! Moving to next step..."
+        },
+        "accessibility": {
+            "wizardForm": "Wizard Form",
+            "form": "Form"
+        }
+    },
+    "forms": {
+        "personalInfo": {
+            "title": "Personal Information",
+            "description": "Please provide your personal details. Fields marked with * are required.",
+            "fields": {
+                "fullName": {
+                    "label": "Full Name",
+                    "placeholder": "Enter your full name"
+                },
+                "nationalId": {
+                    "label": "National ID",
+                    "placeholder": "Enter your national ID"
+                },
+                "dateOfBirth": {
+                    "label": "Date of Birth",
+                    "placeholder": "Select your date of birth"
+                },
+                "gender": {
+                    "label": "Gender",
+                    "placeholder": "Select your gender"
+                },
+                "address": {
+                    "label": "Address",
+                    "placeholder": "Enter your full address"
+                },
+                "country": {
+                    "label": "Country",
+                    "placeholder": "Select your country"
+                },
+                "state": {
+                    "label": "State/Province",
+                    "placeholder": "Select your state/province",
+                    "placeholderSelectCountry": "Select country first"
+                },
+                "city": {
+                    "label": "City",
+                    "placeholder": "Select your city",
+                    "placeholderSelectCountry": "Select country first",
+                    "placeholderSelectState": "Select state first"
+                },
+                "phoneNumber": {
+                    "label": "Phone Number",
+                    "placeholder": "Enter your phone number"
+                },
+                "email": {
+                    "label": "Email Address",
+                    "placeholder": "Enter your email address"
+                }
+            },
+            "genderOptions": {
+                "male": "Male",
+                "female": "Female",
+                "other": "Other",
+                "preferNotToSay": "Prefer not to say"
+            }
+        }
     },
     "wizard": {
         "steps": {
@@ -12,7 +89,8 @@
     "pages": {
         "step1": {
             "title": "Personal Information",
-            "description": "Please provide your basic personal details including name, identification, contact information, and address."
+            "description": "Please provide your basic personal details including name, identification, contact information, and address.",
+            "successMessage": "Personal information saved successfully! Moving to next step..."
         },
         "step2": {
             "title": "Family & Financial Information",

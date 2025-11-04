@@ -1,6 +1,8 @@
 import type { FC } from "react";
 import { useTranslation } from "react-i18next";
-import Template from "../templates/Template";
+import { useEffect } from "react";
+import { Template } from "../templates";
+import { useWizardNavigation } from "../../lib/contexts";
 
 /**
  * Summary page component that displays the final results.
@@ -8,8 +10,15 @@ import Template from "../templates/Template";
  */
 const Summary: FC = () => {
   const { t } = useTranslation();
+  const { setWizardStep } = useWizardNavigation();
+
+  // Summary page - keep wizard step at 2 (completed)
+  useEffect(() => {
+    setWizardStep(2);
+  }, [setWizardStep]);
+
   return (
-    <Template currentStep={3}>
+    <Template>
       <div className="space-y-6">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-primary mb-4">

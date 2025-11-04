@@ -1,6 +1,9 @@
 import type { FC } from "react";
 import { useTranslation } from "react-i18next";
-import Template from "../templates/Template";
+import { useEffect } from "react";
+import { Template } from "../templates";
+import { useWizardNavigation } from "../../lib/contexts";
+import { StepHeader } from "../atoms";
 
 /**
  * Step 3 page component for the wizard form.
@@ -8,17 +11,20 @@ import Template from "../templates/Template";
  */
 const Step3: FC = () => {
   const { t } = useTranslation();
+  const { setWizardStep } = useWizardNavigation();
+
+  // Set wizard step to 2 when component mounts
+  useEffect(() => {
+    setWizardStep(2);
+  }, []); // Remove setWizardStep from dependencies to prevent infinite loop
+
   return (
-    <Template currentStep={2}>
+    <Template>
       <div className="space-y-6">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
-            {t("pages.step3.title")}
-          </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            {t("pages.step3.description")}
-          </p>
-        </div>
+        <StepHeader
+          title={t("pages.step3.title")}
+          description={t("pages.step3.description")}
+        />
 
         {/* Form content will go here */}
         <div className="mt-8">
