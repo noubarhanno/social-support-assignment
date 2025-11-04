@@ -129,7 +129,7 @@ export const FormPhoneInput: React.FC<FormPhoneInputProps> = ({
         </label>
       )}
 
-      <div className="relative">
+      <div className="relative" dir="ltr">
         <PhoneInput
           id={name}
           value={value}
@@ -140,6 +140,8 @@ export const FormPhoneInput: React.FC<FormPhoneInputProps> = ({
           disabled={disabled}
           className={cn(
             "w-full",
+            // Force LTR layout for phone input regardless of global direction
+            "*:text-left! *:direction-ltr!",
             // Error styles
             hasError && [
               "[&>input]:border-destructive",
@@ -158,12 +160,6 @@ export const FormPhoneInput: React.FC<FormPhoneInputProps> = ({
       {hasError && error && (
         <p className="text-sm text-destructive" role="alert" aria-live="polite">
           {error.message}
-        </p>
-      )}
-
-      {value && !hasError && (
-        <p className="text-sm text-muted-foreground">
-          Formatted: {formatPhoneNumber(value)}
         </p>
       )}
     </div>

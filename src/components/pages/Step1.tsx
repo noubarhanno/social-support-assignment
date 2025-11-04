@@ -1,14 +1,19 @@
 import type { FC } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Button } from "../atoms/button";
-import { Loader2, ArrowRight } from "lucide-react";
+import { Loader2, ArrowRight, ArrowLeft } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Template } from "../templates";
 import { StepHeader } from "../atoms";
 import { FormProvider } from "react-hook-form";
-import { PersonalInfoFormElements, PersonalInfoFormData } from "../organisms";
+import { PersonalInfoFormElements } from "../organisms";
+import {
+  PersonalInfoSchema,
+  PersonalInfoFormData,
+} from "../../lib/schema/validation";
 import { useWizard } from "../../lib/hooks/useWizard";
 import { useWizardNavigation } from "../../lib/contexts";
 import toast, { Toaster } from "react-hot-toast";
@@ -17,7 +22,7 @@ import toast, { Toaster } from "react-hot-toast";
  * Step 1 page component - Uses centralized generator for wizard flow
  */
 const Step1: FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { setWizardStep, nextStep } = useWizardNavigation();
@@ -31,6 +36,7 @@ const Step1: FC = () => {
   const { getStepData, getWizardGenerator, resetWizardGenerator } = useWizard();
   const savedStep1Data = getStepData(1);
   const methods = useForm<PersonalInfoFormData>({
+    resolver: zodResolver(PersonalInfoSchema),
     mode: "onBlur",
     defaultValues: {
       name: savedStep1Data.name || "",
@@ -131,8 +137,17 @@ const Step1: FC = () => {
                     </>
                   ) : (
                     <>
-                      {t("common.buttons.continue")}
-                      <ArrowRight className="h-4 w-4" />
+                      {i18n.language === "ar" ? (
+                        <>
+                          {t("common.buttons.continue")}
+                          <ArrowLeft className="h-4 w-4" />
+                        </>
+                      ) : (
+                        <>
+                          {t("common.buttons.continue")}
+                          <ArrowRight className="h-4 w-4" />
+                        </>
+                      )}
                     </>
                   )}
                 </Button>

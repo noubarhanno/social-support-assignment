@@ -7,22 +7,10 @@ import { FormPhoneInput } from "../../molecules/FormPhoneInput";
 import { FormDate } from "../../molecules/FormDate";
 import { FormCountrySelect } from "../../molecules/FormCountrySelect";
 import { useFormDependenciesReducer } from "../../../lib/hooks/useFormDependenciesReducer";
+import { GENDER_OPTIONS } from "../../../lib/utils/constants";
 
-/**
- * Form data structure for personal information
- */
-export interface PersonalInfoFormData {
-  name: string;
-  nationalId: string;
-  dateOfBirth: string;
-  gender: string;
-  address: string;
-  country: string;
-  state: string;
-  city: string;
-  phoneNumber: string;
-  email: string;
-}
+// Form data structure is now defined in the validation schema
+import type { PersonalInfoFormData } from "../../../lib/schema/validation";
 
 /**
  * PersonalInfoFormElements organism component
@@ -72,11 +60,20 @@ export const PersonalInfoFormElements: React.FC = () => {
   // Memoized gender options for performance
   const genderOptions: SelectOption[] = useMemo(
     () => [
-      { value: "male", label: t("forms.personalInfo.genderOptions.male") },
-      { value: "female", label: t("forms.personalInfo.genderOptions.female") },
-      { value: "other", label: t("forms.personalInfo.genderOptions.other") },
       {
-        value: "prefer-not-to-say",
+        value: GENDER_OPTIONS.MALE,
+        label: t("forms.personalInfo.genderOptions.male"),
+      },
+      {
+        value: GENDER_OPTIONS.FEMALE,
+        label: t("forms.personalInfo.genderOptions.female"),
+      },
+      {
+        value: GENDER_OPTIONS.OTHER,
+        label: t("forms.personalInfo.genderOptions.other"),
+      },
+      {
+        value: GENDER_OPTIONS.PREFER_NOT_TO_SAY,
         label: t("forms.personalInfo.genderOptions.preferNotToSay"),
       },
     ],

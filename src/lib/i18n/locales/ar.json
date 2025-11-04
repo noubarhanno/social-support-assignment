@@ -3,6 +3,8 @@
         "socialSupport": "الدعم الاجتماعي",
         "buttons": {
             "continue": "الانتقال للخطوة 2",
+            "back": "العودة للخطوة {{step}}",
+            "backToPrevious": "عودة",
             "saving": "جاري حفظ المعلومات الشخصية...",
             "submit": "إرسال",
             "cancel": "إلغاء",
@@ -20,6 +22,9 @@
         "accessibility": {
             "wizardForm": "نموذج المعالج",
             "form": "نموذج"
+        },
+        "placeholders": {
+            "searchCountries": "البحث عن البلدان..."
         }
     },
     "forms": {
@@ -76,6 +81,56 @@
                 "female": "أنثى",
                 "other": "آخر",
                 "preferNotToSay": "أفضل عدم الإفصاح"
+            }
+        },
+        "familyFinancial": {
+            "title": "معلومات الأسرة والشؤون المالية",
+            "description": "يرجى تقديم معلومات حول وضع أسرتك والظروف المالية. الحقول المعلمة بـ * مطلوبة.",
+            "fields": {
+                "maritalStatus": {
+                    "label": "الحالة الاجتماعية",
+                    "placeholder": "اختر حالتك الاجتماعية"
+                },
+                "dependents": {
+                    "label": "عدد المعالين",
+                    "placeholder": "أدخل عدد المعالين (0 إذا لم يوجد)"
+                },
+                "employmentStatus": {
+                    "label": "حالة التوظيف",
+                    "placeholder": "اختر حالة التوظيف"
+                },
+                "monthlyIncome": {
+                    "label": "الدخل الشهري",
+                    "placeholder": "أدخل دخلك الشهري"
+                },
+                "housingStatus": {
+                    "label": "حالة السكن",
+                    "placeholder": "اختر حالة السكن"
+                }
+            },
+            "maritalStatusOptions": {
+                "single": "أعزب",
+                "married": "متزوج",
+                "divorced": "مطلق",
+                "widowed": "أرمل",
+                "separated": "منفصل"
+            },
+            "employmentStatusOptions": {
+                "employedFullTime": "موظف (دوام كامل)",
+                "employedPartTime": "موظف (دوام جزئي)",
+                "selfEmployed": "يعمل لحسابه الخاص",
+                "unemployed": "عاطل عن العمل",
+                "retired": "متقاعد",
+                "student": "طالب",
+                "disabled": "غير قادر على العمل (معاق)"
+            },
+            "housingStatusOptions": {
+                "owned": "مملوك",
+                "rented": "مستأجر",
+                "livingWithFamily": "يعيش مع العائلة/الأصدقاء",
+                "homeless": "بلا مأوى",
+                "temporaryHousing": "سكن مؤقت",
+                "other": "آخر"
             }
         }
     },

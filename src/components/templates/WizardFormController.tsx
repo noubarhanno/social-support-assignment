@@ -3,7 +3,7 @@ import { FormProvider, UseFormReturn, FieldValues } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { Button } from "../atoms/button";
-import { Loader2 } from "lucide-react";
+import { Loader2, ArrowLeft, ArrowRight } from "lucide-react";
 import { ApiResponse } from "../../lib/api/externalMockedApi";
 
 /**
@@ -48,6 +48,12 @@ export interface WizardFormControllerProps<T extends FieldValues> {
     | "secondary"
     | "ghost"
     | "link";
+  /** Function to call when back button is clicked */
+  onBack?: () => void;
+  /** Whether to show the back button */
+  showBackButton?: boolean;
+  /** Text for the back button */
+  backButtonText?: string;
 }
 
 /**
@@ -95,8 +101,11 @@ export const WizardFormController = <T extends FieldValues>({
   className = "",
   disabled = false,
   submitButtonVariant = "default",
+  onBack,
+  showBackButton = false,
+  backButtonText,
 }: WizardFormControllerProps<T>) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Generate wizard-specific messages
@@ -205,8 +214,38 @@ export const WizardFormController = <T extends FieldValues>({
           {/* Form Content */}
           <div className="space-y-6">{children}</div>
 
-          {/* Submit Button */}
-          <div className="flex justify-end pt-6">
+          {/* Action Buttons */}
+          <div className="flex justify-between pt-6">
+            {/* Back Button */}
+            {showBackButton && onBack && (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={onBack}
+                disabled={isSubmitting}
+                className="min-w-[140px]"
+                aria-label={
+                  backButtonText || t("common.buttons.backToPrevious")
+                }
+              >
+                {i18n.language === "ar" ? (
+                  <>
+                    {backButtonText || t("common.buttons.backToPrevious")}
+                    <ArrowRight className="mr-2 h-4 w-4" />
+                  </>
+                ) : (
+                  <>
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    {backButtonText || t("common.buttons.backToPrevious")}
+                  </>
+                )}
+              </Button>
+            )}
+
+            {/* Spacer for when no back button */}
+            {(!showBackButton || !onBack) && <div />}
+
+            {/* Submit/Continue Button */}
             <Button
               type="submit"
               variant={submitButtonVariant}
@@ -220,7 +259,19 @@ export const WizardFormController = <T extends FieldValues>({
                   {loadingText}
                 </>
               ) : (
-                submitText
+                <>
+                  {i18n.language === "ar" ? (
+                    <>
+                      {submitText}
+                      <ArrowLeft className="ml-2 h-4 w-4" />
+                    </>
+                  ) : (
+                    <>
+                      {submitText}
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </>
+                  )}
+                </>
               )}
             </Button>
           </div>
