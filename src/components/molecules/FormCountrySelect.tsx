@@ -1,8 +1,10 @@
 import React, { useState, useMemo } from "react";
 import { useController, useFormContext } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { Search, X, Check, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CountrySelectOption } from "../../lib/api/countries";
+import { useRTL } from "../../lib/hooks/useRTL";
 
 export interface FormCountrySelectProps {
   /** The name of the field for react-hook-form registration */
@@ -48,6 +50,8 @@ export const FormCountrySelect: React.FC<FormCountrySelectProps> = ({
   showFlags = true,
   flagSize = "md",
 }) => {
+  const { t } = useTranslation();
+  const { isRTL } = useRTL();
   // Form integration
   const formContext = useFormContext();
   const {
@@ -195,7 +199,13 @@ export const FormCountrySelect: React.FC<FormCountrySelectProps> = ({
           aria-expanded={isOpen}
           aria-haspopup="listbox"
         >
-          <span className="flex items-center gap-2 flex-1 text-left">
+          {isRTL && <ChevronDown className="h-4 w-4 opacity-50 shrink-0" />}
+          <span
+            className={cn(
+              "flex items-center gap-2 flex-1",
+              isRTL ? "justify-end" : "justify-start"
+            )}
+          >
             {loading ? (
               "Loading countries..."
             ) : selectedCountry ? (
@@ -217,7 +227,7 @@ export const FormCountrySelect: React.FC<FormCountrySelectProps> = ({
               <span className="text-muted-foreground">{placeholder}</span>
             )}
           </span>
-          <ChevronDown className="h-4 w-4 opacity-50 shrink-0" />
+          {!isRTL && <ChevronDown className="h-4 w-4 opacity-50 shrink-0" />}
         </button>
 
         {/* Dropdown Content */}
@@ -229,7 +239,7 @@ export const FormCountrySelect: React.FC<FormCountrySelectProps> = ({
                 <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <input
                   type="text"
-                  placeholder="Search countries..."
+                  placeholder={t("common.placeholders.searchCountries")}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-8 pr-8 py-1.5 text-sm border border-input rounded focus:outline-none focus:ring-1 focus:ring-ring"

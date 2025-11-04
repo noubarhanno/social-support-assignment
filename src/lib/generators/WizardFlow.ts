@@ -88,8 +88,6 @@ export async function* wizardFlowGenerator(): AsyncGenerator<
     try {
       await submitForm(step2Data);
     } catch (error) {
-      console.error("Failed to submit step 2 data:", error);
-      // Yield error information for the calling code to handle
       yield {
         step: 2,
         message: "Failed to submit professional information",
@@ -122,7 +120,6 @@ export async function* wizardFlowGenerator(): AsyncGenerator<
     try {
       await submitForm(step3Data);
     } catch (error) {
-      console.error("Failed to submit step 3 data:", error);
       // Yield error information for the calling code to handle
       yield {
         step: 3,
@@ -134,7 +131,7 @@ export async function* wizardFlowGenerator(): AsyncGenerator<
             ? error.message
             : "Failed to submit data to server. Please try again.",
       };
-      return; // Stop processing further steps on error
+      return;
     }
   }
 

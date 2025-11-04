@@ -3,6 +3,8 @@
         "socialSupport": "Social Support",
         "buttons": {
             "continue": "Continue to Step 2",
+            "back": "Back to Step {{step}}",
+            "backToPrevious": "Back",
             "saving": "Saving Personal Info...",
             "submit": "Submit",
             "cancel": "Cancel",
@@ -20,6 +22,9 @@
         "accessibility": {
             "wizardForm": "Wizard Form",
             "form": "Form"
+        },
+        "placeholders": {
+            "searchCountries": "Search countries..."
         }
     },
     "forms": {
@@ -76,6 +81,56 @@
                 "female": "Female",
                 "other": "Other",
                 "preferNotToSay": "Prefer not to say"
+            }
+        },
+        "familyFinancial": {
+            "title": "Family & Financial Information",
+            "description": "Please provide information about your family situation and financial circumstances. Fields marked with * are required.",
+            "fields": {
+                "maritalStatus": {
+                    "label": "Marital Status",
+                    "placeholder": "Select your marital status"
+                },
+                "dependents": {
+                    "label": "Number of Dependents",
+                    "placeholder": "Enter number of dependents (0 if none)"
+                },
+                "employmentStatus": {
+                    "label": "Employment Status",
+                    "placeholder": "Select your employment status"
+                },
+                "monthlyIncome": {
+                    "label": "Monthly Income",
+                    "placeholder": "Enter your monthly income"
+                },
+                "housingStatus": {
+                    "label": "Housing Status",
+                    "placeholder": "Select your housing status"
+                }
+            },
+            "maritalStatusOptions": {
+                "single": "Single",
+                "married": "Married",
+                "divorced": "Divorced",
+                "widowed": "Widowed",
+                "separated": "Separated"
+            },
+            "employmentStatusOptions": {
+                "employedFullTime": "Employed (Full-time)",
+                "employedPartTime": "Employed (Part-time)",
+                "selfEmployed": "Self-employed",
+                "unemployed": "Unemployed",
+                "retired": "Retired",
+                "student": "Student",
+                "disabled": "Unable to work (Disabled)"
+            },
+            "housingStatusOptions": {
+                "owned": "Owned",
+                "rented": "Rented",
+                "livingWithFamily": "Living with family/friends",
+                "homeless": "Homeless",
+                "temporaryHousing": "Temporary housing",
+                "other": "Other"
             }
         }
     },
