@@ -16,7 +16,7 @@ const Step3: FC = () => {
   // Set wizard step to 2 when component mounts
   useEffect(() => {
     setWizardStep(2);
-  }, [setWizardStep]);
+  }, []); // Remove setWizardStep from dependencies to prevent infinite loop
 
   return (
     <Template>

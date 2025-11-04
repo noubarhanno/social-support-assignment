@@ -3,22 +3,37 @@ import WizardProgress, {
   WizardStep,
 } from "../components/molecules/WizardProgress";
 
+// Mock react-router-dom
+jest.mock("react-router-dom", () => ({
+  useNavigate: () => jest.fn(),
+}));
+
+// Mock the wizard navigation context
+jest.mock("../lib/contexts", () => ({
+  useWizardNavigation: () => ({
+    setWizardStep: jest.fn(),
+  }),
+}));
+
 describe("WizardProgress", () => {
   const mockSteps: WizardStep[] = [
     {
       id: "step1",
       title: "Personal Information",
       status: "completed",
+      route: "/step1",
     },
     {
       id: "step2",
       title: "Family & Financial Info",
       status: "active",
+      route: "/step2",
     },
     {
       id: "step3",
       title: "Situation Descriptions",
       status: "inactive",
+      route: "/step3",
     },
   ];
 
@@ -46,6 +61,7 @@ describe("WizardProgress", () => {
           id: "step1",
           title: "Completed Step",
           status: "completed",
+          route: "/step1",
         },
       ];
 
@@ -70,6 +86,7 @@ describe("WizardProgress", () => {
           id: "step1",
           title: "Active Step",
           status: "active",
+          route: "/step1",
         },
       ];
 
@@ -91,6 +108,7 @@ describe("WizardProgress", () => {
           id: "step1",
           title: "Inactive Step",
           status: "inactive",
+          route: "/step1",
         },
       ];
 
@@ -137,11 +155,13 @@ describe("WizardProgress", () => {
           id: "step1",
           title: "Step 1",
           status: "completed",
+          route: "/step1",
         },
         {
           id: "step2",
           title: "Step 2",
           status: "active",
+          route: "/step2",
         },
       ];
 

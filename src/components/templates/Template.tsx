@@ -38,18 +38,21 @@ const Template: React.FC<TemplateProps> = ({
       title: t("wizard.steps.personalInfo"),
       status:
         wizardStep > 0 ? "completed" : wizardStep === 0 ? "active" : "inactive",
+      route: "/step1",
     },
     {
       id: "family-financial",
       title: t("wizard.steps.familyFinancial"),
       status:
         wizardStep > 1 ? "completed" : wizardStep === 1 ? "active" : "inactive",
+      route: "/step2",
     },
     {
       id: "situation",
       title: t("wizard.steps.situation"),
       status:
         wizardStep > 2 ? "completed" : wizardStep === 2 ? "active" : "inactive",
+      route: "/step3",
     },
   ];
   const steps = getWizardSteps();

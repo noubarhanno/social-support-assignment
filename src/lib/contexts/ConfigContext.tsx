@@ -135,31 +135,43 @@ export function useConfigContext(): ConfigContextConsumer {
 export function useWizardNavigation() {
   const { state, dispatch } = useConfigContext();
 
-  const setWizardStep = (wizardStep: WizardStep) => {
-    dispatch({
-      type: "SET_WIZARD_STEP",
-      payload: { wizardStep },
-    });
-  };
+  const setWizardStep = useMemo(
+    () => (wizardStep: WizardStep) => {
+      dispatch({
+        type: "SET_WIZARD_STEP",
+        payload: { wizardStep },
+      });
+    },
+    [dispatch]
+  );
 
-  const resetWizard = () => {
-    dispatch({
-      type: "RESET_WIZARD",
-      payload: {},
-    });
-  };
+  const resetWizard = useMemo(
+    () => () => {
+      dispatch({
+        type: "RESET_WIZARD",
+        payload: {},
+      });
+    },
+    [dispatch]
+  );
 
-  const nextStep = () => {
-    if (state.wizardStep < 2) {
-      setWizardStep((state.wizardStep + 1) as WizardStep);
-    }
-  };
+  const nextStep = useMemo(
+    () => () => {
+      if (state.wizardStep < 2) {
+        setWizardStep((state.wizardStep + 1) as WizardStep);
+      }
+    },
+    [state.wizardStep, setWizardStep]
+  );
 
-  const previousStep = () => {
-    if (state.wizardStep > 0) {
-      setWizardStep((state.wizardStep - 1) as WizardStep);
-    }
-  };
+  const previousStep = useMemo(
+    () => () => {
+      if (state.wizardStep > 0) {
+        setWizardStep((state.wizardStep - 1) as WizardStep);
+      }
+    },
+    [state.wizardStep, setWizardStep]
+  );
 
   return {
     wizardStep: state.wizardStep,

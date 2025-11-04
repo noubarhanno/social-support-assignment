@@ -33,8 +33,10 @@ src/
 │   └── templates/         # Page layouts (Template, WizardFormController)
 ├── lib/
 │   ├── api/              # API integrations (countries, states)
+│   ├── contexts/         # React contexts (ConfigContext)
+│   ├── generators/       # JavaScript generators for wizard flow
 │   ├── http/             # HTTP client with error handling
-│   ├── hooks/            # Custom hooks (useWizardStep, useRTL)
+│   ├── hooks/            # Custom hooks (useWizard, useRTL, useFormDependenciesReducer)
 │   └── utils/            # Helper functions and storage
 └── tests/                # Jest + RTL test suites
 ```
@@ -99,19 +101,34 @@ This free service provides data in English only. For production applications req
 }
 ```
 
-### Wizard Navigation
+### Wizard Navigation & State Management
 
-**Features:**
+**Architecture:**
 
-- Automatic progress tracking using generator functions
-- RTL support for Arabic
-- Responsive design (mobile-first)
+- **JavaScript Generators:** Centralized wizard flow control using `wizardFlowGenerator()`
+- **ConfigContext:** Single source of truth for wizard step state with localStorage persistence
+- **useWizard Hook:** Provides generator instance and utility functions for step pages
+
+**Generator Features:**
+
+- Stateful wizard progression with automatic data persistence
+- API submission handling for each completed step
+- Progress restoration from localStorage on app restart
+
+**Usage:**
+
+```tsx
+const { getWizardGenerator, getStepData } = useWizard();
+const wizardGen = getWizardGenerator();
+const result = wizardGen.next(formData);
+```
 
 **Components:**
 
-- `useWizardStep` hook for navigation
-- `WizardProgress` with step indicators
+- `WizardProgress` with step indicators and clickable completed steps
 - `Template` component with header and layout
+- `StepHeader` atom for consistent step titles
+- `useWizard` hook for generator management and wizard state
 
 ### Internationalization
 
@@ -131,10 +148,12 @@ This free service provides data in English only. For production applications req
 
 **Test Suites:**
 
-- Form Phone Input
-- Wizard navigation flow
-- RTL Custom Hook
-- Storage utilities
+- Form Phone Input validation and formatting
+- Wizard generator flow and state management
+- RTL custom hook functionality
+- Storage utilities and localStorage persistence
+- ConfigContext state management
+- WizardProgress component interactions
 
 ## Available Routes
 
