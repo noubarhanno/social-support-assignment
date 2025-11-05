@@ -95,7 +95,7 @@ export const FormTextarea: React.FC<FormTextareaProps> = ({
         disabled={disabled}
         rows={rows}
         className={cn(
-          "min-h-[120px] resize-y",
+          "min-h-[100px] sm:min-h-[120px] resize-y",
           hasError && "border-red-500 focus:ring-red-500",
           isRTL ? "text-right" : "text-left",
           className

@@ -46,12 +46,12 @@ export const SituationDescriptionsFormElements: React.FC = () => {
 
   return (
     <div
-      className="space-y-8"
+      className="space-y-6 lg:space-y-8"
       role="form"
       aria-label={t("forms.situationDescriptions.title")}
     >
       {/* Current Financial Situation */}
-      <div className="space-y-3">
+      <div className="space-y-2 sm:space-y-3">
         <FormTextarea
           name="currentFinancialSituation"
           label={t(
@@ -79,7 +79,7 @@ export const SituationDescriptionsFormElements: React.FC = () => {
       </div>
 
       {/* Employment Circumstances */}
-      <div className="space-y-3">
+      <div className="space-y-2 sm:space-y-3">
         <FormTextarea
           name="employmentCircumstances"
           label={t(
@@ -107,7 +107,7 @@ export const SituationDescriptionsFormElements: React.FC = () => {
       </div>
 
       {/* Reason for Applying */}
-      <div className="space-y-3">
+      <div className="space-y-2 sm:space-y-3">
         <FormTextarea
           name="reasonForApplying"
           label={t(

@@ -124,7 +124,7 @@ const Step1: FC = () => {
         {/* Simple form with generator-powered navigation */}
         <div className="max-w-4xl mx-auto">
           <FormProvider {...methods}>
-            <div className="bg-white rounded-lg border border-primary p-8 space-y-6">
+            <div className="bg-white rounded-lg border border-primary p-6 lg:p-8 space-y-6">
               {/* Form Elements */}
               <PersonalInfoFormElements />
 

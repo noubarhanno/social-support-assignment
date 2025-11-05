@@ -69,6 +69,24 @@
   text-align: right;
 }
 
+/* Mobile dialog improvements */
+@media (max-width: 640px) {
+  [data-slot="dialog-content"] {
+    margin: 1rem;
+    max-width: calc(100vw - 2rem);
+  }
+
+  [data-slot="dialog-footer"] {
+    flex-direction: column-reverse;
+    gap: 0.75rem;
+  }
+
+  [data-slot="dialog-footer"] button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
