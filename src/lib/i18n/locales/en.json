@@ -1,0 +1,271 @@
+{
+    "common": {
+        "socialSupport": "Social Support",
+        "buttons": {
+            "continue": "Continue to Step 2",
+            "back": "Back to Step {{step}}",
+            "backToPrevious": "Back",
+            "saving": "Saving Personal Info...",
+            "submit": "Submit",
+            "cancel": "Cancel",
+            "submitting": "Submitting...",
+            "completeApplication": "Complete Application",
+            "continueToStep": "Continue to Step {{step}}",
+            "completing": "Completing...",
+            "savingAndContinuing": "Saving & Continuing..."
+        },
+        "messages": {
+            "formSubmittedSuccessfully": "Form submitted successfully!",
+            "applicationCompletedSuccessfully": "Application completed successfully!",
+            "stepCompletedMovingToNext": "Step {{step}} completed! Moving to next step..."
+        },
+        "toast": {
+            "step1": {
+                "success": "Personal information saved!",
+                "error": "Failed to save information",
+                "errorWithRetry": "Failed to save information. Please try again."
+            },
+            "step2": {
+                "success": "Family & financial information saved!",
+                "error": "Failed to save family & financial information",
+                "errorWithRetry": "Failed to save family & financial information. Please try again."
+            },
+            "step3": {
+                "success": "Situation descriptions saved!",
+                "error": "Failed to save situation descriptions",
+                "errorWithRetry": "Failed to save situation descriptions. Please try again."
+            }
+        },
+        "accessibility": {
+            "wizardForm": "Wizard Form",
+            "form": "Form"
+        },
+        "placeholders": {
+            "searchCountries": "Search countries..."
+        },
+        "labels": {
+            "countryOptions": "Country options"
+        },
+        "actions": {
+            "helpMeWrite": "Help me write",
+            "accept": "Accept",
+            "cancel": "Cancel"
+        }
+    },
+    "validation": {
+        "messages": {
+            "selectRequired": "Please select one of the available options",
+            "genderRequired": "Please select one of the available options",
+            "maritalStatusRequired": "Please select one of the available options",
+            "employmentStatusRequired": "Please select one of the available options",
+            "housingStatusRequired": "Please select one of the available options",
+            "required": "This field is required",
+            "nameRequired": "Full name is required",
+            "nameMinLength": "Name must be at least 2 characters",
+            "nameMaxLength": "Name must not exceed 100 characters",
+            "nameInvalidFormat": "Name can only contain letters and spaces",
+            "nationalIdRequired": "National ID is required",
+            "nationalIdMinLength": "National ID must be at least 7 characters",
+            "nationalIdMaxLength": "National ID must not exceed 20 characters",
+            "nationalIdInvalidFormat": "National ID can only contain letters and numbers",
+            "dateOfBirthRequired": "Date of birth is required",
+            "dateOfBirthInvalidAge": "You must be between 13 and 120 years old",
+            "addressRequired": "Address is required",
+            "addressMinLength": "Address must be at least 10 characters",
+            "addressMaxLength": "Address must not exceed 200 characters",
+            "countryRequired": "Country is required",
+            "stateRequired": "State/Province is required",
+            "cityRequired": "City is required",
+            "phoneRequired": "Phone number is required",
+            "phoneInvalidFormat": "Please enter a valid international phone number",
+            "emailRequired": "Email address is required",
+            "emailInvalidFormat": "Please enter a valid email address",
+            "emailMaxLength": "Email must not exceed 100 characters",
+            "dependentsRequired": "Number of dependents is required",
+            "dependentsInvalidRange": "Number of dependents must be between 0 and 20",
+            "monthlyIncomeRequired": "Monthly income is required",
+            "monthlyIncomeInvalidRange": "Monthly income must be between 0 and 1,000,000 AED",
+            "financialSituationMinLength": "Please provide at least 10 characters describing your financial situation",
+            "financialSituationMaxLength": "Description must be 1000 characters or less",
+            "employmentCircumstancesMinLength": "Please provide at least 10 characters describing your employment circumstances",
+            "employmentCircumstancesMaxLength": "Description must be 1000 characters or less",
+            "reasonForApplyingMinLength": "Please provide at least 10 characters explaining your reason for applying",
+            "reasonForApplyingMaxLength": "Description must be 1000 characters or less"
+        }
+    },
+    "forms": {
+        "personalInfo": {
+            "title": "Personal Information",
+            "description": "Please provide your personal details. Fields marked with * are required.",
+            "fields": {
+                "fullName": {
+                    "label": "Full Name",
+                    "placeholder": "Enter your full name"
+                },
+                "nationalId": {
+                    "label": "National ID",
+                    "placeholder": "Enter your national ID"
+                },
+                "dateOfBirth": {
+                    "label": "Date of Birth",
+                    "placeholder": "Select your date of birth"
+                },
+                "gender": {
+                    "label": "Gender",
+                    "placeholder": "Select your gender"
+                },
+                "address": {
+                    "label": "Address",
+                    "placeholder": "Enter your full address"
+                },
+                "country": {
+                    "label": "Country",
+                    "placeholder": "Select your country"
+                },
+                "state": {
+                    "label": "State/Province",
+                    "placeholder": "Select your state/province",
+                    "placeholderSelectCountry": "Select country first",
+                    "placeholderInput": "Enter your state/province/region"
+                },
+                "city": {
+                    "label": "City",
+                    "placeholder": "Select your city",
+                    "placeholderSelectCountry": "Select country first",
+                    "placeholderSelectState": "Select state first"
+                },
+                "phoneNumber": {
+                    "label": "Phone Number",
+                    "placeholder": "Enter your phone number"
+                },
+                "email": {
+                    "label": "Email Address",
+                    "placeholder": "Enter your email address"
+                }
+            },
+            "genderOptions": {
+                "male": "Male",
+                "female": "Female",
+                "other": "Other",
+                "preferNotToSay": "Prefer not to say"
+            }
+        },
+        "familyFinancial": {
+            "title": "Family & Financial Information",
+            "description": "Please provide information about your family situation and financial circumstances. Fields marked with * are required.",
+            "fields": {
+                "maritalStatus": {
+                    "label": "Marital Status",
+                    "placeholder": "Select your marital status"
+                },
+                "dependents": {
+                    "label": "Number of Dependents",
+                    "placeholder": "Enter number of dependents (0 if none)"
+                },
+                "employmentStatus": {
+                    "label": "Employment Status",
+                    "placeholder": "Select your employment status"
+                },
+                "monthlyIncome": {
+                    "label": "Monthly Income",
+                    "placeholder": "Enter your monthly income"
+                },
+                "housingStatus": {
+                    "label": "Housing Status",
+                    "placeholder": "Select your housing status"
+                }
+            },
+            "maritalStatusOptions": {
+                "single": "Single",
+                "married": "Married",
+                "divorced": "Divorced",
+                "widowed": "Widowed",
+                "separated": "Separated"
+            },
+            "employmentStatusOptions": {
+                "employedFullTime": "Employed (Full-time)",
+                "employedPartTime": "Employed (Part-time)",
+                "selfEmployed": "Self-employed",
+                "unemployed": "Unemployed",
+                "retired": "Retired",
+                "student": "Student",
+                "disabled": "Unable to work (Disabled)"
+            },
+            "housingStatusOptions": {
+                "owned": "Owned",
+                "rented": "Rented",
+                "livingWithFamily": "Living with family/friends",
+                "homeless": "Homeless",
+                "temporaryHousing": "Temporary housing",
+                "other": "Other"
+            }
+        },
+        "situationDescriptions": {
+            "title": "Situation Descriptions",
+            "fields": {
+                "currentFinancialSituation": {
+                    "label": "Current Financial Situation",
+                    "placeholder": "Describe your current financial situation, income sources, expenses, debts..."
+                },
+                "employmentCircumstances": {
+                    "label": "Employment Circumstances",
+                    "placeholder": "Describe your employment status, job search activities, skills, barriers to employment..."
+                },
+                "reasonForApplying": {
+                    "label": "Reason for Applying",
+                    "placeholder": "Explain why you are applying for support and how it will help improve your situation..."
+                }
+            }
+        }
+    },
+    "ai": {
+        "dialog": {
+            "title": "AI Suggestion",
+            "description": "The AI will provide a suggested text below as it streams. You can accept it to replace your field or close to cancel."
+        },
+        "streaming": "Generating...",
+        "noContent": "No suggestion yet",
+        "error": "Error",
+        "actions": {
+            "generateNew": "Generate New",
+            "accept": "Accept",
+            "helpMeWrite": "Help me write"
+        },
+        "prompts": {
+            "financialSituation": "Help me describe my current financial situation in one paragraph (max 300 characters). Include income, expenses, and any financial challenges I'm facing.",
+            "employmentCircumstances": "Help me describe my employment circumstances in one paragraph (max 300 characters). Include job status, work experience, and any barriers I face in finding employment.",
+            "reasonForApplying": "Help me explain why I need social support in one paragraph (max 300 characters). Describe how it will help improve my situation and achieve my goals."
+        }
+    },
+    "wizard": {
+        "steps": {
+            "personalInfo": "Personal Information",
+            "familyFinancial": "Family & Financial Info",
+            "situationDesc": "Situation Descriptions"
+        }
+    },
+    "pages": {
+        "step1": {
+            "title": "Personal Information",
+            "description": "Please provide your basic personal details including name, identification, contact information, and address.",
+            "successMessage": "Personal information saved successfully! Moving to next step..."
+        },
+        "step2": {
+            "title": "Family & Financial Information",
+            "description": "Please provide information about your family situation and financial circumstances."
+        },
+        "step3": {
+            "title": "Situation Descriptions",
+            "description": "Please describe your current situation in detail. AI assistance is available to help you articulate your circumstances effectively."
+        },
+        "summary": {
+            "title": "Social Support Application Complete!",
+            "description": "Thank you for completing your social support application. We have received your personal information, family & financial details, and situation descriptions.",
+            "nextSteps": "What happens next?",
+            "reviewTime": "We will review your application within 2-3 business days",
+            "emailConfirmation": "You will receive an email confirmation shortly",
+            "contactInfo": "Our support team will contact you to discuss next steps",
+            "startNew": "Start New Application"
+        }
+    }
+}

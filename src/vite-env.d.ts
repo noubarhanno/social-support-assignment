@@ -24,3 +24,8 @@ declare module "*.gif" {
   const content: string;
   export default content;
 }
+
+declare module "*.json" {
+  const content: Record<string, any>;
+  export default content;
+}

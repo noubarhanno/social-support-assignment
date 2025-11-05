@@ -1,0 +1,271 @@
+{
+    "common": {
+        "socialSupport": "الدعم الاجتماعي",
+        "buttons": {
+            "continue": "الانتقال للخطوة 2",
+            "back": "العودة للخطوة {{step}}",
+            "backToPrevious": "عودة",
+            "saving": "جاري حفظ المعلومات الشخصية...",
+            "submit": "إرسال",
+            "cancel": "إلغاء",
+            "submitting": "جاري الإرسال...",
+            "completeApplication": "إنهاء الطلب",
+            "continueToStep": "الانتقال للخطوة {{step}}",
+            "completing": "جاري الإنهاء...",
+            "savingAndContinuing": "جاري الحفظ والمتابعة..."
+        },
+        "messages": {
+            "formSubmittedSuccessfully": "تم إرسال النموذج بنجاح!",
+            "applicationCompletedSuccessfully": "تم إنهاء الطلب بنجاح!",
+            "stepCompletedMovingToNext": "تم إنهاء الخطوة {{step}}! الانتقال للخطوة التالية..."
+        },
+        "toast": {
+            "step1": {
+                "success": "تم حفظ المعلومات الشخصية!",
+                "error": "فشل في حفظ المعلومات",
+                "errorWithRetry": "فشل في حفظ المعلومات. يرجى المحاولة مرة أخرى."
+            },
+            "step2": {
+                "success": "تم حفظ معلومات الأسرة والمالية!",
+                "error": "فشل في حفظ معلومات الأسرة والمالية",
+                "errorWithRetry": "فشل في حفظ معلومات الأسرة والمالية. يرجى المحاولة مرة أخرى."
+            },
+            "step3": {
+                "success": "تم حفظ وصف الحالة!",
+                "error": "فشل في حفظ وصف الحالة",
+                "errorWithRetry": "فشل في حفظ وصف الحالة. يرجى المحاولة مرة أخرى."
+            }
+        },
+        "accessibility": {
+            "wizardForm": "نموذج المعالج",
+            "form": "نموذج"
+        },
+        "placeholders": {
+            "searchCountries": "البحث عن البلدان..."
+        },
+        "labels": {
+            "countryOptions": "خيارات البلدان"
+        },
+        "actions": {
+            "helpMeWrite": "ساعدني في الكتابة",
+            "accept": "قبول",
+            "cancel": "إلغاء"
+        }
+    },
+    "validation": {
+        "messages": {
+            "selectRequired": "يرجى اختيار أحد الخيارات المتاحة",
+            "genderRequired": "يرجى اختيار أحد الخيارات المتاحة",
+            "maritalStatusRequired": "يرجى اختيار أحد الخيارات المتاحة",
+            "employmentStatusRequired": "يرجى اختيار أحد الخيارات المتاحة",
+            "housingStatusRequired": "يرجى اختيار أحد الخيارات المتاحة",
+            "required": "هذا الحقل مطلوب",
+            "nameRequired": "الاسم الكامل مطلوب",
+            "nameMinLength": "يجب أن يكون الاسم على الأقل حرفين",
+            "nameMaxLength": "يجب ألا يتجاوز الاسم 100 حرف",
+            "nameInvalidFormat": "يمكن أن يحتوي الاسم على حروف ومسافات فقط",
+            "nationalIdRequired": "الهوية الوطنية مطلوبة",
+            "nationalIdMinLength": "يجب أن تكون الهوية الوطنية على الأقل 7 أحرف",
+            "nationalIdMaxLength": "يجب ألا تتجاوز الهوية الوطنية 20 حرف",
+            "nationalIdInvalidFormat": "يمكن أن تحتوي الهوية الوطنية على حروف وأرقام فقط",
+            "dateOfBirthRequired": "تاريخ الميلاد مطلوب",
+            "dateOfBirthInvalidAge": "يجب أن يكون عمرك بين 13 و 120 سنة",
+            "addressRequired": "العنوان مطلوب",
+            "addressMinLength": "يجب أن يكون العنوان على الأقل 10 أحرف",
+            "addressMaxLength": "يجب ألا يتجاوز العنوان 200 حرف",
+            "countryRequired": "البلد مطلوب",
+            "stateRequired": "الولاية/المحافظة مطلوبة",
+            "cityRequired": "المدينة مطلوبة",
+            "phoneRequired": "رقم الهاتف مطلوب",
+            "phoneInvalidFormat": "يرجى إدخال رقم هاتف دولي صحيح",
+            "emailRequired": "عنوان البريد الإلكتروني مطلوب",
+            "emailInvalidFormat": "يرجى إدخال عنوان بريد إلكتروني صحيح",
+            "emailMaxLength": "يجب ألا يتجاوز البريد الإلكتروني 100 حرف",
+            "dependentsRequired": "عدد المعالين مطلوب",
+            "dependentsInvalidRange": "يجب أن يكون عدد المعالين بين 0 و 20",
+            "monthlyIncomeRequired": "الدخل الشهري مطلوب",
+            "monthlyIncomeInvalidRange": "يجب أن يكون الدخل الشهري بين 0 و 1,000,000 درهم",
+            "financialSituationMinLength": "يرجى تقديم وصف لا يقل عن 10 أحرف لوضعك المالي",
+            "financialSituationMaxLength": "يجب أن يكون الوصف 1000 حرف أو أقل",
+            "employmentCircumstancesMinLength": "يرجى تقديم وصف لا يقل عن 10 أحرف لظروف عملك",
+            "employmentCircumstancesMaxLength": "يجب أن يكون الوصف 1000 حرف أو أقل",
+            "reasonForApplyingMinLength": "يرجى تقديم تفسير لا يقل عن 10 أحرف لسبب تقديم الطلب",
+            "reasonForApplyingMaxLength": "يجب أن يكون الوصف 1000 حرف أو أقل"
+        }
+    },
+    "forms": {
+        "personalInfo": {
+            "title": "المعلومات الشخصية",
+            "description": "يرجى تقديم تفاصيلك الشخصية. الحقول المعلمة بـ * مطلوبة.",
+            "fields": {
+                "fullName": {
+                    "label": "الاسم الكامل",
+                    "placeholder": "أدخل اسمك الكامل"
+                },
+                "nationalId": {
+                    "label": "الهوية الوطنية",
+                    "placeholder": "أدخل رقم هويتك الوطنية"
+                },
+                "dateOfBirth": {
+                    "label": "تاريخ الميلاد",
+                    "placeholder": "اختر تاريخ ميلادك"
+                },
+                "gender": {
+                    "label": "الجنس",
+                    "placeholder": "اختر جنسك"
+                },
+                "address": {
+                    "label": "العنوان",
+                    "placeholder": "أدخل عنوانك الكامل"
+                },
+                "country": {
+                    "label": "البلد",
+                    "placeholder": "اختر بلدك"
+                },
+                "state": {
+                    "label": "الولاية/المحافظة",
+                    "placeholder": "اختر ولايتك/محافظتك",
+                    "placeholderSelectCountry": "اختر البلد أولاً",
+                    "placeholderInput": "أدخل اسم الولاية/المحافظة/المنطقة"
+                },
+                "city": {
+                    "label": "المدينة",
+                    "placeholder": "اختر مدينتك",
+                    "placeholderSelectCountry": "اختر البلد أولاً",
+                    "placeholderSelectState": "اختر الولاية أولاً"
+                },
+                "phoneNumber": {
+                    "label": "رقم الهاتف",
+                    "placeholder": "أدخل رقم هاتفك"
+                },
+                "email": {
+                    "label": "عنوان البريد الإلكتروني",
+                    "placeholder": "أدخل عنوان بريدك الإلكتروني"
+                }
+            },
+            "genderOptions": {
+                "male": "ذكر",
+                "female": "أنثى",
+                "other": "آخر",
+                "preferNotToSay": "أفضل عدم الإفصاح"
+            }
+        },
+        "familyFinancial": {
+            "title": "معلومات الأسرة والشؤون المالية",
+            "description": "يرجى تقديم معلومات حول وضع أسرتك والظروف المالية. الحقول المعلمة بـ * مطلوبة.",
+            "fields": {
+                "maritalStatus": {
+                    "label": "الحالة الاجتماعية",
+                    "placeholder": "اختر حالتك الاجتماعية"
+                },
+                "dependents": {
+                    "label": "عدد المعالين",
+                    "placeholder": "أدخل عدد المعالين (0 إذا لم يوجد)"
+                },
+                "employmentStatus": {
+                    "label": "حالة التوظيف",
+                    "placeholder": "اختر حالة التوظيف"
+                },
+                "monthlyIncome": {
+                    "label": "الدخل الشهري",
+                    "placeholder": "أدخل دخلك الشهري"
+                },
+                "housingStatus": {
+                    "label": "حالة السكن",
+                    "placeholder": "اختر حالة السكن"
+                }
+            },
+            "maritalStatusOptions": {
+                "single": "أعزب",
+                "married": "متزوج",
+                "divorced": "مطلق",
+                "widowed": "أرمل",
+                "separated": "منفصل"
+            },
+            "employmentStatusOptions": {
+                "employedFullTime": "موظف (دوام كامل)",
+                "employedPartTime": "موظف (دوام جزئي)",
+                "selfEmployed": "يعمل لحسابه الخاص",
+                "unemployed": "عاطل عن العمل",
+                "retired": "متقاعد",
+                "student": "طالب",
+                "disabled": "غير قادر على العمل (معاق)"
+            },
+            "housingStatusOptions": {
+                "owned": "مملوك",
+                "rented": "مستأجر",
+                "livingWithFamily": "يعيش مع العائلة/الأصدقاء",
+                "homeless": "بلا مأوى",
+                "temporaryHousing": "سكن مؤقت",
+                "other": "آخر"
+            }
+        },
+        "situationDescriptions": {
+            "title": "وصف الحالة",
+            "fields": {
+                "currentFinancialSituation": {
+                    "label": "الوضع المالي الحالي",
+                    "placeholder": "اوصف وضعك المالي الحالي، مصادر الدخل، المصروفات، الديون..."
+                },
+                "employmentCircumstances": {
+                    "label": "ظروف العمل",
+                    "placeholder": "اوصف حالة التوظيف، أنشطة البحث عن عمل، المهارات، العوائق أمام التوظيف..."
+                },
+                "reasonForApplying": {
+                    "label": "سبب التقديم",
+                    "placeholder": "اشرح سبب تقديمك لطلب الدعم وكيف سيساعد في تحسين وضعك..."
+                }
+            }
+        }
+    },
+    "ai": {
+        "dialog": {
+            "title": "اقتراح ذكي",
+            "description": "سيقدم الذكي الاصطناعي نصاً مقترحاً أدناه أثناء الكتابة. يمكنك قبوله لاستبدال حقلك أو إغلاق النافذة للإلغاء."
+        },
+        "streaming": "جاري الإنشاء...",
+        "noContent": "لا يوجد اقتراح بعد",
+        "error": "خطأ",
+        "actions": {
+            "generateNew": "إنشاء جديد",
+            "accept": "قبول",
+            "helpMeWrite": "ساعدني في الكتابة"
+        },
+        "prompts": {
+            "financialSituation": "ساعدني في وصف وضعي المالي الحالي في فقرة واحدة (بحد أقصى 300 حرف). أدرج الدخل والمصروفات وأي تحديات مالية أواجهها.",
+            "employmentCircumstances": "ساعدني في وصف ظروف عملي في فقرة واحدة (بحد أقصى 300 حرف). أدرج حالة العمل وخبرة العمل وأي عوائق أواجهها في إيجاد عمل.",
+            "reasonForApplying": "ساعدني في شرح سبب حاجتي للدعم الاجتماعي في فقرة واحدة (بحد أقصى 300 حرف). اوصف كيف سيساعد في تحسين وضعي وتحقيق أهدافي."
+        }
+    },
+    "wizard": {
+        "steps": {
+            "personalInfo": "المعلومات الشخصية",
+            "familyFinancial": "معلومات الأسرة والشؤون المالية",
+            "situationDesc": "وصف الحالة"
+        }
+    },
+    "pages": {
+        "step1": {
+            "title": "المعلومات الشخصية",
+            "description": "يرجى تقديم تفاصيلك الشخصية الأساسية بما في ذلك الاسم والهوية ومعلومات الاتصال والعنوان.",
+            "successMessage": "تم حفظ المعلومات الشخصية بنجاح! الانتقال للخطوة التالية..."
+        },
+        "step2": {
+            "title": "معلومات الأسرة والشؤون المالية",
+            "description": "يرجى تقديم معلومات حول وضع أسرتك والظروف المالية."
+        },
+        "step3": {
+            "title": "وصف الحالة",
+            "description": "يرجى وصف حالتك الحالية بالتفصيل. المساعدة الذكية متاحة لمساعدتك في التعبير عن ظروفك بفعالية."
+        },
+        "summary": {
+            "title": "تم إكمال طلب الدعم الاجتماعي!",
+            "description": "شكرًا لك لإكمال طلب الدعم الاجتماعي. لقد تلقينا معلوماتك الشخصية وتفاصيل الأسرة والشؤون المالية ووصف الحالة.",
+            "nextSteps": "ماذا يحدث بعد ذلك؟",
+            "reviewTime": "سنقوم بمراجعة طلبك خلال 2-3 أيام عمل",
+            "emailConfirmation": "ستتلقى تأكيد بالبريد الإلكتروني قريباً",
+            "contactInfo": "سيتواصل معك فريق الدعم لمناقشة الخطوات التالية",
+            "startNew": "بدء طلب جديد"
+        }
+    }
+}
