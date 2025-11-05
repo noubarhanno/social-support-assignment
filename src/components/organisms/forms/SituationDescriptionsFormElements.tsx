@@ -54,11 +54,17 @@ export const SituationDescriptionsFormElements: React.FC = () => {
       <div className="space-y-3">
         <FormTextarea
           name="currentFinancialSituation"
-          label={t("forms.situationDescriptions.fields.currentFinancialSituation.label")}
-          placeholder={t("forms.situationDescriptions.fields.currentFinancialSituation.placeholder")}
+          label={t(
+            "forms.situationDescriptions.fields.currentFinancialSituation.label"
+          )}
+          placeholder={t(
+            "forms.situationDescriptions.fields.currentFinancialSituation.placeholder"
+          )}
           rows={4}
           required
-          aria-label={t("forms.situationDescriptions.fields.currentFinancialSituation.placeholder")}
+          aria-label={t(
+            "forms.situationDescriptions.fields.currentFinancialSituation.placeholder"
+          )}
         />
         <div className="flex items-center gap-3 justify-start">
           <AITextGenerator
@@ -76,11 +82,17 @@ export const SituationDescriptionsFormElements: React.FC = () => {
       <div className="space-y-3">
         <FormTextarea
           name="employmentCircumstances"
-          label={t("forms.situationDescriptions.fields.employmentCircumstances.label")}
-          placeholder={t("forms.situationDescriptions.fields.employmentCircumstances.placeholder")}
+          label={t(
+            "forms.situationDescriptions.fields.employmentCircumstances.label"
+          )}
+          placeholder={t(
+            "forms.situationDescriptions.fields.employmentCircumstances.placeholder"
+          )}
           rows={4}
           required
-          aria-label={t("forms.situationDescriptions.fields.employmentCircumstances.placeholder")}
+          aria-label={t(
+            "forms.situationDescriptions.fields.employmentCircumstances.placeholder"
+          )}
         />
         <div className="flex items-center gap-3 justify-start">
           <AITextGenerator
@@ -98,11 +110,17 @@ export const SituationDescriptionsFormElements: React.FC = () => {
       <div className="space-y-3">
         <FormTextarea
           name="reasonForApplying"
-          label={t("forms.situationDescriptions.fields.reasonForApplying.label")}
-          placeholder={t("forms.situationDescriptions.fields.reasonForApplying.placeholder")}
+          label={t(
+            "forms.situationDescriptions.fields.reasonForApplying.label"
+          )}
+          placeholder={t(
+            "forms.situationDescriptions.fields.reasonForApplying.placeholder"
+          )}
           rows={4}
           required
-          aria-label={t("forms.situationDescriptions.fields.reasonForApplying.placeholder")}
+          aria-label={t(
+            "forms.situationDescriptions.fields.reasonForApplying.placeholder"
+          )}
         />
         <div className="flex items-center gap-3 justify-start">
           <AITextGenerator

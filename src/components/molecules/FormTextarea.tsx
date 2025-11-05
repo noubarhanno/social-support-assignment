@@ -81,10 +81,9 @@ export const FormTextarea: React.FC<FormTextareaProps> = ({
         >
           {label}
           {required && (
-            <span className={cn(
-              "text-destructive",
-              isRTL ? "mr-1" : "ml-1"
-            )}>*</span>
+            <span className={cn("text-destructive", isRTL ? "mr-1" : "ml-1")}>
+              *
+            </span>
           )}
         </label>
       )}
