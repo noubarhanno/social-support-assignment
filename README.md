@@ -26,6 +26,59 @@ npm test         # Run test suite
 npm run lint     # Run ESLint
 ```
 
+## Getting Started
+
+### Environment Setup
+
+The application uses a layered environment configuration system:
+
+1. **`.env`** - Contains default OpenAI configuration (already included in project)
+2. **`.env.local`** - Contains your sensitive API key (you need to create this)
+3. **`.env.example`** - Template file showing required variables
+
+**Setup Steps:**
+
+```bash
+# 1. Clone and install
+git clone <repository-url>
+cd northbay-assignment
+npm install
+
+# 2. Set up environment variables
+cp .env.example .env.local
+
+# 3. Add your OpenAI API key to .env.local
+echo "VITE_OPENAI_API_KEY=your-actual-api-key-here" >> .env.local
+
+# 4. Start development server
+npm run dev
+```
+
+**Environment File Structure:**
+
+```bash
+# .env (default settings - already included)
+VITE_OPENAI_MODEL=gpt-3.5-turbo
+VITE_OPENAI_MAX_TOKENS=1000
+VITE_OPENAI_TEMPERATURE=0.7
+
+# .env.local (create this with your API key)
+VITE_OPENAI_API_KEY=sk-your-actual-openai-api-key
+
+# Optional: Override defaults in .env.local
+# VITE_OPENAI_MODEL=gpt-4
+# VITE_OPENAI_MAX_TOKENS=2000
+```
+
+> **Security Note:** The `.env.local` file is gitignored and contains sensitive data. Never commit API keys to version control.
+
+### OpenAI API Key Setup
+
+1. Visit [OpenAI Platform](https://platform.openai.com/api-keys)
+2. Create a new API key
+3. Add it to your `.env.local` file as shown above
+4. Ensure you have sufficient credits in your OpenAI account
+
 ## Architecture
 
 ### Project Structure
@@ -246,11 +299,16 @@ const configReducer = (state: ConfigState, action: ConfigAction) => {
 
 ```tsx
 // Environment Configuration
-// .env.local (create from .env.example)
-VITE_OPENAI_API_KEY = your - openai - api - key - here;
+// Default settings are provided in .env
+// Your API key should be in .env.local (create from .env.example)
+
+// .env (default configuration - already included)
 VITE_OPENAI_MODEL = gpt - 3.5 - turbo;
 VITE_OPENAI_MAX_TOKENS = 1000;
 VITE_OPENAI_TEMPERATURE = 0.7;
+
+// .env.local (create this file with your API key)
+VITE_OPENAI_API_KEY = your - actual - api - key - here;
 
 // Using the AI hook
 import { useAI } from "@/lib/hooks/useAI";
@@ -284,28 +342,6 @@ const MyComponent = () => {
 - **Secure Configuration:** Environment-based API key management with validation
 - **Multi-language:** Arabic and English prompts with contextual assistance
 - **Form Integration:** Specialized prompts for different form field types
-
-**Security & Configuration:**
-
-```bash
-# Setup Instructions
-1. Copy .env.example to .env.local
-2. Add your OpenAI API key from https://platform.openai.com/api-keys
-3. Configure model settings (optional)
-
-# File Structure
-├── lib/
-│   ├── config/
-│   │   └── env.ts          # Environment configuration with validation
-│   ├── api/
-│   │   └── openai.ts       # Main OpenAI service with streaming
-│   ├── http/
-│   │   └── openai.ts       # HTTP client for OpenAI API
-│   ├── hooks/
-│   │   └── useAI.ts        # React hook for AI functionality
-│   └── types/
-│       └── ai.ts           # TypeScript interfaces and error types
-```
 
 **Error Handling:**
 
