@@ -44,10 +44,6 @@ interface UseAIState {
  */
 interface UseAIReturn extends UseAIState {
   // Actions
-  generateCompletion: (
-    request: AIAssistantRequest,
-    config?: Partial<AIAssistantConfig>
-  ) => Promise<void>;
   generateStreaming: (
     request: AIAssistantRequest,
     config?: Partial<AIAssistantConfig>
@@ -58,7 +54,6 @@ interface UseAIReturn extends UseAIState {
   cancel: () => void;
 
   // Utilities
-  testConnection: () => Promise<boolean>;
   retry: () => Promise<void>;
 }
 
@@ -99,7 +94,7 @@ export const useAI = (options: UseAIOptions = {}): UseAIReturn => {
   // Refs for cleanup and retry functionality
   const abortControllerRef = useRef<AbortController | null>(null);
   const lastRequestRef = useRef<{
-    type: "completion" | "streaming" | "form";
+    type: "streaming";
     params: any;
   } | null>(null);
   const errorTimeoutRef = useRef<number | null>(null);
@@ -176,52 +171,6 @@ export const useAI = (options: UseAIOptions = {}): UseAIReturn => {
       }
     },
     [setError]
-  );
-
-  /**
-   * Generate standard completion
-   */
-  const generateCompletion = useCallback(
-    async (
-      request: AIAssistantRequest,
-      config?: Partial<AIAssistantConfig>
-    ) => {
-      try {
-        // Store request for retry functionality
-        lastRequestRef.current = {
-          type: "completion",
-          params: { request, config },
-        };
-
-        setState((prev) => ({
-          ...prev,
-          isLoading: true,
-          isStreaming: false,
-          error: null,
-          errorDetails: null,
-          response: "",
-          fullResponse: null,
-          requestId: `req_${Date.now()}`,
-        }));
-
-        const finalConfig = { ...defaultConfig, ...config };
-        const response = await openaiService.generateCompletion(
-          request,
-          finalConfig
-        );
-
-        setState((prev) => ({
-          ...prev,
-          isLoading: false,
-          response: response.content,
-          fullResponse: response,
-          usage: response.usage,
-        }));
-      } catch (error) {
-        handleError(error instanceof Error ? error : new Error(String(error)));
-      }
-    },
-    [defaultConfig, handleError]
   );
 
   /**
@@ -323,18 +272,6 @@ export const useAI = (options: UseAIOptions = {}): UseAIReturn => {
   }, []);
 
   /**
-   * Test OpenAI connection
-   */
-  const testConnection = useCallback(async (): Promise<boolean> => {
-    try {
-      const result = await openaiService.testConnection();
-      return result;
-    } catch (error) {
-      return false;
-    }
-  }, []);
-
-  /**
    * Retry last request
    */
   const retry = useCallback(async () => {
@@ -344,12 +281,6 @@ export const useAI = (options: UseAIOptions = {}): UseAIReturn => {
     }
 
     switch (lastRequest.type) {
-      case "completion":
-        await generateCompletion(
-          lastRequest.params.request,
-          lastRequest.params.config
-        );
-        break;
       case "streaming":
         await generateStreaming(
           lastRequest.params.request,
@@ -357,7 +288,7 @@ export const useAI = (options: UseAIOptions = {}): UseAIReturn => {
         );
         break;
     }
-  }, [generateCompletion, generateStreaming]);
+  }, [generateStreaming]);
 
   // Cleanup on unmount
   useEffect(() => {
@@ -376,7 +307,6 @@ export const useAI = (options: UseAIOptions = {}): UseAIReturn => {
     ...state,
 
     // Actions
-    generateCompletion,
     generateStreaming,
 
     // Control
@@ -384,7 +314,6 @@ export const useAI = (options: UseAIOptions = {}): UseAIReturn => {
     cancel,
 
     // Utilities
-    testConnection,
     retry,
   };
 };

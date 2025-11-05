@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import { useController, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Search, X, Check, ChevronDown } from "lucide-react";
@@ -71,6 +71,10 @@ export const FormCountrySelect: React.FC<FormCountrySelectProps> = ({
   const [searchQuery, setSearchQuery] = useState("");
   const [focusedIndex, setFocusedIndex] = useState(-1);
 
+  // Refs for scrolling focused option into view
+  const optionsRef = useRef<HTMLDivElement>(null);
+  const optionRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
   // Memoized filtered countries based on search query
   const filteredCountries = useMemo(() => {
     if (!searchQuery.trim()) {
@@ -109,7 +113,7 @@ export const FormCountrySelect: React.FC<FormCountrySelectProps> = ({
     setFocusedIndex(-1);
   };
 
-  // Handle keyboard navigation
+  // Handle keyboard navigation for both trigger and search input
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!isOpen) return;
 
@@ -133,7 +137,15 @@ export const FormCountrySelect: React.FC<FormCountrySelectProps> = ({
         }
         break;
       case "Escape":
+        e.preventDefault();
         setIsOpen(false);
+        setSearchQuery("");
+        setFocusedIndex(-1);
+        break;
+      case "Tab":
+        // Allow natural tab behavior but close dropdown
+        setIsOpen(false);
+        setSearchQuery("");
         setFocusedIndex(-1);
         break;
     }
@@ -145,12 +157,25 @@ export const FormCountrySelect: React.FC<FormCountrySelectProps> = ({
     setFocusedIndex(-1);
   };
 
+  // Click handler for the select trigger
+  const onClick = () => !disabled && !loading && setIsOpen(!isOpen);
+
   // Reset focused index when dropdown opens or search changes
-  React.useEffect(() => {
+  useEffect(() => {
     if (isOpen) {
       setFocusedIndex(-1);
     }
   }, [isOpen, searchQuery]);
+
+  // Scroll focused option into view
+  useEffect(() => {
+    if (focusedIndex >= 0 && optionRefs.current[focusedIndex]) {
+      optionRefs.current[focusedIndex]?.scrollIntoView({
+        block: "nearest",
+        behavior: "smooth",
+      });
+    }
+  }, [focusedIndex]);
 
   // Handle error state
   const hasError = Boolean(error);
@@ -190,7 +215,7 @@ export const FormCountrySelect: React.FC<FormCountrySelectProps> = ({
             className
           )}
           disabled={disabled || loading}
-          onClick={() => !disabled && !loading && setIsOpen(!isOpen)}
+          onClick={onClick}
           onKeyDown={handleKeyDown}
           onBlur={onBlur}
           aria-label={ariaLabel}
@@ -242,8 +267,17 @@ export const FormCountrySelect: React.FC<FormCountrySelectProps> = ({
                   placeholder={t("common.placeholders.searchCountries")}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={handleKeyDown}
                   className="w-full pl-8 pr-8 py-1.5 text-sm border border-input rounded focus:outline-none focus:ring-1 focus:ring-ring"
                   autoFocus
+                  role="combobox"
+                  aria-autocomplete="list"
+                  aria-expanded={isOpen}
+                  aria-activedescendant={
+                    focusedIndex >= 0
+                      ? `${name}-option-${focusedIndex}`
+                      : undefined
+                  }
                 />
                 {searchQuery && (
                   <button
@@ -258,7 +292,12 @@ export const FormCountrySelect: React.FC<FormCountrySelectProps> = ({
             </div>
 
             {/* Options List */}
-            <div className="max-h-60 overflow-auto">
+            <div
+              ref={optionsRef}
+              className="max-h-60 overflow-auto"
+              role="listbox"
+              aria-label={t("common.labels.countryOptions")}
+            >
               {loading ? (
                 <div className="p-2 text-sm text-muted-foreground text-center">
                   Loading countries...
@@ -273,7 +312,13 @@ export const FormCountrySelect: React.FC<FormCountrySelectProps> = ({
                 filteredCountries.map((country, index) => (
                   <button
                     key={country.value}
+                    ref={(el) => {
+                      optionRefs.current[index] = el;
+                    }}
+                    id={`${name}-option-${index}`}
                     type="button"
+                    role="option"
+                    aria-selected={value === country.value}
                     className={cn(
                       "w-full px-2 py-2 text-left text-sm hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none flex items-center gap-2",
                       value === country.value &&
@@ -282,6 +327,7 @@ export const FormCountrySelect: React.FC<FormCountrySelectProps> = ({
                         "bg-accent text-accent-foreground"
                     )}
                     onClick={() => handleSelect(country.value)}
+                    onMouseEnter={() => setFocusedIndex(index)}
                   >
                     {showFlags && (
                       <img

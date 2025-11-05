@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { Header } from "../organisms";
 import { WizardProgress, WizardStep } from "../molecules";
@@ -49,7 +49,7 @@ const Template: React.FC<TemplateProps> = ({
     },
     {
       id: "situation",
-      title: t("wizard.steps.situation"),
+      title: t("wizard.steps.situationDesc"),
       status:
         wizardStep > 2 ? "completed" : wizardStep === 2 ? "active" : "inactive",
       route: "/step3",

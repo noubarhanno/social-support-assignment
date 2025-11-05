@@ -19,27 +19,6 @@ export interface OpenAICompletionRequest {
   stop?: string[];
 }
 
-// OpenAI API Response Types
-export interface OpenAICompletionResponse {
-  id: string;
-  object: string;
-  created: number;
-  model: string;
-  choices: Array<{
-    index: number;
-    message: {
-      role: "assistant";
-      content: string;
-    };
-    finish_reason: string;
-  }>;
-  usage?: {
-    prompt_tokens: number;
-    completion_tokens: number;
-    total_tokens: number;
-  };
-}
-
 // Streaming Response Types
 export interface OpenAIStreamChunk {
   id: string;

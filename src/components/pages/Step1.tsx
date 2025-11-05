@@ -10,10 +10,8 @@ import { Template } from "../templates";
 import { StepHeader } from "../atoms";
 import { FormProvider } from "react-hook-form";
 import { PersonalInfoFormElements } from "../organisms";
-import {
-  PersonalInfoSchema,
-  PersonalInfoFormData,
-} from "../../lib/schema/validation";
+import { PersonalInfoFormData } from "../../lib/schema/validation";
+import { useValidationSchemas } from "../../lib/hooks/useValidationSchemas";
 import { useWizard } from "../../lib/hooks/useWizard";
 import { useWizardNavigation } from "../../lib/contexts";
 import toast, { Toaster } from "react-hot-toast";
@@ -34,6 +32,7 @@ const Step1: FC = () => {
 
   // Initialize form with react-hook-form and load saved data
   const { getStepData, getWizardGenerator, resetWizardGenerator } = useWizard();
+  const { PersonalInfoSchema } = useValidationSchemas();
   const savedStep1Data = getStepData(1);
   const methods = useForm<PersonalInfoFormData>({
     resolver: zodResolver(PersonalInfoSchema),
@@ -51,6 +50,13 @@ const Step1: FC = () => {
       email: savedStep1Data.email || "",
     },
   });
+
+  /**
+   * clear form errors on language change
+   */
+  useEffect(() => {
+    methods.clearErrors();
+  }, [i18n.language]);
 
   /**
    * Handle form submission using centralized generator
@@ -72,7 +78,7 @@ const Step1: FC = () => {
 
         // Check if the first result is an error
         if (!result.done && result.value.hasError) {
-          toast.error(result.value.error || "Failed to save information", {
+          toast.error(result.value.error || t("common.toast.step1.error"), {
             duration: 4000,
             position: "top-right",
           });
@@ -82,7 +88,7 @@ const Step1: FC = () => {
         // If no error, continue to get next step info
         if (!result.done) {
           // Show success toast
-          toast.success("Personal information saved!", {
+          toast.success(t("common.toast.step1.success"), {
             duration: 2000,
             position: "top-right",
           });
@@ -95,7 +101,7 @@ const Step1: FC = () => {
         }
       } catch (error) {
         console.error("Failed to save step 1 data:", error);
-        toast.error("Failed to save information. Please try again.", {
+        toast.error(t("common.toast.step1.errorWithRetry"), {
           duration: 4000,
           position: "top-right",
         });

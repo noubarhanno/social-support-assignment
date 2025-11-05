@@ -2,11 +2,9 @@ import { openaiClient } from "../http/openai";
 import { env } from "../config/env";
 import {
   AIAssistantRequest,
-  AIAssistantResponse,
   StreamingCallback,
   StreamingErrorCallback,
   OpenAICompletionRequest,
-  OpenAICompletionResponse,
   OpenAIStreamChunk,
   AIAssistantConfig,
   AIServiceError,
@@ -23,48 +21,6 @@ class OpenAIService {
     systemPrompt:
       "You are a helpful AI assistant that provides clear, concise, and accurate responses.",
   };
-
-  /**
-   * Generate AI completion using standard (non-streaming) API
-   * @param request - AI assistant request parameters
-   * @param config - Optional configuration overrides
-   * @returns Promise resolving to AI response
-   */
-  async generateCompletion(
-    request: AIAssistantRequest,
-    config?: Partial<AIAssistantConfig>
-  ): Promise<AIAssistantResponse> {
-    const finalConfig = { ...this.defaultConfig, ...config };
-
-    const openaiRequest: OpenAICompletionRequest = {
-      model: finalConfig.model,
-      messages: [
-        {
-          role: "system",
-          content: finalConfig.systemPrompt,
-        },
-        {
-          role: "user",
-          content: this.buildUserPrompt(request),
-        },
-      ],
-      max_tokens: request.maxTokens || finalConfig.maxTokens,
-      temperature: request.temperature ?? finalConfig.temperature,
-      stream: false,
-    };
-
-    try {
-      const response = await openaiClient.request<OpenAICompletionResponse>(
-        "POST",
-        "/chat/completions",
-        openaiRequest
-      );
-
-      return this.processCompletionResponse(response);
-    } catch (error) {
-      throw this.handleServiceError(error);
-    }
-  }
 
   /**
    * Generate AI completion using streaming API
@@ -112,8 +68,6 @@ class OpenAIService {
     }
   }
 
-
-
   /**
    * Build user prompt from request
    */
@@ -125,30 +79,6 @@ class OpenAIService {
     }
 
     return prompt;
-  }
-
-
-
-  /**
-   * Process non-streaming completion response
-   */
-  private processCompletionResponse(
-    response: OpenAICompletionResponse
-  ): AIAssistantResponse {
-    const choice = response.choices[0];
-    if (!choice) {
-      throw new AIServiceError(
-        "No completion choices returned from OpenAI",
-        "NO_CHOICES"
-      );
-    }
-
-    return {
-      content: choice.message.content.trim(),
-      usage: response.usage,
-      model: response.model,
-      timestamp: Date.now(),
-    };
   }
 
   /**
@@ -244,28 +174,6 @@ class OpenAIService {
       undefined,
       new Error(String(error))
     );
-  }
-
-  /**
-   * Test OpenAI API connectivity and configuration
-   */
-  async testConnection(): Promise<boolean> {
-    try {
-      await this.generateCompletion(
-        {
-          prompt: 'Say "Hello" if you can read this.',
-        },
-        {
-          maxTokens: 10,
-          temperature: 0,
-        }
-      );
-
-      return true;
-    } catch (error) {
-      console.error("OpenAI connection test failed:", error);
-      return false;
-    }
   }
 }
 

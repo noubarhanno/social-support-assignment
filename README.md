@@ -58,8 +58,6 @@ src/
 
 **Generator Pattern:** JavaScript generators control wizard flow, providing stateful iteration through form steps with automatic persistence and recovery.
 
-**Composition over Inheritance:** Components are designed to be composed together rather than extended, following React best practices for flexibility and reusability.
-
 ## Key Features
 
 ### Generator-Powered Wizard Flow

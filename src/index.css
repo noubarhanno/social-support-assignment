@@ -29,6 +29,46 @@
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* RTL Dialog Support */
+[dir="rtl"] [data-radix-dialog-content] {
+  text-align: right;
+}
+
+[dir="rtl"] [data-slot="dialog-content"] {
+  text-align: right;
+}
+
+[dir="rtl"] [data-slot="dialog-title"] {
+  text-align: right;
+}
+
+[dir="rtl"] [data-slot="dialog-description"] {
+  text-align: right;
+}
+
+[dir="rtl"] textarea {
+  text-align: right;
+}
+
+/* RTL Button positioning */
+[dir="rtl"] .flex.justify-between {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .gap-2 {
+  gap: 0.5rem;
+}
+
+/* RTL Button alignment - buttons should align to the right (start) in RTL */
+[dir="rtl"] .justify-start {
+  justify-content: flex-start; /* This will be right-aligned in RTL */
+}
+
+/* RTL Dialog footer - ensure proper button alignment */
+[dir="rtl"] [data-slot="dialog-footer"] {
+  text-align: right;
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

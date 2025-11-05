@@ -1,162 +1,195 @@
 import type { FC } from "react";
-import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { Button } from "../atoms/button";
+import { Loader2, ArrowRight, ArrowLeft } from "lucide-react";
+import { useState, useEffect } from "react";
 import { Template } from "../templates";
-import { useWizardNavigation } from "../../lib/contexts";
 import { StepHeader } from "../atoms";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogFooter,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/atoms/dialog";
-import { useAI } from "@/lib/hooks";
+import { FormProvider } from "react-hook-form";
+import { SituationDescriptionsFormElements } from "../organisms";
+import { SituationDescriptionsFormData } from "../../lib/schema/validation";
+import { useValidationSchemas } from "../../lib/hooks/useValidationSchemas";
+import { useWizard } from "../../lib/hooks/useWizard";
+import { useWizardNavigation } from "../../lib/contexts";
+import toast, { Toaster } from "react-hot-toast";
 
 /**
- * Step 3 page component for the wizard form.
- * Situation Descriptions step with AI assistance - third step of the wizard.
+ * Step 3 page component - Situation Descriptions
+ * Uses AI assistance for writing situation descriptions following Step2 pattern
  */
 const Step3: FC = () => {
-  const { t } = useTranslation();
-  const { setWizardStep } = useWizardNavigation();
+  const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { setWizardStep, nextStep } = useWizardNavigation();
 
-  // Set wizard step to 2 (0-based index) when component mounts
+  // Set wizard step to 2 when component mounts
   useEffect(() => {
     setWizardStep(2);
   }, []); // Remove setWizardStep from dependencies to prevent infinite loop
 
-  // Local state for the textarea and dialog
-  const [text, setText] = useState("");
-  const [open, setOpen] = useState(false);
+  // Initialize form with react-hook-form and load saved data
+  const { getStepData, getWizardGenerator, resetWizardGenerator } = useWizard();
+  const { SituationDescriptionsSchema } = useValidationSchemas();
+  const savedStep3Data = getStepData(3);
+  const methods = useForm<SituationDescriptionsFormData>({
+    resolver: zodResolver(SituationDescriptionsSchema),
+    mode: "onBlur",
+    defaultValues: {
+      currentFinancialSituation: savedStep3Data.currentFinancialSituation || "",
+      employmentCircumstances: savedStep3Data.employmentCircumstances || "",
+      reasonForApplying: savedStep3Data.reasonForApplying || "",
+    },
+  });
 
-  const { generateStreaming, response, isStreaming, error, cancel, reset } =
-    useAI();
+  /**
+   * clear form errors on language change
+   */
+  useEffect(() => {
+    methods.clearErrors();
+  }, [i18n.language]);
+
+  /**
+   * Handle back navigation to Step 2
+   */
+  const handleBack = () => {
+    navigate("/step2");
+  };
+
+  /**
+   * Handle form submission using centralized generator
+   */
+  const handleSubmit = methods.handleSubmit(
+    async (formData: SituationDescriptionsFormData) => {
+      try {
+        setIsSubmitting(true);
+
+        // Reset and get a fresh wizard generator for submission
+        resetWizardGenerator();
+        const wizardGen = getWizardGenerator();
+
+        // First call: get step 3 info (generator yields step info)
+        let result = await wizardGen.next();
+
+        // If we're not on step 3 yet, advance to it
+        if (!result.done && result.value.step !== 3) {
+          // Continue advancing until we reach step 3
+          while (!result.done && result.value.step < 3) {
+            result = await wizardGen.next();
+          }
+        }
+
+        // Second call: send form data (generator processes the data)
+        result = await wizardGen.next(formData);
+
+        // Check if the result is an error
+        if (!result.done && result.value.hasError) {
+          toast.error(result.value.error || t("common.toast.step3.error"), {
+            duration: 4000,
+            position: "top-right",
+          });
+          return; // Don't navigate to next step on error
+        }
+
+        // If no error, continue to get next step info
+        if (!result.done) {
+          // Show success toast
+          toast.success(t("common.toast.step3.success"), {
+            duration: 2000,
+            position: "top-right",
+          });
+
+          // Navigate to summary page using both ConfigContext and react-router
+          nextStep();
+          navigate("/summary");
+        } else {
+          // Wizard completed - go to summary
+          navigate("/summary");
+        }
+      } catch (error) {
+        console.error("Failed to save step 3 data:", error);
+        toast.error(t("common.toast.step3.errorWithRetry"), {
+          duration: 4000,
+          position: "top-right",
+        });
+      } finally {
+        setIsSubmitting(false);
+      }
+    }
+  );
 
   return (
     <Template>
+      <Toaster />
+
       <div className="space-y-6">
         <StepHeader
           title={t("pages.step3.title")}
           description={t("pages.step3.description")}
         />
 
-        {/* Form content - textarea with AI assistance */}
-        <div className="mt-8 max-w-3xl mx-auto">
-          <label className="block text-sm font-medium text-muted-foreground mb-2">
-            {t("pages.step3.fieldLabel", "Describe your situation")}
-          </label>
-          <textarea
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            rows={6}
-            className="w-full rounded-md border border-input p-3 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-ring"
-            placeholder={t(
-              "pages.step3.fieldPlaceholder",
-              "Write a brief description of your current situation..."
-            )}
-          />
-
-          <div className="mt-3 flex items-center gap-3">
-            <button
-              type="button"
-              className="px-4 py-2 rounded bg-primary text-white text-sm"
-              onClick={() => {
-                // Open dialog and start streaming AI suggestion
-                setOpen(true);
-                // Build a simple prompt using current text
-                const prompt = t(
-                  "ai.prompts.improveText",
-                  "I am unemployed with no income. Help me describe my financial hardship."
-                ).replace("{input}", text || "");
-
-                generateStreaming({ prompt, context: text || "" });
-              }}
+        {/* Form with three textarea fields and AI assistance */}
+        <div className="max-w-4xl mx-auto">
+          <FormProvider {...methods}>
+            <form
+              onSubmit={handleSubmit}
+              className="bg-white rounded-lg border border-primary p-8 space-y-8"
             >
-              {t("common.actions.helpMeWrite", "Help me write")}
-            </button>
+              {/* Form Elements */}
+              <SituationDescriptionsFormElements />
 
-            <button
-              type="button"
-              className="px-4 py-2 rounded border border-input text-sm"
-              onClick={() => setText("")}
-            >
-              {t("common.actions.clear", "Clear")}
-            </button>
-          </div>
-
-          {/* Dialog showing streaming AI result */}
-          <Dialog
-            open={open}
-            onOpenChange={(val) => {
-              if (!val) {
-                // If dialog closed, cancel streaming and reset AI hook
-                cancel();
-                reset();
-              }
-              setOpen(val);
-            }}
-          >
-            <DialogContent className="max-w-2xl">
-              <DialogHeader>
-                <DialogTitle>
-                  {t("ai.dialog.title", "AI suggestion")}
-                </DialogTitle>
-                <DialogDescription>
-                  {t(
-                    "ai.dialog.description",
-                    "The AI will provide a suggested text below as it streams. You can accept it to replace your field or close to cancel."
+              {/* Navigation Buttons */}
+              <div className="flex justify-between pt-6 border-t border-gray-200">
+                {/* Back Button */}
+                <Button
+                  type="button"
+                  onClick={handleBack}
+                  disabled={isSubmitting}
+                  variant="outline"
+                  className="flex items-center gap-2"
+                >
+                  {i18n.language === "ar" ? (
+                    <>
+                      {t("common.buttons.backToPrevious")}
+                      <ArrowRight className="h-4 w-4" />
+                    </>
+                  ) : (
+                    <>
+                      <ArrowLeft className="h-4 w-4" />
+                      {t("common.buttons.backToPrevious")}
+                    </>
                   )}
-                </DialogDescription>
-              </DialogHeader>
+                </Button>
 
-              <div className="min-h-40 max-h-[50vh] overflow-auto whitespace-pre-wrap p-2 border border-border rounded">
-                {isStreaming && (
-                  <div className="text-sm text-muted-foreground">
-                    {t("ai.streaming", "Generating...")}
-                  </div>
-                )}
-                <div className="text-sm">
-                  {response || t("ai.noContent", "No suggestion yet")}
-                </div>
-                {error && (
-                  <div className="text-sm text-destructive mt-2">
-                    {String(error)}
-                  </div>
-                )}
+                {/* Submit Button */}
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="flex items-center gap-2 bg-primary hover:bg-primary/90"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      {t("common.buttons.submitting")}
+                    </>
+                  ) : (
+                    <>
+                      {t("common.buttons.submit")}
+                      {i18n.language !== "ar" && (
+                        <ArrowRight className="h-4 w-4" />
+                      )}
+                      {i18n.language === "ar" && (
+                        <ArrowLeft className="h-4 w-4" />
+                      )}
+                    </>
+                  )}
+                </Button>
               </div>
-
-              <DialogFooter>
-                <button
-                  type="button"
-                  className="px-4 py-2 rounded border border-input text-sm"
-                  onClick={() => {
-                    // Cancel and close, do not copy
-                    cancel();
-                    reset();
-                    setOpen(false);
-                  }}
-                >
-                  {t("common.actions.cancel", "Cancel")}
-                </button>
-
-                <button
-                  type="button"
-                  className="px-4 py-2 rounded bg-primary text-white text-sm"
-                  onClick={() => {
-                    // Accept the AI suggestion and copy to textarea
-                    setText(response || text);
-                    cancel();
-                    reset();
-                    setOpen(false);
-                  }}
-                >
-                  {t("common.actions.accept", "Accept")}
-                </button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+            </form>
+          </FormProvider>
         </div>
       </div>
     </Template>

@@ -5,6 +5,10 @@ import {
   EMPLOYMENT_STATUS_OPTIONS,
   HOUSING_STATUS_OPTIONS,
 } from "../utils/constants";
+import {
+  getSelectValidationMessage,
+  getValidationMessage,
+} from "../utils/validationMessages";
 
 /**
  * Personal Information Form Validation Schema (Step 1)
@@ -20,27 +24,24 @@ import {
 export const PersonalInfoSchema = z.object({
   name: z
     .string()
-    .min(1, "Full name is required")
-    .min(2, "Name must be at least 2 characters")
-    .max(100, "Name must not exceed 100 characters")
+    .min(1, getValidationMessage("nameRequired"))
+    .min(2, getValidationMessage("nameMinLength"))
+    .max(100, getValidationMessage("nameMaxLength"))
     .regex(
       /^[a-zA-Z\s\u0600-\u06FF]+$/,
-      "Name can only contain letters and spaces"
+      getValidationMessage("nameInvalidFormat")
     ),
 
   nationalId: z
     .string()
-    .min(1, "National ID is required")
-    .min(7, "National ID must be at least 7 characters")
-    .max(20, "National ID must not exceed 20 characters")
-    .regex(
-      /^[A-Za-z0-9]+$/,
-      "National ID can only contain letters and numbers"
-    ),
+    .min(1, getValidationMessage("nationalIdRequired"))
+    .min(7, getValidationMessage("nationalIdMinLength"))
+    .max(20, getValidationMessage("nationalIdMaxLength"))
+    .regex(/^[A-Za-z0-9]+$/, getValidationMessage("nationalIdInvalidFormat")),
 
   dateOfBirth: z
     .string()
-    .min(1, "Date of birth is required")
+    .min(1, getValidationMessage("dateOfBirthRequired"))
     .refine((date) => {
       const birthDate = new Date(date);
       const today = new Date();
@@ -55,42 +56,43 @@ export const PersonalInfoSchema = z.object({
         today.getDate()
       );
       return birthDate >= minAge && birthDate <= maxAge;
-    }, "You must be between 13 and 120 years old"),
+    }, getValidationMessage("dateOfBirthInvalidAge")),
 
   gender: z
-    .enum([
-      GENDER_OPTIONS.MALE,
-      GENDER_OPTIONS.FEMALE,
-      GENDER_OPTIONS.OTHER,
-      GENDER_OPTIONS.PREFER_NOT_TO_SAY,
-    ] as [string, ...string[]])
-    .refine((value) => value !== "", "Please select your gender"),
+    .string()
+    .refine(
+      (value) =>
+        [
+          GENDER_OPTIONS.MALE,
+          GENDER_OPTIONS.FEMALE,
+          GENDER_OPTIONS.OTHER,
+          GENDER_OPTIONS.PREFER_NOT_TO_SAY,
+        ].includes(value as any),
+      { message: getSelectValidationMessage("gender") }
+    ),
 
   address: z
     .string()
-    .min(1, "Address is required")
-    .min(10, "Address must be at least 10 characters")
-    .max(200, "Address must not exceed 200 characters"),
+    .min(1, getValidationMessage("addressRequired"))
+    .min(10, getValidationMessage("addressMinLength"))
+    .max(200, getValidationMessage("addressMaxLength")),
 
-  country: z.string().min(1, "Country is required"),
+  country: z.string().min(1, getValidationMessage("countryRequired")),
 
-  state: z.string().min(1, "State/Province is required"),
+  state: z.string().min(1, getValidationMessage("stateRequired")),
 
-  city: z.string().min(1, "City is required"),
+  city: z.string().min(1, getValidationMessage("cityRequired")),
 
   phoneNumber: z
     .string()
-    .min(1, "Phone number is required")
-    .regex(
-      /^\+?[1-9]\d{1,14}$/,
-      "Please enter a valid international phone number"
-    ),
+    .min(1, getValidationMessage("phoneRequired"))
+    .regex(/^\+?[1-9]\d{1,14}$/, getValidationMessage("phoneInvalidFormat")),
 
   email: z
     .string()
-    .min(1, "Email address is required")
-    .email("Please enter a valid email address")
-    .max(100, "Email must not exceed 100 characters"),
+    .min(1, getValidationMessage("emailRequired"))
+    .email(getValidationMessage("emailInvalidFormat"))
+    .max(100, getValidationMessage("emailMaxLength")),
 });
 
 /**
@@ -104,55 +106,89 @@ export const PersonalInfoSchema = z.object({
  */
 export const FamilyFinancialSchema = z.object({
   maritalStatus: z
-    .enum([
-      MARITAL_STATUS_OPTIONS.SINGLE,
-      MARITAL_STATUS_OPTIONS.MARRIED,
-      MARITAL_STATUS_OPTIONS.DIVORCED,
-      MARITAL_STATUS_OPTIONS.WIDOWED,
-      MARITAL_STATUS_OPTIONS.SEPARATED,
-    ] as [string, ...string[]])
-    .refine((value) => value !== "", "Please select your marital status"),
+    .string()
+    .refine(
+      (value) =>
+        [
+          MARITAL_STATUS_OPTIONS.SINGLE,
+          MARITAL_STATUS_OPTIONS.MARRIED,
+          MARITAL_STATUS_OPTIONS.DIVORCED,
+          MARITAL_STATUS_OPTIONS.WIDOWED,
+          MARITAL_STATUS_OPTIONS.SEPARATED,
+        ].includes(value as any),
+      { message: getSelectValidationMessage("maritalStatus") }
+    ),
 
   dependents: z
     .string()
-    .min(1, "Number of dependents is required")
+    .min(1, getValidationMessage("dependentsRequired"))
     .refine((value) => {
       const num = parseInt(value);
       return !isNaN(num) && num >= 0 && num <= 20;
-    }, "Number of dependents must be between 0 and 20"),
+    }, getValidationMessage("dependentsInvalidRange")),
 
   employmentStatus: z
-    .enum([
-      EMPLOYMENT_STATUS_OPTIONS.EMPLOYED_FULL_TIME,
-      EMPLOYMENT_STATUS_OPTIONS.EMPLOYED_PART_TIME,
-      EMPLOYMENT_STATUS_OPTIONS.SELF_EMPLOYED,
-      EMPLOYMENT_STATUS_OPTIONS.UNEMPLOYED,
-      EMPLOYMENT_STATUS_OPTIONS.RETIRED,
-      EMPLOYMENT_STATUS_OPTIONS.STUDENT,
-      EMPLOYMENT_STATUS_OPTIONS.DISABLED,
-    ] as [string, ...string[]])
-    .refine((value) => value !== "", "Please select your employment status"),
+    .string()
+    .refine(
+      (value) =>
+        [
+          EMPLOYMENT_STATUS_OPTIONS.EMPLOYED_FULL_TIME,
+          EMPLOYMENT_STATUS_OPTIONS.EMPLOYED_PART_TIME,
+          EMPLOYMENT_STATUS_OPTIONS.SELF_EMPLOYED,
+          EMPLOYMENT_STATUS_OPTIONS.UNEMPLOYED,
+          EMPLOYMENT_STATUS_OPTIONS.RETIRED,
+          EMPLOYMENT_STATUS_OPTIONS.STUDENT,
+          EMPLOYMENT_STATUS_OPTIONS.DISABLED,
+        ].includes(value as any),
+      { message: getSelectValidationMessage("employmentStatus") }
+    ),
 
   monthlyIncome: z
     .string()
-    .min(1, "Monthly income is required")
+    .min(1, getValidationMessage("monthlyIncomeRequired"))
     .refine((value) => {
       const num = parseFloat(value);
       return !isNaN(num) && num >= 0 && num <= 1000000;
-    }, "Monthly income must be between 0 and 1,000,000 AED"),
+    }, getValidationMessage("monthlyIncomeInvalidRange")),
 
   housingStatus: z
-    .enum([
-      HOUSING_STATUS_OPTIONS.OWNED,
-      HOUSING_STATUS_OPTIONS.RENTED,
-      HOUSING_STATUS_OPTIONS.LIVING_WITH_FAMILY,
-      HOUSING_STATUS_OPTIONS.HOMELESS,
-      HOUSING_STATUS_OPTIONS.TEMPORARY_HOUSING,
-      HOUSING_STATUS_OPTIONS.OTHER,
-    ] as [string, ...string[]])
-    .refine((value) => value !== "", "Please select your housing status"),
+    .string()
+    .refine(
+      (value) =>
+        [
+          HOUSING_STATUS_OPTIONS.OWNED,
+          HOUSING_STATUS_OPTIONS.RENTED,
+          HOUSING_STATUS_OPTIONS.LIVING_WITH_FAMILY,
+          HOUSING_STATUS_OPTIONS.HOMELESS,
+          HOUSING_STATUS_OPTIONS.TEMPORARY_HOUSING,
+          HOUSING_STATUS_OPTIONS.OTHER,
+        ].includes(value as any),
+      { message: getSelectValidationMessage("housingStatus") }
+    ),
+});
+
+/**
+ * Situation Descriptions Form Validation Schema (Step 3)
+ * Validates user's situation descriptions with AI assistance
+ */
+export const SituationDescriptionsSchema = z.object({
+  currentFinancialSituation: z
+    .string()
+    .min(10, getValidationMessage("financialSituationMinLength"))
+    .max(1000, getValidationMessage("financialSituationMaxLength")),
+  employmentCircumstances: z
+    .string()
+    .min(10, getValidationMessage("employmentCircumstancesMinLength"))
+    .max(1000, getValidationMessage("employmentCircumstancesMaxLength")),
+  reasonForApplying: z
+    .string()
+    .min(10, getValidationMessage("reasonForApplyingMinLength"))
+    .max(1000, getValidationMessage("reasonForApplyingMaxLength")),
 });
 
 // Export TypeScript types from Zod schemas
 export type PersonalInfoFormData = z.infer<typeof PersonalInfoSchema>;
 export type FamilyFinancialFormData = z.infer<typeof FamilyFinancialSchema>;
+export type SituationDescriptionsFormData = z.infer<
+  typeof SituationDescriptionsSchema
+>;
