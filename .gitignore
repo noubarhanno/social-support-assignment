@@ -25,3 +25,8 @@ dist-ssr
 
 # Testing
 coverage
+
+# Environment variables
+.env.local
+.env.production.local
+.env.development.local

@@ -58,8 +58,6 @@ src/
 
 **Generator Pattern:** JavaScript generators control wizard flow, providing stateful iteration through form steps with automatic persistence and recovery.
 
-**Composition over Inheritance:** Components are designed to be composed together rather than extended, following React best practices for flexibility and reusability.
-
 ## Key Features
 
 ### Generator-Powered Wizard Flow
@@ -239,6 +237,82 @@ const configReducer = (state: ConfigState, action: ConfigAction) => {
 - **Privacy:** All data stored locally, no server-side session management required
 
 ## API Integration
+
+### OpenAI API Layer
+
+**Implementation:** Comprehensive OpenAI integration with streaming support, proper error handling, and secure environment configuration.
+
+**Features:**
+
+```tsx
+// Environment Configuration
+// .env.local (create from .env.example)
+VITE_OPENAI_API_KEY = your - openai - api - key - here;
+VITE_OPENAI_MODEL = gpt - 3.5 - turbo;
+VITE_OPENAI_MAX_TOKENS = 1000;
+VITE_OPENAI_TEMPERATURE = 0.7;
+
+// Using the AI hook
+import { useAI } from "@/lib/hooks/useAI";
+
+const MyComponent = () => {
+  const { generateStreaming, response, isStreaming, error, cancel } = useAI();
+
+  const handleAIAssist = async () => {
+    await generateStreaming({
+      prompt: "Help me write a professional summary",
+      context: currentFieldValue,
+    });
+  };
+
+  return (
+    <div>
+      <button onClick={handleAIAssist}>Get AI Suggestions</button>
+      {isStreaming && <div>Generating...</div>}
+      {response && <div>{response}</div>}
+      {error && <div className="error">{error}</div>}
+    </div>
+  );
+};
+```
+
+**AI Service Architecture:**
+
+- **Streaming Support:** Real-time response streaming with chunked processing
+- **Error Handling:** Comprehensive error mapping for different OpenAI API issues
+- **Rate Limiting:** Built-in handling for API rate limits with retry mechanisms
+- **Secure Configuration:** Environment-based API key management with validation
+- **Multi-language:** Arabic and English prompts with contextual assistance
+- **Form Integration:** Specialized prompts for different form field types
+
+**Security & Configuration:**
+
+```bash
+# Setup Instructions
+1. Copy .env.example to .env.local
+2. Add your OpenAI API key from https://platform.openai.com/api-keys
+3. Configure model settings (optional)
+
+# File Structure
+├── lib/
+│   ├── config/
+│   │   └── env.ts          # Environment configuration with validation
+│   ├── api/
+│   │   └── openai.ts       # Main OpenAI service with streaming
+│   ├── http/
+│   │   └── openai.ts       # HTTP client for OpenAI API
+│   ├── hooks/
+│   │   └── useAI.ts        # React hook for AI functionality
+│   └── types/
+│       └── ai.ts           # TypeScript interfaces and error types
+```
+
+**Error Handling:**
+
+- **Network Issues:** Automatic retry with exponential backoff
+- **Authentication:** Clear error messages for invalid API keys
+- **Rate Limiting:** Graceful handling with retry-after headers
+- **Streaming Errors:** Robust stream processing with fallback mechanisms
 
 ### Countries & States Service
 

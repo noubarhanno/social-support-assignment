@@ -216,11 +216,11 @@ export const FamilyFinancialFormElements: React.FC = () => {
             <div className="relative">
               {/* Currency symbol positioning based on language direction */}
               <div
-                className={`absolute inset-y-0 ${
+                className={`absolute top-0 bottom-0 ${
                   i18n.language === "ar" ? "right-0 pr-3" : "left-0 pl-3"
-                } flex items-center pointer-events-none z-10`}
+                } flex items-center pointer-events-none z-10 h-9`}
               >
-                <span className="text-gray-500 font-medium">
+                <span className="text-gray-500 font-medium text-sm">
                   {i18n.language === "ar" ? "د.إ" : "AED"}
                 </span>
               </div>
@@ -231,8 +231,8 @@ export const FamilyFinancialFormElements: React.FC = () => {
                 required
                 className={`${
                   i18n.language === "ar"
-                    ? "pr-12 text-right" // Arabic: Currency on right, text from right
-                    : "pl-12 text-left" // English: Currency on left, text from left
+                    ? "pr-14 text-right" // Arabic: Currency on right, text from right - increased padding
+                    : "pl-14 text-left" // English: Currency on left, text from left - increased padding
                 }`}
                 aria-label={`${t(
                   "forms.familyFinancial.fields.monthlyIncome.placeholder"

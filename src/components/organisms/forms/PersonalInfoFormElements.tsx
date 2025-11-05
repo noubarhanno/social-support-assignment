@@ -163,26 +163,46 @@ export const PersonalInfoFormElements: React.FC = () => {
           </div>
         </div>
 
-        {/* State */}
+        {/* State - Dynamic: Select if states available, Input if no states */}
         <div>
-          <FormSelect
-            name="state"
-            label={t("forms.personalInfo.fields.state.label")}
-            options={stateOptions}
-            placeholder={
-              selectedCountry
-                ? t("forms.personalInfo.fields.state.placeholder")
-                : t("forms.personalInfo.fields.state.placeholderSelectCountry")
-            }
-            disabled={!selectedCountry || loadingStates}
-            loading={loadingStates}
-            required
-            aria-label={t("forms.personalInfo.fields.state.placeholder")}
-            aria-describedby="state-help"
-          />
+          {selectedCountry && !loadingStates && stateOptions.length === 0 ? (
+            // Render input for countries without predefined states
+            <FormInput
+              name="state"
+              label={t("forms.personalInfo.fields.state.label")}
+              placeholder={t(
+                "forms.personalInfo.fields.state.placeholderInput"
+              )}
+              required
+              aria-label={t("forms.personalInfo.fields.state.placeholderInput")}
+              aria-describedby="state-help-input"
+            />
+          ) : (
+            // Render select for countries with predefined states
+            <FormSelect
+              name="state"
+              label={t("forms.personalInfo.fields.state.label")}
+              options={stateOptions}
+              placeholder={
+                selectedCountry
+                  ? t("forms.personalInfo.fields.state.placeholder")
+                  : t(
+                      "forms.personalInfo.fields.state.placeholderSelectCountry"
+                    )
+              }
+              disabled={!selectedCountry || loadingStates}
+              loading={loadingStates}
+              required
+              aria-label={t("forms.personalInfo.fields.state.placeholder")}
+              aria-describedby="state-help"
+            />
+          )}
           <div id="state-help" className="sr-only">
             Available after selecting a country. Selecting a state will load
             available cities.
+          </div>
+          <div id="state-help-input" className="sr-only">
+            Enter your state/province/region name.
           </div>
         </div>
 

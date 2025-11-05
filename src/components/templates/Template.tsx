@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { Header } from "../organisms";
 import { WizardProgress, WizardStep } from "../molecules";
@@ -49,7 +49,7 @@ const Template: React.FC<TemplateProps> = ({
     },
     {
       id: "situation",
-      title: t("wizard.steps.situation"),
+      title: t("wizard.steps.situationDesc"),
       status:
         wizardStep > 2 ? "completed" : wizardStep === 2 ? "active" : "inactive",
       route: "/step3",
@@ -61,13 +61,13 @@ const Template: React.FC<TemplateProps> = ({
       <Header />
 
       <main className="w-full">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="mb-8">
+        <div className="max-w-[1400px] mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
+          <div className="mb-4 sm:mb-6 lg:mb-8">
             <WizardProgress steps={steps} />
           </div>
 
           <div
-            className={`w-full bg-white rounded-lg shadow-sm p-6 sm:p-8 ${contentClassName}`}
+            className={`w-full bg-white rounded-lg shadow-sm p-3 sm:p-6 lg:p-8 ${contentClassName}`}
           >
             {children}
           </div>

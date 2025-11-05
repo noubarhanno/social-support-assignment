@@ -10,10 +10,8 @@ import { Template } from "../templates";
 import { StepHeader } from "../atoms";
 import { FormProvider } from "react-hook-form";
 import { FamilyFinancialFormElements } from "../organisms";
-import {
-  FamilyFinancialSchema,
-  FamilyFinancialFormData,
-} from "../../lib/schema/validation";
+import { FamilyFinancialFormData } from "../../lib/schema/validation";
+import { useValidationSchemas } from "../../lib/hooks/useValidationSchemas";
 import { useWizard } from "../../lib/hooks/useWizard";
 import { useWizardNavigation } from "../../lib/contexts";
 import toast, { Toaster } from "react-hot-toast";
@@ -33,8 +31,16 @@ const Step2: FC = () => {
     setWizardStep(1);
   }, []); // Remove setWizardStep from dependencies to prevent infinite loop
 
+  /**
+   * clear form errors on language change
+   */
+  useEffect(() => {
+    methods.clearErrors();
+  }, [i18n.language]);
+
   // Initialize form with react-hook-form and load saved data
   const { getStepData, getWizardGenerator, resetWizardGenerator } = useWizard();
+  const { FamilyFinancialSchema } = useValidationSchemas();
   const savedStep2Data = getStepData(2);
   const methods = useForm<FamilyFinancialFormData>({
     resolver: zodResolver(FamilyFinancialSchema),
@@ -47,6 +53,13 @@ const Step2: FC = () => {
       housingStatus: savedStep2Data.housingStatus || "",
     },
   });
+
+  /**
+   * clear form errors on language change
+   */
+  useEffect(() => {
+    methods.clearErrors();
+  }, [i18n.language]);
 
   /**
    * Handle back navigation to Step 1
@@ -83,21 +96,17 @@ const Step2: FC = () => {
 
         // Check if the result is an error
         if (!result.done && result.value.hasError) {
-          toast.error(
-            result.value.error ||
-              "Failed to save family & financial information",
-            {
-              duration: 4000,
-              position: "top-right",
-            }
-          );
+          toast.error(result.value.error || t("common.toast.step2.error"), {
+            duration: 4000,
+            position: "top-right",
+          });
           return; // Don't navigate to next step on error
         }
 
         // If no error, continue to get next step info
         if (!result.done) {
           // Show success toast
-          toast.success("Family & financial information saved!", {
+          toast.success(t("common.toast.step2.success"), {
             duration: 2000,
             position: "top-right",
           });
@@ -110,13 +119,10 @@ const Step2: FC = () => {
         }
       } catch (error) {
         console.error("Failed to save step 2 data:", error);
-        toast.error(
-          "Failed to save family & financial information. Please try again.",
-          {
-            duration: 4000,
-            position: "top-right",
-          }
-        );
+        toast.error(t("common.toast.step2.errorWithRetry"), {
+          duration: 4000,
+          position: "top-right",
+        });
       } finally {
         setIsSubmitting(false);
       }
@@ -136,7 +142,7 @@ const Step2: FC = () => {
         {/* Simple form with generator-powered navigation */}
         <div className="max-w-4xl mx-auto">
           <FormProvider {...methods}>
-            <div className="bg-white rounded-lg border border-primary p-8 space-y-6">
+            <div className="bg-white rounded-lg border border-primary p-6 lg:p-8 space-y-6">
               {/* Form Elements */}
               <FamilyFinancialFormElements />
 
