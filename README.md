@@ -1,6 +1,4 @@
-# NorthBay Social Support Application
-
-React + TypeScript + Vite application implementing a 3-step wizard form for a social support portal with advanced form handling, internationalization, and state persistence.
+# Social Support Application
 
 ## Tech Stack
 

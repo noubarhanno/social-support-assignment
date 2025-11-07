@@ -220,16 +220,22 @@
     },
     "ai": {
         "dialog": {
-            "title": "AI Suggestion",
-            "description": "The AI will provide a suggested text below as it streams. You can accept it to replace your field or close to cancel."
+            "title": "AI Writing Assistant",
+            "description": "I'm here to help you write compelling and effective text. Describe what you'd like to write, and I'll craft it for you."
         },
         "streaming": "Generating...",
         "noContent": "No suggestion yet",
         "error": "Error",
         "actions": {
             "generateNew": "Generate New",
+            "gettingHelp": "Getting My Help",
             "accept": "Accept",
             "helpMeWrite": "Help me write"
+        },
+        "labels": {
+            "customPrompt": "What would you like me to write?",
+            "customPromptPlaceholder": "Describe what you want to write about...",
+            "editGeneratedText": "Generated Text"
         },
         "prompts": {
             "financialSituation": "Help me describe my current financial situation in one paragraph (max 300 characters). Include income, expenses, and any financial challenges I'm facing.",

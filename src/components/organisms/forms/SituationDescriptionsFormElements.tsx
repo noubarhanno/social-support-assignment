@@ -70,6 +70,7 @@ export const SituationDescriptionsFormElements: React.FC = () => {
           <AITextGenerator
             prompt={t("ai.prompts.financialSituation")}
             context={watch("currentFinancialSituation")}
+            defaultValue={watch("currentFinancialSituation") || ""}
             onTextGenerated={(text) =>
               setValue("currentFinancialSituation", text)
             }
@@ -77,6 +78,9 @@ export const SituationDescriptionsFormElements: React.FC = () => {
           />
         </div>
       </div>
+
+      {/* Separator Line */}
+      <div className="border-t border-primary/20 my-6"></div>
 
       {/* Employment Circumstances */}
       <div className="space-y-2 sm:space-y-3">
@@ -98,6 +102,7 @@ export const SituationDescriptionsFormElements: React.FC = () => {
           <AITextGenerator
             prompt={t("ai.prompts.employmentCircumstances")}
             context={watch("employmentCircumstances")}
+            defaultValue={watch("employmentCircumstances") || ""}
             onTextGenerated={(text) =>
               setValue("employmentCircumstances", text)
             }
@@ -105,6 +110,9 @@ export const SituationDescriptionsFormElements: React.FC = () => {
           />
         </div>
       </div>
+
+      {/* Separator Line */}
+      <div className="border-t border-primary/20 my-6"></div>
 
       {/* Reason for Applying */}
       <div className="space-y-2 sm:space-y-3">
@@ -126,6 +134,7 @@ export const SituationDescriptionsFormElements: React.FC = () => {
           <AITextGenerator
             prompt={t("ai.prompts.reasonForApplying")}
             context={watch("reasonForApplying")}
+            defaultValue={watch("reasonForApplying") || ""}
             onTextGenerated={(text) => setValue("reasonForApplying", text)}
             buttonText={t("common.actions.helpMeWrite")}
           />

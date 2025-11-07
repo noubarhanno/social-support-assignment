@@ -3,6 +3,7 @@ import { Check, Edit3 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useWizardNavigation } from "../../lib/contexts";
+import { useRTL } from "@/lib/hooks";
 
 export type StepStatus = "inactive" | "active" | "completed";
 
@@ -34,6 +35,7 @@ const WizardProgress: React.FC<WizardProgressProps> = ({
   const navigate = useNavigate();
   const { setWizardStep } = useWizardNavigation();
   const [hoveredStep, setHoveredStep] = useState<string | null>(null);
+  const { isRTL } = useRTL();
 
   const handleStepClick = (step: WizardStep, stepIndex: number) => {
     // Only allow clicking on completed steps
@@ -106,7 +108,11 @@ const WizardProgress: React.FC<WizardProgressProps> = ({
 
   return (
     <nav className={cn("w-full", className)} aria-label="Wizard Progress">
-      <div className="flex items-center justify-between">
+      <div
+        className={`flex items-center justify-between ${
+          isRTL ? "flex-row-reverse" : "flex-row"
+        }`}
+      >
         {steps.map((step, stepIndex) => {
           const isClickable = step.status === "completed";
 

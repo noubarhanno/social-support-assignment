@@ -176,7 +176,8 @@ export function useFormDependenciesReducer() {
         // Normal behavior: clear form fields
         setValue("state", "");
         setValue("city", "");
-        clearErrors(["state", "city"]);
+        setValue("phoneNumber", "");
+        clearErrors(["state", "city", "phoneNumber"]);
       }
 
       if (!newCountry) {
