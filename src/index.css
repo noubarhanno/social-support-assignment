@@ -52,7 +52,22 @@
 
 /* RTL Button positioning */
 [dir="rtl"] .flex.justify-between {
-  flex-direction: row-reverse;
+  flex-direction: row !important;
+}
+
+/* More specific RTL rules for our components */
+html[dir="rtl"] .flex.justify-between,
+html[dir="rtl"] .flex.items-center.justify-between {
+  flex-direction: row !important;
+}
+
+/* Force RTL flex direction for components that need manual control */
+.flex-row-reverse {
+  flex-direction: row-reverse !important;
+}
+
+.flex-row {
+  flex-direction: row !important;
 }
 
 [dir="rtl"] .gap-2 {
