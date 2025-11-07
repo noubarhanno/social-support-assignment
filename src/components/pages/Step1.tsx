@@ -129,12 +129,12 @@ const Step1: FC = () => {
               <PersonalInfoFormElements />
 
               {/* Generator-powered Next Button */}
-              <div className="flex justify-end pt-6 border-t border-gray-200">
+              <div className="flex justify-end pt-4 sm:pt-6 border-t border-gray-200">
                 <Button
                   type="submit"
                   onClick={handleNext}
                   disabled={isSubmitting}
-                  className="flex items-center gap-2 bg-primary hover:bg-primary/90"
+                  className="flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 w-full sm:w-auto"
                 >
                   {isSubmitting ? (
                     <>

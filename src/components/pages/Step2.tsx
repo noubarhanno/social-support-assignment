@@ -147,14 +147,14 @@ const Step2: FC = () => {
               <FamilyFinancialFormElements />
 
               {/* Navigation Buttons */}
-              <div className="flex justify-between pt-6 border-t border-gray-200">
+              <div className="flex flex-col-reverse sm:flex-row sm:justify-between gap-3 pt-4 sm:pt-6 border-t border-gray-200">
                 {/* Back Button */}
                 <Button
                   type="button"
                   onClick={handleBack}
                   disabled={isSubmitting}
                   variant="outline"
-                  className="flex items-center gap-2"
+                  className="flex items-center justify-center gap-2 w-full sm:w-auto"
                 >
                   {i18n.language === "ar" ? (
                     <>
@@ -174,7 +174,7 @@ const Step2: FC = () => {
                   type="submit"
                   onClick={handleNext}
                   disabled={isSubmitting}
-                  className="flex items-center gap-2 bg-primary hover:bg-primary/90"
+                  className="flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 w-full sm:w-auto"
                 >
                   {isSubmitting ? (
                     <>

@@ -42,7 +42,7 @@ export const SituationDescriptionsFormElements: React.FC = () => {
     );
   }
 
-  const { watch, setValue } = formContext;
+  const { watch, setValue, clearErrors } = formContext;
 
   return (
     <div
@@ -71,9 +71,13 @@ export const SituationDescriptionsFormElements: React.FC = () => {
             prompt={t("ai.prompts.financialSituation")}
             context={watch("currentFinancialSituation")}
             defaultValue={watch("currentFinancialSituation") || ""}
-            onTextGenerated={(text) =>
-              setValue("currentFinancialSituation", text)
-            }
+            onTextGenerated={(text) => {
+              setValue("currentFinancialSituation", text, {
+                shouldValidate: true,
+                shouldDirty: true,
+              });
+              clearErrors("currentFinancialSituation");
+            }}
             buttonText={t("common.actions.helpMeWrite")}
           />
         </div>
@@ -103,9 +107,13 @@ export const SituationDescriptionsFormElements: React.FC = () => {
             prompt={t("ai.prompts.employmentCircumstances")}
             context={watch("employmentCircumstances")}
             defaultValue={watch("employmentCircumstances") || ""}
-            onTextGenerated={(text) =>
-              setValue("employmentCircumstances", text)
-            }
+            onTextGenerated={(text) => {
+              setValue("employmentCircumstances", text, {
+                shouldValidate: true,
+                shouldDirty: true,
+              });
+              clearErrors("employmentCircumstances");
+            }}
             buttonText={t("common.actions.helpMeWrite")}
           />
         </div>
@@ -135,7 +143,13 @@ export const SituationDescriptionsFormElements: React.FC = () => {
             prompt={t("ai.prompts.reasonForApplying")}
             context={watch("reasonForApplying")}
             defaultValue={watch("reasonForApplying") || ""}
-            onTextGenerated={(text) => setValue("reasonForApplying", text)}
+            onTextGenerated={(text) => {
+              setValue("reasonForApplying", text, {
+                shouldValidate: true,
+                shouldDirty: true,
+              });
+              clearErrors("reasonForApplying");
+            }}
             buttonText={t("common.actions.helpMeWrite")}
           />
         </div>

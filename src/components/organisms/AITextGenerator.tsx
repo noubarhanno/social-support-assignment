@@ -55,7 +55,7 @@ const AITextGenerator: FC<AITextGeneratorProps> = ({
   const { t } = useTranslation();
   const { isRTL } = useRTL();
   const [open, setOpen] = useState(false);
-  const [customPrompt, setCustomPrompt] = useState(prompt);
+  const [customPrompt, setCustomPrompt] = useState(""); // Start with empty custom prompt
   const [editableResponse, setEditableResponse] = useState(defaultValue);
   const [hasGenerated, setHasGenerated] = useState(false);
 
@@ -63,13 +63,21 @@ const AITextGenerator: FC<AITextGeneratorProps> = ({
     useAI();
 
   /**
-   * Handle opening dialog - don't generate immediately
+   * Handle opening dialog - immediately generate with default prompt
    */
   const handleOpenDialog = () => {
     setOpen(true);
-    setCustomPrompt(prompt);
+    setCustomPrompt(""); // Keep custom prompt empty
     setEditableResponse(defaultValue);
     setHasGenerated(!!defaultValue); // Set hasGenerated to true if there's a defaultValue
+
+    // Immediately generate text with default prompt if no defaultValue
+    if (!defaultValue) {
+      generateStreaming({
+        prompt: prompt,
+        context: context,
+      });
+    }
   };
 
   /**
@@ -108,14 +116,18 @@ const AITextGenerator: FC<AITextGeneratorProps> = ({
   };
 
   /**
-   * Handle generating text with custom prompt
+   * Handle generating text with custom prompt (or default if custom is empty)
    */
   const handleGenerateText = () => {
     cancel();
     reset();
     setEditableResponse("");
+
+    // Use custom prompt if provided, otherwise use default prompt
+    const promptToUse = customPrompt.trim() || prompt;
+
     generateStreaming({
-      prompt: customPrompt,
+      prompt: promptToUse,
       context: context,
     });
   };
@@ -253,7 +265,7 @@ const AITextGenerator: FC<AITextGeneratorProps> = ({
                 type="button"
                 size="sm"
                 onClick={handleGenerateText}
-                disabled={isStreaming || !customPrompt.trim()}
+                disabled={isStreaming}
                 className={`absolute bottom-2 h-8 w-8 rounded-full p-0 ${
                   isRTL ? "left-2" : "right-2"
                 }`}

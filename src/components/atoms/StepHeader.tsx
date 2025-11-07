@@ -27,7 +27,7 @@ const StepHeader: FC<StepHeaderProps> = ({
   return (
     <div className={`text-center ${className}`}>
       <h1
-        className={`text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-4 ${titleClassName}`}
+        className={`text-3xl lg:text-5xl md:text-4xl font-bold text-gray-900 mb-2 sm:mb-4 ${titleClassName}`}
       >
         {title}
       </h1>
