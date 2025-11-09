@@ -4,3 +4,4 @@ export * from "./config/env";
 export * from "./hooks";
 export * from "./types/ai";
 export * from "./utils";
+export * from "./services/persistenceService";

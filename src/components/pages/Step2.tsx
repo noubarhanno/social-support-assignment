@@ -14,6 +14,8 @@ import { FamilyFinancialFormData } from "../../lib/schema/validation";
 import { useValidationSchemas } from "../../lib/hooks/useValidationSchemas";
 import { useWizard } from "../../lib/hooks/useWizard";
 import { useWizardNavigation } from "../../lib/contexts";
+import { useAutoSave } from "../../lib/hooks/useAutoSave";
+import { autoSaveService } from "../../lib/services/persistenceService";
 import toast, { Toaster } from "react-hot-toast";
 
 /**
@@ -39,9 +41,10 @@ const Step2: FC = () => {
   }, [i18n.language]);
 
   // Initialize form with react-hook-form and load saved data
-  const { getStepData, getWizardGenerator, resetWizardGenerator } = useWizard();
+  const { getWizardGenerator, resetWizardGenerator } = useWizard();
   const { FamilyFinancialSchema } = useValidationSchemas();
-  const savedStep2Data = getStepData(2);
+  const savedStep2Data =
+    autoSaveService.getStepData<FamilyFinancialFormData>("professionalInfo");
   const methods = useForm<FamilyFinancialFormData>({
     resolver: zodResolver(FamilyFinancialSchema),
     mode: "onBlur",
@@ -53,6 +56,9 @@ const Step2: FC = () => {
       housingStatus: savedStep2Data.housingStatus || "",
     },
   });
+
+  // Setup auto-save functionality
+  useAutoSave(methods.watch, "professionalInfo");
 
   /**
    * clear form errors on language change

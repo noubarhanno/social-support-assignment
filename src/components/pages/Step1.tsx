@@ -14,6 +14,8 @@ import { PersonalInfoFormData } from "../../lib/schema/validation";
 import { useValidationSchemas } from "../../lib/hooks/useValidationSchemas";
 import { useWizard } from "../../lib/hooks/useWizard";
 import { useWizardNavigation } from "../../lib/contexts";
+import { useAutoSave } from "../../lib/hooks/useAutoSave";
+import { autoSaveService } from "../../lib/services/persistenceService";
 import toast, { Toaster } from "react-hot-toast";
 
 /**
@@ -31,9 +33,10 @@ const Step1: FC = () => {
   }, []); // Remove setWizardStep from dependencies to prevent infinite loop
 
   // Initialize form with react-hook-form and load saved data
-  const { getStepData, getWizardGenerator, resetWizardGenerator } = useWizard();
+  const { getWizardGenerator, resetWizardGenerator } = useWizard();
   const { PersonalInfoSchema } = useValidationSchemas();
-  const savedStep1Data = getStepData(1);
+  const savedStep1Data =
+    autoSaveService.getStepData<PersonalInfoFormData>("personalInfo");
   const methods = useForm<PersonalInfoFormData>({
     resolver: zodResolver(PersonalInfoSchema),
     mode: "onBlur",
@@ -50,6 +53,9 @@ const Step1: FC = () => {
       email: savedStep1Data.email || "",
     },
   });
+
+  // Setup auto-save functionality
+  useAutoSave(methods.watch, "personalInfo");
 
   /**
    * clear form errors on language change

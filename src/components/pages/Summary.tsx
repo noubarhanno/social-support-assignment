@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Template } from "../templates";
 import { useWizardNavigation } from "../../lib/contexts";
 import { useWizard } from "../../lib/hooks/useWizard";
+import { autoSaveService } from "../../lib/services/persistenceService";
 import { Button } from "../atoms/button";
 import { RotateCcw } from "lucide-react";
 import { StepHeader } from "../atoms";
@@ -25,11 +26,17 @@ const Summary: FC = () => {
   }, [setWizardStep]);
 
   /**
-   * Handle starting a new application
+   * Handle starting a new application - clear all data and restart
    */
   const handleStartNew = () => {
+    // Clear all auto-saved data
+    autoSaveService.clearAllData();
+
+    // Reset wizard state
     resetWizard();
     setWizardStep(0);
+
+    // Navigate to first step
     navigate("/step1");
   };
 

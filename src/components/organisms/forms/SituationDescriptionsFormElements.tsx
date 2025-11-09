@@ -7,6 +7,14 @@ import AITextGenerator from "../AITextGenerator";
 // Form data structure is now defined in the validation schema
 import type { SituationDescriptionsFormData } from "../../../lib/schema/validation";
 
+// Props interface for the form component
+interface SituationDescriptionsFormElementsProps {
+  onAIAccept?: (
+    fieldName: keyof SituationDescriptionsFormData,
+    text: string
+  ) => void;
+}
+
 /**
  * SituationDescriptionsFormElements organism component
  *
@@ -32,7 +40,9 @@ import type { SituationDescriptionsFormData } from "../../../lib/schema/validati
  * </FormProvider>
  * ```
  */
-export const SituationDescriptionsFormElements: React.FC = () => {
+export const SituationDescriptionsFormElements: React.FC<
+  SituationDescriptionsFormElementsProps
+> = ({ onAIAccept }) => {
   const { t } = useTranslation();
   const formContext = useFormContext<SituationDescriptionsFormData>();
 
@@ -77,6 +87,8 @@ export const SituationDescriptionsFormElements: React.FC = () => {
                 shouldDirty: true,
               });
               clearErrors("currentFinancialSituation");
+              // Call AI auto-save if provided
+              onAIAccept?.("currentFinancialSituation", text);
             }}
             buttonText={t("common.actions.helpMeWrite")}
           />
@@ -113,6 +125,8 @@ export const SituationDescriptionsFormElements: React.FC = () => {
                 shouldDirty: true,
               });
               clearErrors("employmentCircumstances");
+              // Call AI auto-save if provided
+              onAIAccept?.("employmentCircumstances", text);
             }}
             buttonText={t("common.actions.helpMeWrite")}
           />
@@ -149,6 +163,8 @@ export const SituationDescriptionsFormElements: React.FC = () => {
                 shouldDirty: true,
               });
               clearErrors("reasonForApplying");
+              // Call AI auto-save if provided
+              onAIAccept?.("reasonForApplying", text);
             }}
             buttonText={t("common.actions.helpMeWrite")}
           />
