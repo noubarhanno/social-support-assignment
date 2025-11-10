@@ -84,20 +84,25 @@ VITE_OPENAI_API_KEY=sk-your-actual-openai-api-key
 ```
 src/
 ├── app/                    # Application configuration and providers
+├── assets/                # Static assets (images, icons, etc.)
 ├── components/             # Atomic Design structure
 │   ├── atoms/             # Basic UI elements (buttons, inputs, icons)
 │   ├── molecules/         # Composed form components with validation
 │   ├── organisms/         # Complex form sections and layouts
+│   ├── pages/             # Page components (Step1, Step2, Step3, Summary)
 │   └── templates/         # Page templates and layout wrappers
 ├── lib/
 │   ├── api/              # API services and endpoint definitions
+│   ├── config/           # Configuration files
 │   ├── contexts/         # React Context providers and state management
 │   ├── generators/       # JavaScript generators for wizard flow control
-│   ├── http/             # HTTP client with interceptors and error handling
 │   ├── hooks/            # Custom hooks for reusable logic
+│   ├── http/             # HTTP client with interceptors and error handling
+│   ├── i18n/             # Internationalization setup
 │   ├── schema/           # Zod validation schemas and type definitions
+│   ├── services/         # Business logic services
+│   ├── types/            # TypeScript type definitions
 │   └── utils/            # Helper functions, storage, and constants
-├── pages/                # Route components and page-level logic
 └── tests/                # Test suites with comprehensive coverage
 ```
 
