@@ -39,7 +39,7 @@ The application uses a layered environment configuration system:
 ```bash
 # 1. Clone and install
 git clone <repository-url>
-cd northbay-assignment
+cd social-support-assignment
 npm install
 
 # 2. Set up environment variables

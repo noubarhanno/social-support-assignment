@@ -31,7 +31,7 @@ const Header: React.FC = () => {
           {/* Logo Section */}
           <div className="shrink-0 flex items-center gap-3">
             <div className="bg-primary text-primary-foreground px-3 py-2 rounded-lg font-bold text-sm">
-              NB
+              NJ
             </div>
             <span className="text-lg font-semibold text-gray-800">
               {t("common.socialSupport")}

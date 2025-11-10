@@ -13,6 +13,7 @@ import { Button } from "@/components/atoms/button";
 import { Textarea } from "@/components/atoms/textarea";
 import { useAI } from "@/lib/hooks";
 import { useRTL } from "@/lib/hooks";
+import clsx from "clsx";
 
 /**
  * Props for AITextGenerator component
@@ -175,11 +176,21 @@ const AITextGenerator: FC<AITextGeneratorProps> = ({
 
                 {isStreaming && (
                   <div
-                    className={`text-sm text-muted-foreground mb-2 flex items-center gap-2 ${
-                      isRTL ? "flex-row-reverse" : "flex-row"
-                    }`}
+                    className={`text-sm text-muted-foreground mb-2 flex items-center gap-2${clsx(
+                      {
+                        "flex-row-reverse": isRTL,
+                        "flex-row": !isRTL,
+                      }
+                    )}`}
                   >
-                    <div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full" />
+                    <div
+                      className={`animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full ${clsx(
+                        {
+                          "flex-row-reverse ml-1": isRTL,
+                          "flex-row mr-1": !isRTL,
+                        }
+                      )}`}
+                    />
                     {t("ai.streaming")}
                   </div>
                 )}
