@@ -14,6 +14,8 @@ import { SituationDescriptionsFormData } from "../../lib/schema/validation";
 import { useValidationSchemas } from "../../lib/hooks/useValidationSchemas";
 import { useWizard } from "../../lib/hooks/useWizard";
 import { useWizardNavigation } from "../../lib/contexts";
+import { useAutoSave } from "../../lib/hooks/useAutoSave";
+import { autoSaveService } from "../../lib/services/persistenceService";
 import toast, { Toaster } from "react-hot-toast";
 
 /**
@@ -32,9 +34,12 @@ const Step3: FC = () => {
   }, []); // Remove setWizardStep from dependencies to prevent infinite loop
 
   // Initialize form with react-hook-form and load saved data
-  const { getStepData, getWizardGenerator, resetWizardGenerator } = useWizard();
+  const { getWizardGenerator, resetWizardGenerator } = useWizard();
   const { SituationDescriptionsSchema } = useValidationSchemas();
-  const savedStep3Data = getStepData(3);
+  const savedStep3Data =
+    autoSaveService.getStepData<SituationDescriptionsFormData>(
+      "additionalInfo"
+    );
   const methods = useForm<SituationDescriptionsFormData>({
     resolver: zodResolver(SituationDescriptionsSchema),
     mode: "onBlur",
@@ -44,6 +49,22 @@ const Step3: FC = () => {
       reasonForApplying: savedStep3Data.reasonForApplying || "",
     },
   });
+
+  // Setup auto-save functionality
+  useAutoSave(methods.watch, "additionalInfo");
+
+  // Simple AI accept handler
+  const saveOnAIAccept = (
+    fieldName: keyof SituationDescriptionsFormData,
+    aiText: string
+  ) => {
+    methods.setValue(fieldName, aiText);
+    methods.clearErrors(fieldName);
+    autoSaveService.debouncedSave("additionalInfo", {
+      ...methods.watch(),
+      [fieldName]: aiText,
+    });
+  };
 
   /**
    * clear form errors on language change
@@ -139,8 +160,9 @@ const Step3: FC = () => {
               className="bg-white rounded-lg border border-primary p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6 lg:space-y-8"
             >
               {/* Form Elements */}
-              <SituationDescriptionsFormElements />
-
+              <SituationDescriptionsFormElements
+                onAIAccept={saveOnAIAccept}
+              />{" "}
               {/* Navigation Buttons */}
               <div className="flex flex-col-reverse sm:flex-row sm:justify-between gap-3 pt-4 sm:pt-6 border-t border-gray-200">
                 {/* Back Button */}

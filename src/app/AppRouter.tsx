@@ -16,7 +16,7 @@ const Summary = lazy(() => import("../components/pages/Summary"));
  */
 const AppRouter = () => {
   // Initialize RTL support
-  useRTL();
+  useRTL({ sideEffects: true });
 
   return (
     <ErrorBoundary>

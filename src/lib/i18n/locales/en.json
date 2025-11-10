@@ -220,16 +220,22 @@
     },
     "ai": {
         "dialog": {
-            "title": "AI Suggestion",
-            "description": "The AI will provide a suggested text below as it streams. You can accept it to replace your field or close to cancel."
+            "title": "AI Writing Assistant",
+            "description": "I'm here to help you write compelling and effective text. Describe what you'd like to write, and I'll craft it for you."
         },
         "streaming": "Generating...",
         "noContent": "No suggestion yet",
         "error": "Error",
         "actions": {
             "generateNew": "Generate New",
+            "gettingHelp": "Getting My Help",
             "accept": "Accept",
             "helpMeWrite": "Help me write"
+        },
+        "labels": {
+            "customPrompt": "What would you like me to write?",
+            "customPromptPlaceholder": "Describe what you want to write about...",
+            "editGeneratedText": "Generated Text"
         },
         "prompts": {
             "financialSituation": "Help me describe my current financial situation in one paragraph (max 300 characters). Include income, expenses, and any financial challenges I'm facing.",
@@ -259,8 +265,13 @@
             "description": "Please describe your current situation in detail. AI assistance is available to help you articulate your circumstances effectively."
         },
         "summary": {
+            "stepHeader": "Summary",
+            "description": "Review your application before submission",
             "title": "Social Support Application Complete!",
-            "description": "Thank you for completing your social support application. We have received your personal information, family & financial details, and situation descriptions.",
+            "success": "Application Submitted Successfully!",
+            "thankYou": "Thank you for submitting your application. We have received your information.",
+            "applicationNumberIntro": "This is your application number",
+            "applicationNumberNote": "Please save this number for your records. You may need it for future reference.",
             "nextSteps": "What happens next?",
             "reviewTime": "We will review your application within 2-3 business days",
             "emailConfirmation": "You will receive an email confirmation shortly",

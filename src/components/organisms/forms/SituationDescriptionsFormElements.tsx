@@ -7,6 +7,14 @@ import AITextGenerator from "../AITextGenerator";
 // Form data structure is now defined in the validation schema
 import type { SituationDescriptionsFormData } from "../../../lib/schema/validation";
 
+// Props interface for the form component
+interface SituationDescriptionsFormElementsProps {
+  onAIAccept?: (
+    fieldName: keyof SituationDescriptionsFormData,
+    text: string
+  ) => void;
+}
+
 /**
  * SituationDescriptionsFormElements organism component
  *
@@ -32,7 +40,9 @@ import type { SituationDescriptionsFormData } from "../../../lib/schema/validati
  * </FormProvider>
  * ```
  */
-export const SituationDescriptionsFormElements: React.FC = () => {
+export const SituationDescriptionsFormElements: React.FC<
+  SituationDescriptionsFormElementsProps
+> = ({ onAIAccept }) => {
   const { t } = useTranslation();
   const formContext = useFormContext<SituationDescriptionsFormData>();
 
@@ -42,7 +52,7 @@ export const SituationDescriptionsFormElements: React.FC = () => {
     );
   }
 
-  const { watch, setValue } = formContext;
+  const { watch, setValue, clearErrors } = formContext;
 
   return (
     <div
@@ -70,13 +80,23 @@ export const SituationDescriptionsFormElements: React.FC = () => {
           <AITextGenerator
             prompt={t("ai.prompts.financialSituation")}
             context={watch("currentFinancialSituation")}
-            onTextGenerated={(text) =>
-              setValue("currentFinancialSituation", text)
-            }
+            defaultValue={watch("currentFinancialSituation") || ""}
+            onTextGenerated={(text) => {
+              setValue("currentFinancialSituation", text, {
+                shouldValidate: true,
+                shouldDirty: true,
+              });
+              clearErrors("currentFinancialSituation");
+              // Call AI auto-save if provided
+              onAIAccept?.("currentFinancialSituation", text);
+            }}
             buttonText={t("common.actions.helpMeWrite")}
           />
         </div>
       </div>
+
+      {/* Separator Line */}
+      <div className="border-t border-primary/20 my-6"></div>
 
       {/* Employment Circumstances */}
       <div className="space-y-2 sm:space-y-3">
@@ -98,13 +118,23 @@ export const SituationDescriptionsFormElements: React.FC = () => {
           <AITextGenerator
             prompt={t("ai.prompts.employmentCircumstances")}
             context={watch("employmentCircumstances")}
-            onTextGenerated={(text) =>
-              setValue("employmentCircumstances", text)
-            }
+            defaultValue={watch("employmentCircumstances") || ""}
+            onTextGenerated={(text) => {
+              setValue("employmentCircumstances", text, {
+                shouldValidate: true,
+                shouldDirty: true,
+              });
+              clearErrors("employmentCircumstances");
+              // Call AI auto-save if provided
+              onAIAccept?.("employmentCircumstances", text);
+            }}
             buttonText={t("common.actions.helpMeWrite")}
           />
         </div>
       </div>
+
+      {/* Separator Line */}
+      <div className="border-t border-primary/20 my-6"></div>
 
       {/* Reason for Applying */}
       <div className="space-y-2 sm:space-y-3">
@@ -126,7 +156,16 @@ export const SituationDescriptionsFormElements: React.FC = () => {
           <AITextGenerator
             prompt={t("ai.prompts.reasonForApplying")}
             context={watch("reasonForApplying")}
-            onTextGenerated={(text) => setValue("reasonForApplying", text)}
+            defaultValue={watch("reasonForApplying") || ""}
+            onTextGenerated={(text) => {
+              setValue("reasonForApplying", text, {
+                shouldValidate: true,
+                shouldDirty: true,
+              });
+              clearErrors("reasonForApplying");
+              // Call AI auto-save if provided
+              onAIAccept?.("reasonForApplying", text);
+            }}
             buttonText={t("common.actions.helpMeWrite")}
           />
         </div>
