@@ -1,15 +1,20 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
+interface UseRTLProps {
+  sideEffects?: boolean; // Whether to perform side effects like updating document attributes
+}
 /**
  * Custom hook for managing RTL layout and language switching.
  * Automatically updates document direction and lang attributes.
  * Persists language selection to localStorage.
  */
-export const useRTL = () => {
+export const useRTL = (useRTLProps?: UseRTLProps) => {
   const { i18n } = useTranslation();
+  const { sideEffects } = useRTLProps || {};
 
   useEffect(() => {
+    if (!sideEffects) return;
     const isRTL = i18n.language === "ar";
 
     // Update document direction

@@ -14,6 +14,8 @@ import { FamilyFinancialFormData } from "../../lib/schema/validation";
 import { useValidationSchemas } from "../../lib/hooks/useValidationSchemas";
 import { useWizard } from "../../lib/hooks/useWizard";
 import { useWizardNavigation } from "../../lib/contexts";
+import { useAutoSave } from "../../lib/hooks/useAutoSave";
+import { autoSaveService } from "../../lib/services/persistenceService";
 import toast, { Toaster } from "react-hot-toast";
 
 /**
@@ -39,9 +41,10 @@ const Step2: FC = () => {
   }, [i18n.language]);
 
   // Initialize form with react-hook-form and load saved data
-  const { getStepData, getWizardGenerator, resetWizardGenerator } = useWizard();
+  const { getWizardGenerator, resetWizardGenerator } = useWizard();
   const { FamilyFinancialSchema } = useValidationSchemas();
-  const savedStep2Data = getStepData(2);
+  const savedStep2Data =
+    autoSaveService.getStepData<FamilyFinancialFormData>("professionalInfo");
   const methods = useForm<FamilyFinancialFormData>({
     resolver: zodResolver(FamilyFinancialSchema),
     mode: "onBlur",
@@ -53,6 +56,9 @@ const Step2: FC = () => {
       housingStatus: savedStep2Data.housingStatus || "",
     },
   });
+
+  // Setup auto-save functionality
+  useAutoSave(methods.watch, "professionalInfo");
 
   /**
    * clear form errors on language change
@@ -147,14 +153,14 @@ const Step2: FC = () => {
               <FamilyFinancialFormElements />
 
               {/* Navigation Buttons */}
-              <div className="flex justify-between pt-6 border-t border-gray-200">
+              <div className="flex flex-col-reverse sm:flex-row sm:justify-between gap-3 pt-4 sm:pt-6 border-t border-gray-200">
                 {/* Back Button */}
                 <Button
                   type="button"
                   onClick={handleBack}
                   disabled={isSubmitting}
                   variant="outline"
-                  className="flex items-center gap-2"
+                  className="flex items-center justify-center gap-2 w-full sm:w-auto"
                 >
                   {i18n.language === "ar" ? (
                     <>
@@ -174,7 +180,7 @@ const Step2: FC = () => {
                   type="submit"
                   onClick={handleNext}
                   disabled={isSubmitting}
-                  className="flex items-center gap-2 bg-primary hover:bg-primary/90"
+                  className="flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 w-full sm:w-auto"
                 >
                   {isSubmitting ? (
                     <>

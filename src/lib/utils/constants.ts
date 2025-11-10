@@ -2,26 +2,6 @@
  * Application constants and configuration values.
  */
 
-// API Configuration
-export const API_CONFIG = {
-  OPENAI_API_URL: "https://api.openai.com/v1/chat/completions",
-  REQUEST_TIMEOUT: 10000,
-} as const;
-
-// Local Storage Keys
-export const STORAGE_KEYS = {
-  WIZARD_PROGRESS: "northbay_wizard_progress",
-} as const;
-
-// Route Paths
-export const ROUTES = {
-  ROOT: "/",
-  STEP1: "/step1",
-  STEP2: "/step2",
-  STEP3: "/step3",
-  SUMMARY: "/summary",
-} as const;
-
 // Form Option Values - Gender
 export const GENDER_OPTIONS = {
   MALE: "male",
@@ -38,6 +18,20 @@ export const MARITAL_STATUS_OPTIONS = {
   WIDOWED: "widowed",
   SEPARATED: "separated",
 } as const;
+
+/**
+ * Generates a unique application number with timestamp and random digits.
+ * Format: NB-YYYYMMDD-XXXX (NB + date + 4 random digits)
+ */
+export const generateApplicationNumber = (): string => {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const random = Math.floor(1000 + Math.random() * 9000); // 4-digit random number
+
+  return `NJ-${year}${month}${day}-${random}`;
+};
 
 // Form Option Values - Employment Status
 export const EMPLOYMENT_STATUS_OPTIONS = {
