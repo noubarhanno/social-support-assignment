@@ -8,6 +8,11 @@ import { useWizard } from "../../lib/hooks/useWizard";
 import { useRTL } from "../../lib/hooks/useRTL";
 import { autoSaveService } from "../../lib/services/persistenceService";
 import { generateApplicationNumber } from "../../lib/utils/constants";
+import {
+  loadFromStorage,
+  saveToStorage,
+  removeFromStorage,
+} from "../../lib/utils/storage";
 import { Button } from "../atoms/button";
 import { RotateCcw, CheckCircle, Copy } from "lucide-react";
 import { StepHeader } from "../atoms";
@@ -33,10 +38,13 @@ const Summary: FC = () => {
 
     // Clear form data from localStorage on first load
     // Set a flag to indicate wizard is completed (disable editing)
-    const isWizardCompleted = localStorage.getItem("wizard-completed");
+    const isWizardCompleted = loadFromStorage<string | null>(
+      "wizard-completed",
+      null
+    );
     if (!isWizardCompleted) {
       autoSaveService.clearAllData();
-      localStorage.setItem("wizard-completed", "true");
+      saveToStorage("wizard-completed", "true");
     }
   }, [setWizardStep]);
 
@@ -61,7 +69,7 @@ const Summary: FC = () => {
     autoSaveService.clearAllData();
 
     // Clear wizard completion flag to allow editing again
-    localStorage.removeItem("wizard-completed");
+    removeFromStorage("wizard-completed");
 
     // Reset wizard state
     resetWizard();
@@ -82,9 +90,9 @@ const Summary: FC = () => {
         {/* Summary content */}
         <div className="mt-8 space-y-8">
           {/* Application Success Message + What's Next (merged) */}
-          <div className="text-center bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-8">
+          <div className="text-center bg-linear-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-8">
             <CheckCircle className="h-16 w-16 text-green-600 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-green-800 mb-2">
+            <h2 className="sm:text-2xl text-[20px] font-bold text-green-800 mb-2">
               {t("pages.summary.success")}
             </h2>
             <p className="text-green-700 mb-6">{t("pages.summary.thankYou")}</p>

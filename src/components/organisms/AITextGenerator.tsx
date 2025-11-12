@@ -133,6 +133,51 @@ const AITextGenerator: FC<AITextGeneratorProps> = ({
     });
   };
 
+  const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    // Handle Enter key: Send prompt if Enter alone, new line if Shift+Enter
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault(); // Prevent default textarea behavior
+      if (customPrompt.trim() && !isStreaming) {
+        handleGenerateText(); // Send the prompt
+      }
+    }
+    // Shift+Enter allows new line (default textarea behavior)
+  };
+
+  const onChangePromptTextArea = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setCustomPrompt(e.target.value);
+    // Auto-resize on change as well
+    const target = e.target as HTMLTextAreaElement;
+    setTimeout(() => {
+      target.style.height = "auto";
+      const lineHeight = 24; // approximate line height
+      const maxLines = 5;
+      const minHeight = 80; // min-h-20 equivalent (3 lines)
+      const maxHeight = lineHeight * maxLines + 20; // 5 lines + padding
+      const newHeight = Math.min(
+        Math.max(target.scrollHeight, minHeight),
+        maxHeight
+      );
+      target.style.height = newHeight + "px";
+    }, 0);
+  };
+
+  const onInputPromptTextArea = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    const target = e.target as HTMLTextAreaElement;
+    target.style.height = "auto";
+    const lineHeight = 24; // approximate line height
+    const maxLines = 5;
+    const minHeight = 80; // min-h-20 equivalent (3 lines)
+    const maxHeight = lineHeight * maxLines + 20; // 5 lines + padding
+    const newHeight = Math.min(
+      Math.max(target.scrollHeight, minHeight),
+      maxHeight
+    );
+    target.style.height = newHeight + "px";
+  };
+
   // Update editable response when AI response changes
   useEffect(() => {
     if (response) {
@@ -229,23 +274,8 @@ const AITextGenerator: FC<AITextGeneratorProps> = ({
               <Textarea
                 id="customPrompt"
                 value={customPrompt}
-                onChange={(e) => {
-                  setCustomPrompt(e.target.value);
-                  // Auto-resize on change as well
-                  const target = e.target as HTMLTextAreaElement;
-                  setTimeout(() => {
-                    target.style.height = "auto";
-                    const lineHeight = 24; // approximate line height
-                    const maxLines = 5;
-                    const minHeight = 80; // min-h-20 equivalent (3 lines)
-                    const maxHeight = lineHeight * maxLines + 20; // 5 lines + padding
-                    const newHeight = Math.min(
-                      Math.max(target.scrollHeight, minHeight),
-                      maxHeight
-                    );
-                    target.style.height = newHeight + "px";
-                  }, 0);
-                }}
+                onChange={onChangePromptTextArea}
+                onKeyDown={onKeyDown}
                 placeholder={t("ai.labels.customPromptPlaceholder")}
                 className={`min-h-20 resize-none rounded-md border-2 border-primary focus:border-primary px-4 py-3 pr-12 ${
                   isRTL ? "text-right pl-12 pr-4" : "text-left"
@@ -256,19 +286,7 @@ const AITextGenerator: FC<AITextGeneratorProps> = ({
                   height: "auto",
                   overflowY: "hidden",
                 }}
-                onInput={(e) => {
-                  const target = e.target as HTMLTextAreaElement;
-                  target.style.height = "auto";
-                  const lineHeight = 24; // approximate line height
-                  const maxLines = 5;
-                  const minHeight = 80; // min-h-20 equivalent (3 lines)
-                  const maxHeight = lineHeight * maxLines + 20; // 5 lines + padding
-                  const newHeight = Math.min(
-                    Math.max(target.scrollHeight, minHeight),
-                    maxHeight
-                  );
-                  target.style.height = newHeight + "px";
-                }}
+                onInput={onChangePromptTextArea}
               />
 
               {/* Generate Button in Bottom Right */}
