@@ -29,8 +29,23 @@ const Summary: FC = () => {
   const { resetWizard } = useWizard();
   const navigate = useNavigate();
   const { isRTL } = useRTL();
-  const [applicationNumber] = useState(() => generateApplicationNumber());
+  const [applicationNumber, setApplicationNumber] = useState<string>("");
   const [copied, setCopied] = useState(false);
+
+  // Initialize application number on component mount
+  useEffect(() => {
+    const existingNumber = loadFromStorage<string | null>(
+      "application-number",
+      null
+    );
+    if (existingNumber) {
+      setApplicationNumber(existingNumber);
+    } else {
+      const newNumber = generateApplicationNumber();
+      setApplicationNumber(newNumber);
+      saveToStorage("application-number", newNumber);
+    }
+  }, []);
 
   // Summary page - set wizard step to 3 (all steps completed) and clear form data
   useEffect(() => {
@@ -70,6 +85,10 @@ const Summary: FC = () => {
 
     // Clear wizard completion flag to allow editing again
     removeFromStorage("wizard-completed");
+
+    // Clear application number from storage and state
+    removeFromStorage("application-number");
+    setApplicationNumber("");
 
     // Reset wizard state
     resetWizard();
