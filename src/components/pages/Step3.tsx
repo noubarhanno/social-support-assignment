@@ -157,6 +157,16 @@ const Step3: FC = () => {
           <FormProvider {...methods}>
             <form
               onSubmit={handleSubmit}
+              onKeyDown={(e) => {
+                // Submit form when Enter is pressed in any textarea (but allow Shift+Enter for newlines)
+                if (e.key === "Enter" && !e.shiftKey) {
+                  const target = e.target as HTMLElement;
+                  if (target && target.tagName === "TEXTAREA") {
+                    e.preventDefault();
+                    handleSubmit(e as any);
+                  }
+                }
+              }}
               className="bg-white rounded-lg border border-primary p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6 lg:space-y-8"
             >
               {/* Form Elements */}

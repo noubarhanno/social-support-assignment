@@ -148,7 +148,10 @@ const Step2: FC = () => {
         {/* Simple form with generator-powered navigation */}
         <div className="max-w-4xl mx-auto">
           <FormProvider {...methods}>
-            <div className="bg-white rounded-lg border border-primary p-6 lg:p-8 space-y-6">
+            <form
+              onSubmit={handleNext}
+              className="bg-white rounded-lg border border-primary p-6 lg:p-8 space-y-6"
+            >
               {/* Form Elements */}
               <FamilyFinancialFormElements />
 
@@ -178,7 +181,6 @@ const Step2: FC = () => {
                 {/* Continue Button */}
                 <Button
                   type="submit"
-                  onClick={handleNext}
                   disabled={isSubmitting}
                   className="flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 w-full sm:w-auto"
                 >
@@ -204,7 +206,7 @@ const Step2: FC = () => {
                   )}
                 </Button>
               </div>
-            </div>
+            </form>
           </FormProvider>
         </div>
       </div>

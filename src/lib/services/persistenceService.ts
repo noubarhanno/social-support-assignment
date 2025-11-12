@@ -1,7 +1,11 @@
 /**
  * Simple auto-save service for form data persistence
  */
-import { saveToStorage, loadFromStorage } from "../utils/storage";
+import {
+  saveToStorage,
+  loadFromStorage,
+  removeFromStorage,
+} from "../utils/storage";
 import { PersonalInfoFormData } from "../schema/validation";
 import { FamilyFinancialFormData } from "../schema/validation";
 import { SituationDescriptionsFormData } from "../schema/validation";
@@ -41,7 +45,7 @@ class AutoSaveService {
   }
 
   clearAllData(): void {
-    localStorage.removeItem(STORAGE_KEY);
+    removeFromStorage(STORAGE_KEY);
     this.timers.forEach((timer) => clearTimeout(timer));
     this.timers.clear();
   }

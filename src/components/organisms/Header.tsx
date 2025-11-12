@@ -33,7 +33,7 @@ const Header: React.FC = () => {
             <div className="bg-primary text-primary-foreground px-3 py-2 rounded-lg font-bold text-sm">
               NJ
             </div>
-            <span className="text-lg font-semibold text-gray-800">
+            <span className="text-lg font-semibold text-gray-800 sm:block hidden">
               {t("common.socialSupport")}
             </span>
           </div>

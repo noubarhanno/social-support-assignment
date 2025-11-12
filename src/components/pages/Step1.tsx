@@ -130,7 +130,10 @@ const Step1: FC = () => {
         {/* Simple form with generator-powered navigation */}
         <div className="max-w-4xl mx-auto">
           <FormProvider {...methods}>
-            <div className="bg-white rounded-lg border border-primary p-6 lg:p-8 space-y-6">
+            <form
+              onSubmit={handleNext}
+              className="bg-white rounded-lg border border-primary p-6 lg:p-8 space-y-6"
+            >
               {/* Form Elements */}
               <PersonalInfoFormElements />
 
@@ -138,7 +141,6 @@ const Step1: FC = () => {
               <div className="flex justify-end pt-4 sm:pt-6 border-t border-gray-200">
                 <Button
                   type="submit"
-                  onClick={handleNext}
                   disabled={isSubmitting}
                   className="flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 w-full sm:w-auto"
                 >
@@ -164,7 +166,7 @@ const Step1: FC = () => {
                   )}
                 </Button>
               </div>
-            </div>
+            </form>
           </FormProvider>
         </div>
       </div>
