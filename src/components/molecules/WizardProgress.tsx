@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useWizardNavigation } from "../../lib/contexts";
 import { useRTL } from "@/lib";
+import { loadFromStorage } from "@/lib/utils/storage";
 
 export type StepStatus = "inactive" | "active" | "completed";
 
@@ -42,7 +43,7 @@ const WizardProgress: React.FC<WizardProgressProps> = ({
   const handleStepClick = (step: WizardStep, stepIndex: number) => {
     // Check if wizard is completed (disable editing)
     const isWizardCompleted =
-      localStorage.getItem("wizard-completed") === "true";
+      loadFromStorage<string | null>("wizard-completed", null) === "true";
 
     // Only allow clicking on completed steps if wizard is not fully completed
     if (step.status === "completed" && !isWizardCompleted) {
@@ -57,7 +58,7 @@ const WizardProgress: React.FC<WizardProgressProps> = ({
     const { status, icon } = step;
     const isHovered = hoveredStep === step.id;
     const isWizardCompleted =
-      localStorage.getItem("wizard-completed") === "true";
+      loadFromStorage<string | null>("wizard-completed", null) === "true";
     const isClickable = status === "completed" && !isWizardCompleted;
 
     switch (status) {
@@ -125,7 +126,7 @@ const WizardProgress: React.FC<WizardProgressProps> = ({
       >
         {steps.map((step, stepIndex) => {
           const isWizardCompleted =
-            localStorage.getItem("wizard-completed") === "true";
+            loadFromStorage<string | null>("wizard-completed", null) === "true";
           const isClickable = step.status === "completed" && !isWizardCompleted;
 
           return (
