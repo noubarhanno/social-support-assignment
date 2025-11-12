@@ -286,7 +286,7 @@ const AITextGenerator: FC<AITextGeneratorProps> = ({
                   height: "auto",
                   overflowY: "hidden",
                 }}
-                onInput={onChangePromptTextArea}
+                onInput={onInputPromptTextArea}
               />
 
               {/* Generate Button in Bottom Right */}
