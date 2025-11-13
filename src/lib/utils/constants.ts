@@ -53,3 +53,11 @@ export const HOUSING_STATUS_OPTIONS = {
   TEMPORARY_HOUSING: "temporary-housing",
   OTHER: "other",
 } as const;
+
+// Storage Keys - LocalStorage keys used throughout the application
+export const STORAGE_KEYS = {
+  /** Main wizard form data storage key */
+  WIZARD_DATA: "wizard-form-data",
+  /** Wizard progress tracking key */
+  WIZARD_PROGRESS: "wizard-progress",
+} as const;

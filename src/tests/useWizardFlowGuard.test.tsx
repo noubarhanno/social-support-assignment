@@ -3,6 +3,7 @@
  */
 import { renderHook, act } from "@testing-library/react";
 import { useWizardFlowGuard } from "../lib/hooks/useWizardFlowGuard";
+import { STORAGE_KEYS } from "../lib/utils/constants";
 
 // Mock react-router-dom
 const mockNavigate = jest.fn();
@@ -39,7 +40,7 @@ describe("useWizardFlowGuard Hook", () => {
       });
 
       expect(localStorageMock.setItem).toHaveBeenCalledWith(
-        "wizard-form-data",
+        STORAGE_KEYS.WIZARD_DATA,
         expect.stringContaining('"isCompleted":true')
       );
     });
@@ -173,7 +174,7 @@ describe("useWizardFlowGuard Hook", () => {
       });
 
       expect(localStorageMock.setItem).toHaveBeenCalledWith(
-        "wizard-form-data",
+        STORAGE_KEYS.WIZARD_DATA,
         expect.stringContaining('"isCompleted":false')
       );
     });

@@ -4,10 +4,7 @@
  */
 import { saveToStorage, loadFromStorage } from "../utils/storage";
 import { wizardFlowGenerator, WizardStep } from "../generators/WizardFlow";
-
-// Storage keys for wizard data
-const WIZARD_DATA_KEY = "wizard-form-data";
-const WIZARD_PROGRESS_KEY = "wizard-progress";
+import { STORAGE_KEYS } from "../utils/constants";
 
 /**
  * Global wizard generator instance
@@ -33,8 +30,8 @@ export const getWizardGenerator = () => {
  */
 export const resetWizard = () => {
   globalWizardGenerator = null;
-  saveToStorage(WIZARD_DATA_KEY, {});
-  saveToStorage(WIZARD_PROGRESS_KEY, 0);
+  saveToStorage(STORAGE_KEYS.WIZARD_DATA, {});
+  saveToStorage(STORAGE_KEYS.WIZARD_PROGRESS, 0);
 };
 
 /**
@@ -51,7 +48,10 @@ export const resetWizardGenerator = () => {
  * @returns Saved form data for the step or empty object
  */
 export const getStepData = (step: number): any => {
-  const savedData = loadFromStorage<Record<string, any>>(WIZARD_DATA_KEY, {});
+  const savedData = loadFromStorage<Record<string, any>>(
+    STORAGE_KEYS.WIZARD_DATA,
+    {}
+  );
 
   switch (step) {
     case 1:
@@ -70,7 +70,7 @@ export const getStepData = (step: number): any => {
  * @returns Number of completed steps (0-3)
  */
 export const getWizardProgress = (): number => {
-  return loadFromStorage<number>(WIZARD_PROGRESS_KEY, 0);
+  return loadFromStorage<number>(STORAGE_KEYS.WIZARD_PROGRESS, 0);
 };
 
 /**

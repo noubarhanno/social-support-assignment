@@ -5,9 +5,9 @@
 import { useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { loadFromStorage, saveToStorage } from "../utils/storage";
+import { STORAGE_KEYS } from "../utils/constants";
 
 // Step data keys mapping - now using wizard-form-data structure
-const WIZARD_DATA_KEY = "wizard-form-data";
 const STEP_DATA_KEYS = {
   1: "personalInfo",
   2: "professionalInfo",
@@ -41,7 +41,7 @@ export const useWizardFlowGuard = () => {
    */
   const getStepCompletion = useCallback(
     (step: StepNumber): StepCompletionData => {
-      const wizardData = loadFromStorage<any>(WIZARD_DATA_KEY, {});
+      const wizardData = loadFromStorage<any>(STORAGE_KEYS.WIZARD_DATA, {});
       const stepKey = STEP_DATA_KEYS[step];
       const stepData = wizardData[stepKey] || {};
       return {
@@ -56,7 +56,7 @@ export const useWizardFlowGuard = () => {
    * Mark a step as completed
    */
   const markStepCompleted = useCallback((step: StepNumber) => {
-    const wizardData = loadFromStorage<any>(WIZARD_DATA_KEY, {});
+    const wizardData = loadFromStorage<any>(STORAGE_KEYS.WIZARD_DATA, {});
     const stepKey = STEP_DATA_KEYS[step];
     const existingStepData = wizardData[stepKey] || {};
 
@@ -71,7 +71,7 @@ export const useWizardFlowGuard = () => {
       [stepKey]: updatedStepData,
     };
 
-    saveToStorage(WIZARD_DATA_KEY, updatedWizardData);
+    saveToStorage(STORAGE_KEYS.WIZARD_DATA, updatedWizardData);
   }, []);
 
   /**
@@ -79,7 +79,7 @@ export const useWizardFlowGuard = () => {
    * Called when user goes back and modifies required fields
    */
   const markStepIncomplete = useCallback((step: StepNumber) => {
-    const wizardData = loadFromStorage<any>(WIZARD_DATA_KEY, {});
+    const wizardData = loadFromStorage<any>(STORAGE_KEYS.WIZARD_DATA, {});
 
     // Mark current step and all subsequent steps as incomplete
     for (let s = step; s <= 3; s++) {
@@ -93,7 +93,7 @@ export const useWizardFlowGuard = () => {
       }
     }
 
-    saveToStorage(WIZARD_DATA_KEY, wizardData);
+    saveToStorage(STORAGE_KEYS.WIZARD_DATA, wizardData);
   }, []);
 
   /**
@@ -186,7 +186,7 @@ export const useWizardFlowGuard = () => {
    * Reset all completion states (for new application)
    */
   const resetAllCompletions = useCallback(() => {
-    const wizardData = loadFromStorage<any>(WIZARD_DATA_KEY, {});
+    const wizardData = loadFromStorage<any>(STORAGE_KEYS.WIZARD_DATA, {});
 
     [1, 2, 3].forEach((step) => {
       const stepKey = STEP_DATA_KEYS[step as StepNumber];
@@ -205,7 +205,7 @@ export const useWizardFlowGuard = () => {
       }
     });
 
-    saveToStorage(WIZARD_DATA_KEY, wizardData);
+    saveToStorage(STORAGE_KEYS.WIZARD_DATA, wizardData);
   }, []);
 
   /**

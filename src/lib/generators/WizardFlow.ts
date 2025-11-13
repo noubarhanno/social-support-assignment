@@ -4,6 +4,7 @@
  */
 import { saveToStorage, loadFromStorage } from "../utils/storage";
 import { submitForm } from "../api/externalMockedApi";
+import { STORAGE_KEYS } from "../utils/constants";
 
 export interface WizardStep {
   step: number;
@@ -12,10 +13,6 @@ export interface WizardStep {
   error?: string; // Error message if submission failed
   hasError?: boolean; // Flag to indicate if there was an error
 }
-
-// Storage keys for wizard data
-const WIZARD_DATA_KEY = "wizard-form-data";
-const WIZARD_PROGRESS_KEY = "wizard-progress";
 
 /**
  * Wizard Flow Generator Function with data persistence and API submission
@@ -30,10 +27,13 @@ export async function* wizardFlowGenerator(): AsyncGenerator<
 > {
   // Load existing form data and progress from localStorage
   const savedFormData = loadFromStorage<Record<string, any>>(
-    WIZARD_DATA_KEY,
+    STORAGE_KEYS.WIZARD_DATA,
     {}
   );
-  const savedProgress = loadFromStorage<number>(WIZARD_PROGRESS_KEY, 0);
+  const savedProgress = loadFromStorage<number>(
+    STORAGE_KEYS.WIZARD_PROGRESS,
+    0
+  );
 
   const allFormData: Record<string, any> = { ...savedFormData };
 
@@ -48,8 +48,8 @@ export async function* wizardFlowGenerator(): AsyncGenerator<
     allFormData.personalInfo = step1Data;
 
     // Save to localStorage immediately
-    saveToStorage(WIZARD_DATA_KEY, allFormData);
-    saveToStorage(WIZARD_PROGRESS_KEY, 1);
+    saveToStorage(STORAGE_KEYS.WIZARD_DATA, allFormData);
+    saveToStorage(STORAGE_KEYS.WIZARD_PROGRESS, 1);
 
     // Submit to API using async/await
     try {
@@ -81,8 +81,8 @@ export async function* wizardFlowGenerator(): AsyncGenerator<
     allFormData.professionalInfo = step2Data;
 
     // Save to localStorage immediately
-    saveToStorage(WIZARD_DATA_KEY, allFormData);
-    saveToStorage(WIZARD_PROGRESS_KEY, 2);
+    saveToStorage(STORAGE_KEYS.WIZARD_DATA, allFormData);
+    saveToStorage(STORAGE_KEYS.WIZARD_PROGRESS, 2);
 
     // Submit to API using async/await
     try {
@@ -113,8 +113,8 @@ export async function* wizardFlowGenerator(): AsyncGenerator<
     allFormData.additionalInfo = step3Data;
 
     // Save to localStorage immediately
-    saveToStorage(WIZARD_DATA_KEY, allFormData);
-    saveToStorage(WIZARD_PROGRESS_KEY, 3);
+    saveToStorage(STORAGE_KEYS.WIZARD_DATA, allFormData);
+    saveToStorage(STORAGE_KEYS.WIZARD_PROGRESS, 3);
 
     // Submit to API using async/await
     try {
