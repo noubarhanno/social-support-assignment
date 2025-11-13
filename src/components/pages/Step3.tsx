@@ -14,7 +14,8 @@ import { SituationDescriptionsFormData } from "../../lib/schema/validation";
 import { useValidationSchemas } from "../../lib/hooks/useValidationSchemas";
 import { useWizard } from "../../lib/hooks/useWizard";
 import { useWizardNavigation } from "../../lib/contexts";
-import { useAutoSave } from "../../lib/hooks/useAutoSave";
+import { useAutoSave } from "../../lib/hooks";
+import { useWizardFlowGuard } from "../../lib/hooks";
 import { autoSaveService } from "../../lib/services/persistenceService";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -27,6 +28,7 @@ const Step3: FC = () => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { setWizardStep, nextStep } = useWizardNavigation();
+  const { markStepCompleted } = useWizardFlowGuard();
 
   // Set wizard step to 2 when component mounts
   useEffect(() => {
@@ -50,8 +52,8 @@ const Step3: FC = () => {
     },
   });
 
-  // Setup auto-save functionality
-  useAutoSave(methods.watch, "additionalInfo");
+  // Setup auto-save functionality with completion tracking
+  useAutoSave(methods.watch, "additionalInfo", 3);
 
   // Simple AI accept handler
   const saveOnAIAccept = (
@@ -117,6 +119,9 @@ const Step3: FC = () => {
 
         // If no error, continue to get next step info
         if (!result.done) {
+          // Mark step as completed
+          markStepCompleted(3);
+
           // Show success toast
           toast.success(t("common.toast.step3.success"), {
             duration: 2000,
@@ -127,7 +132,8 @@ const Step3: FC = () => {
           nextStep();
           navigate("/summary");
         } else {
-          // Wizard completed - go to summary
+          // Mark step as completed and go to summary
+          markStepCompleted(3);
           navigate("/summary");
         }
       } catch (error) {

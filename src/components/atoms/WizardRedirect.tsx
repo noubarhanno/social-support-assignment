@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useWizardNavigation } from "../../lib/contexts";
+import { useWizardFlowGuard } from "../../lib/hooks";
 import Loading from "./Loading";
 
 /**
@@ -10,24 +11,18 @@ import Loading from "./Loading";
 const WizardRedirect = () => {
   const navigate = useNavigate();
   const { wizardStep } = useWizardNavigation();
+  const { getNextAllowedStep } = useWizardFlowGuard();
 
   useEffect(() => {
-    const getStepPath = (step: number): string => {
-      switch (step) {
-        case 0:
-          return "/step1";
-        case 1:
-          return "/step2";
-        case 2:
-          return "/step3";
-        default:
-          return "/step1";
-      }
-    };
+    // Use flow guard to determine the next allowed step instead of just wizard step
+    const nextAllowed = getNextAllowedStep();
+    const targetPath = `/step${nextAllowed}`;
 
-    const targetPath = getStepPath(wizardStep);
+    console.log(
+      `WizardRedirect: redirecting to ${targetPath} (wizard step: ${wizardStep}, next allowed: ${nextAllowed})`
+    );
     navigate(targetPath, { replace: true });
-  }, [navigate, wizardStep]);
+  }, [navigate, wizardStep, getNextAllowedStep]);
 
   // Show loading while redirecting
   return <Loading />;

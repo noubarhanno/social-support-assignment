@@ -14,7 +14,8 @@ import { FamilyFinancialFormData } from "../../lib/schema/validation";
 import { useValidationSchemas } from "../../lib/hooks/useValidationSchemas";
 import { useWizard } from "../../lib/hooks/useWizard";
 import { useWizardNavigation } from "../../lib/contexts";
-import { useAutoSave } from "../../lib/hooks/useAutoSave";
+import { useAutoSave } from "../../lib/hooks";
+import { useWizardFlowGuard } from "../../lib/hooks";
 import { autoSaveService } from "../../lib/services/persistenceService";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -27,6 +28,7 @@ const Step2: FC = () => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { setWizardStep, nextStep } = useWizardNavigation();
+  const { markStepCompleted } = useWizardFlowGuard();
 
   // Set wizard step to 1 when component mounts
   useEffect(() => {
@@ -57,8 +59,8 @@ const Step2: FC = () => {
     },
   });
 
-  // Setup auto-save functionality
-  useAutoSave(methods.watch, "professionalInfo");
+  // Setup auto-save functionality with completion tracking
+  useAutoSave(methods.watch, "professionalInfo", 2);
 
   /**
    * clear form errors on language change
@@ -111,6 +113,9 @@ const Step2: FC = () => {
 
         // If no error, continue to get next step info
         if (!result.done) {
+          // Mark step as completed
+          markStepCompleted(2);
+
           // Show success toast
           toast.success(t("common.toast.step2.success"), {
             duration: 2000,

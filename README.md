@@ -146,6 +146,69 @@ const nextStep = generator.next(currentFormData);
 - **Flexible Flow:** Easy to modify wizard steps and add conditional branching
 - **Memory Efficient:** Lazy evaluation of steps reduces memory footprint
 
+### Wizard Flow Guard & URL Navigation Protection
+
+The application implements a comprehensive flow protection system that prevents users from accessing incomplete steps via direct URL navigation.
+
+**Implementation:**
+
+```tsx
+/**
+ * Custom hook managing step completion state and URL restrictions
+ */
+const { markStepCompleted, canAccessRoute, redirectToAppropriateStep } =
+  useWizardFlowGuard();
+
+// Mark step as completed when form is successfully submitted
+const handleSubmit = async (formData) => {
+  const success = await submitStep(formData);
+  if (success) {
+    markStepCompleted(currentStep); // Only mark completed on successful submission
+    navigate("/next-step");
+  }
+};
+```
+
+**Features:**
+
+- **Completion Tracking:** Each step stores `isCompleted` flag in localStorage with timestamp
+- **URL Protection:** Direct navigation to `/step2` redirects to `/step1` if step 1 incomplete
+- **Progressive Access:** Users can only access the next incomplete step or previously completed steps
+- **Step Invalidation:** Automatically marks steps incomplete when users modify them after completion
+- **Application Number Security:** Summary page only generates application number after proper completion flow
+- **Reset Functionality:** New application clears all completion states
+
+**Flow Logic:**
+
+1. **Step 1** → Always accessible (entry point)
+2. **Step 2** → Only if Step 1 completed via form submission
+3. **Step 3** → Only if Steps 1-2 completed via form submission
+4. **Summary** → Only if all steps (1-3) completed via proper flow
+
+**Storage Structure:**
+
+```json
+{
+  "wizard-form-data": {
+    "personalInfo": {
+      "name": "John Doe",
+      "email": "john@example.com",
+      "isCompleted": true,
+      "completedAt": "2024-01-15T10:30:00.000Z"
+    },
+    "professionalInfo": {
+      "maritalStatus": "single",
+      "monthlyIncome": "50000",
+      "isCompleted": false
+    },
+    "additionalInfo": {
+      "currentFinancialSituation": "Need assistance with...",
+      "isCompleted": false
+    }
+  }
+}
+```
+
 ### HTTP Client with Authentication Interceptors
 
 Centralized HTTP client built on axios with comprehensive error handling and authentication management.

@@ -1,7 +1,7 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ErrorBoundary from "./ErrorBoundary";
-import { Loading, WizardRedirect } from "../components/atoms";
+import { Loading, WizardRedirect, WizardFlowGuard } from "../components/atoms";
 import { useRTL } from "../lib/hooks/useRTL";
 
 // Lazy load pages for better performance
@@ -21,6 +21,7 @@ const AppRouter = () => {
   return (
     <ErrorBoundary>
       <BrowserRouter>
+        <WizardFlowGuard />
         <Suspense fallback={<Loading />}>
           <Routes>
             {/* Root path - redirect to last visited step */}

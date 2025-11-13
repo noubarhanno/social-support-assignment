@@ -6,6 +6,7 @@ import { Template } from "../templates";
 import { useWizardNavigation } from "../../lib/contexts";
 import { useWizard } from "../../lib/hooks/useWizard";
 import { useRTL } from "../../lib/hooks/useRTL";
+import { useWizardFlowGuard } from "../../lib/hooks";
 import { autoSaveService } from "../../lib/services/persistenceService";
 import { generateApplicationNumber } from "../../lib/utils/constants";
 import {
@@ -31,36 +32,29 @@ const Summary: FC = () => {
   const { isRTL } = useRTL();
   const [applicationNumber, setApplicationNumber] = useState<string>("");
   const [copied, setCopied] = useState(false);
+  const { shouldGenerateApplicationNumber, resetAllCompletions } =
+    useWizardFlowGuard();
 
-  // Initialize application number on component mount
+  // Initialize application number on component mount - only if accessed through proper flow
   useEffect(() => {
-    const existingNumber = loadFromStorage<string | null>(
-      "application-number",
-      null
-    );
-    if (existingNumber) {
-      setApplicationNumber(existingNumber);
-    } else {
-      const newNumber = generateApplicationNumber();
-      setApplicationNumber(newNumber);
-      saveToStorage("application-number", newNumber);
+    if (shouldGenerateApplicationNumber()) {
+      const existingNumber = loadFromStorage<string | null>(
+        "application-number",
+        null
+      );
+      if (existingNumber) {
+        setApplicationNumber(existingNumber);
+      } else {
+        const newNumber = generateApplicationNumber();
+        setApplicationNumber(newNumber);
+        saveToStorage("application-number", newNumber);
+      }
     }
-  }, []);
+  }, [shouldGenerateApplicationNumber]);
 
-  // Summary page - set wizard step to 3 (all steps completed) and clear form data
+  // Summary page - set wizard step to 3 (all steps completed)
   useEffect(() => {
     setWizardStep(3);
-
-    // Clear form data from localStorage on first load
-    // Set a flag to indicate wizard is completed (disable editing)
-    const isWizardCompleted = loadFromStorage<string | null>(
-      "wizard-completed",
-      null
-    );
-    if (!isWizardCompleted) {
-      autoSaveService.clearAllData();
-      saveToStorage("wizard-completed", "true");
-    }
   }, [setWizardStep]);
 
   /**
@@ -83,12 +77,12 @@ const Summary: FC = () => {
     // Clear all auto-saved data
     autoSaveService.clearAllData();
 
-    // Clear wizard completion flag to allow editing again
-    removeFromStorage("wizard-completed");
-
     // Clear application number from storage and state
     removeFromStorage("application-number");
     setApplicationNumber("");
+
+    // Reset completion states
+    resetAllCompletions();
 
     // Reset wizard state
     resetWizard();
