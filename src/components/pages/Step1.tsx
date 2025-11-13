@@ -18,6 +18,7 @@ import { useAutoSave } from "../../lib/hooks";
 import { useWizardFlowGuard } from "../../lib/hooks";
 import { autoSaveService } from "../../lib/services/persistenceService";
 import toast, { Toaster } from "react-hot-toast";
+import { STEP_KEYS } from "../../lib/utils/constants";
 
 /**
  * Step 1 page component - Uses centralized generator for wizard flow
@@ -37,8 +38,9 @@ const Step1: FC = () => {
   // Initialize form with react-hook-form and load saved data
   const { getWizardGenerator, resetWizardGenerator } = useWizard();
   const { PersonalInfoSchema } = useValidationSchemas();
-  const savedStep1Data =
-    autoSaveService.getStepData<PersonalInfoFormData>("personalInfo");
+  const savedStep1Data = autoSaveService.getStepData<PersonalInfoFormData>(
+    STEP_KEYS.PERSONAL_INFO
+  );
   const methods = useForm<PersonalInfoFormData>({
     resolver: zodResolver(PersonalInfoSchema),
     mode: "onBlur",
@@ -57,7 +59,7 @@ const Step1: FC = () => {
   });
 
   // Setup auto-save functionality with completion tracking
-  useAutoSave(methods.watch, "personalInfo", 1);
+  useAutoSave(methods.watch, STEP_KEYS.PERSONAL_INFO, 1);
 
   /**
    * clear form errors on language change

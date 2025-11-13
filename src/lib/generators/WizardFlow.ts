@@ -4,7 +4,7 @@
  */
 import { saveToStorage, loadFromStorage } from "../utils/storage";
 import { submitForm } from "../api/externalMockedApi";
-import { STORAGE_KEYS } from "../utils/constants";
+import { STORAGE_KEYS, STEP_KEYS } from "../utils/constants";
 
 export interface WizardStep {
   step: number;
@@ -45,7 +45,7 @@ export async function* wizardFlowGenerator(): AsyncGenerator<
   };
 
   if (step1Data !== null && step1Data !== undefined) {
-    allFormData.personalInfo = step1Data;
+    allFormData[STEP_KEYS.PERSONAL_INFO] = step1Data;
 
     // Save to localStorage immediately
     saveToStorage(STORAGE_KEYS.WIZARD_DATA, allFormData);
@@ -78,7 +78,7 @@ export async function* wizardFlowGenerator(): AsyncGenerator<
   };
 
   if (step2Data !== null && step2Data !== undefined) {
-    allFormData.professionalInfo = step2Data;
+    allFormData[STEP_KEYS.PROFESSIONAL_INFO] = step2Data;
 
     // Save to localStorage immediately
     saveToStorage(STORAGE_KEYS.WIZARD_DATA, allFormData);
@@ -110,7 +110,7 @@ export async function* wizardFlowGenerator(): AsyncGenerator<
   };
 
   if (step3Data !== null && step3Data !== undefined) {
-    allFormData.additionalInfo = step3Data;
+    allFormData[STEP_KEYS.ADDITIONAL_INFO] = step3Data;
 
     // Save to localStorage immediately
     saveToStorage(STORAGE_KEYS.WIZARD_DATA, allFormData);

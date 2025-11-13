@@ -17,6 +17,7 @@ import { useWizardNavigation } from "../../lib/contexts";
 import { useAutoSave } from "../../lib/hooks";
 import { useWizardFlowGuard } from "../../lib/hooks";
 import { autoSaveService } from "../../lib/services/persistenceService";
+import { STEP_KEYS } from "../../lib/utils/constants";
 import toast, { Toaster } from "react-hot-toast";
 
 /**
@@ -40,7 +41,7 @@ const Step3: FC = () => {
   const { SituationDescriptionsSchema } = useValidationSchemas();
   const savedStep3Data =
     autoSaveService.getStepData<SituationDescriptionsFormData>(
-      "additionalInfo"
+      STEP_KEYS.ADDITIONAL_INFO
     );
   const methods = useForm<SituationDescriptionsFormData>({
     resolver: zodResolver(SituationDescriptionsSchema),
@@ -53,7 +54,7 @@ const Step3: FC = () => {
   });
 
   // Setup auto-save functionality with completion tracking
-  useAutoSave(methods.watch, "additionalInfo", 3);
+  useAutoSave(methods.watch, STEP_KEYS.ADDITIONAL_INFO, 3);
 
   // Simple AI accept handler
   const saveOnAIAccept = (
@@ -62,7 +63,7 @@ const Step3: FC = () => {
   ) => {
     methods.setValue(fieldName, aiText);
     methods.clearErrors(fieldName);
-    autoSaveService.debouncedSave("additionalInfo", {
+    autoSaveService.debouncedSave(STEP_KEYS.ADDITIONAL_INFO, {
       ...methods.watch(),
       [fieldName]: aiText,
     });

@@ -174,10 +174,6 @@ export const useWizardFlowGuard = () => {
     if (!canAccessRoute(currentPath)) {
       const nextAllowed = getNextAllowedStep();
       const targetRoute = nextAllowed <= 3 ? `/step${nextAllowed}` : "/step1";
-
-      console.log(
-        `Redirecting from ${currentPath} to ${targetRoute} - step ${nextAllowed} is next allowed`
-      );
       navigate(targetRoute, { replace: true });
     }
   }, [location.pathname, canAccessRoute, getNextAllowedStep, navigate]);

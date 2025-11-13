@@ -4,7 +4,7 @@
  */
 import { saveToStorage, loadFromStorage } from "../utils/storage";
 import { wizardFlowGenerator, WizardStep } from "../generators/WizardFlow";
-import { STORAGE_KEYS } from "../utils/constants";
+import { STORAGE_KEYS, STEP_KEYS } from "../utils/constants";
 
 /**
  * Global wizard generator instance
@@ -55,11 +55,11 @@ export const getStepData = (step: number): any => {
 
   switch (step) {
     case 1:
-      return savedData.personalInfo || {};
+      return savedData[STEP_KEYS.PERSONAL_INFO] || {};
     case 2:
-      return savedData.professionalInfo || {};
+      return savedData[STEP_KEYS.PROFESSIONAL_INFO] || {};
     case 3:
-      return savedData.additionalInfo || {};
+      return savedData[STEP_KEYS.ADDITIONAL_INFO] || {};
     default:
       return {};
   }

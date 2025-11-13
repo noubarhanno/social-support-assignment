@@ -9,12 +9,12 @@ import {
 import { PersonalInfoFormData } from "../schema/validation";
 import { FamilyFinancialFormData } from "../schema/validation";
 import { SituationDescriptionsFormData } from "../schema/validation";
-import { STORAGE_KEYS } from "../utils/constants";
+import { STORAGE_KEYS, STEP_KEYS } from "../utils/constants";
 
 export type WizardFormData = {
-  personalInfo?: PersonalInfoFormData;
-  professionalInfo?: FamilyFinancialFormData;
-  additionalInfo?: SituationDescriptionsFormData;
+  [STEP_KEYS.PERSONAL_INFO]?: PersonalInfoFormData;
+  [STEP_KEYS.PROFESSIONAL_INFO]?: FamilyFinancialFormData;
+  [STEP_KEYS.ADDITIONAL_INFO]?: SituationDescriptionsFormData;
 };
 
 class AutoSaveService {
