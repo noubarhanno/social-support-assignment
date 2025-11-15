@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useWizardNavigation } from "../../lib/contexts";
 import { useRTL } from "@/lib";
-import { loadFromStorage } from "@/lib/utils/storage";
 
 export type StepStatus = "inactive" | "active" | "completed";
 
@@ -19,6 +18,7 @@ export interface WizardStep {
 export interface WizardProgressProps {
   steps: WizardStep[];
   className?: string;
+  disableNavigation?: boolean; // Disable step navigation (e.g., when application is completed)
 }
 
 /**
@@ -29,10 +29,8 @@ export interface WizardProgressProps {
  * @param steps - Array of wizard steps with status
  * @param className - Additional CSS classes
  */
-const WizardProgress: React.FC<WizardProgressProps> = ({
-  steps,
-  className,
-}) => {
+const WizardProgress: React.FC<WizardProgressProps> = (props) => {
+  const { steps, className, disableNavigation = false } = props;
   const navigate = useNavigate();
   const { setWizardStep } = useWizardNavigation();
   const [hoveredStep, setHoveredStep] = useState<string | null>(null);
@@ -41,12 +39,9 @@ const WizardProgress: React.FC<WizardProgressProps> = ({
   const { isRTL } = useRTL();
 
   const handleStepClick = (step: WizardStep, stepIndex: number) => {
-    // Check if wizard is completed (disable editing)
-    const isWizardCompleted =
-      loadFromStorage<string | null>("wizard-completed", null) === "true";
-
-    // Only allow clicking on completed steps if wizard is not fully completed
-    if (step.status === "completed" && !isWizardCompleted) {
+    // Only allow clicking on completed steps to go back and edit
+    // But disable all navigation if step navigation is disabled (passed via props)
+    if (step.status === "completed" && !props.disableNavigation) {
       setWizardStep(stepIndex as 0 | 1 | 2);
       if (step.route) {
         navigate(step.route);
@@ -57,21 +52,23 @@ const WizardProgress: React.FC<WizardProgressProps> = ({
   const getStepIcon = (step: WizardStep, stepIndex: number) => {
     const { status, icon } = step;
     const isHovered = hoveredStep === step.id;
-    const isWizardCompleted =
-      loadFromStorage<string | null>("wizard-completed", null) === "true";
-    const isClickable = status === "completed" && !isWizardCompleted;
+    const isClickable = status === "completed" && !disableNavigation;
+    const isDisabled = status === "completed" && disableNavigation;
 
     switch (status) {
       case "completed":
         return (
           <div
             className={cn(
-              "flex items-center justify-center w-10 h-10 rounded-full bg-primary text-primary-foreground transition-all duration-200",
+              "flex items-center justify-center w-10 h-10 rounded-full transition-all duration-200",
               {
-                "cursor-pointer hover:bg-primary/90 hover:scale-105":
+                // Normal completed state (clickable)
+                "bg-primary text-primary-foreground cursor-pointer hover:bg-primary/90 hover:scale-105":
                   isClickable,
                 "shadow-lg": isHovered && isClickable,
-                "opacity-60": isWizardCompleted,
+                // Disabled completed state (non-clickable) - lighter primary color
+                "bg-primary/40 text-primary-foreground/70 cursor-not-allowed":
+                  isDisabled,
               }
             )}
           >
@@ -125,19 +122,20 @@ const WizardProgress: React.FC<WizardProgressProps> = ({
         )}
       >
         {steps.map((step, stepIndex) => {
-          const isWizardCompleted =
-            loadFromStorage<string | null>("wizard-completed", null) === "true";
-          const isClickable = step.status === "completed" && !isWizardCompleted;
+          const isClickable = step.status === "completed" && !disableNavigation;
 
           return (
             <React.Fragment key={step.id}>
               {/* Step */}
               <div
-                className={cn("flex flex-col items-center", {
-                  "cursor-pointer": isClickable,
-                  "cursor-not-allowed":
-                    step.status === "completed" && isWizardCompleted,
-                })}
+                className={cn(
+                  "flex flex-col items-center transition-opacity duration-200",
+                  {
+                    "cursor-pointer": isClickable,
+                    "cursor-not-allowed opacity-70":
+                      disableNavigation && step.status === "completed",
+                  }
+                )}
                 onMouseEnter={() => isClickable && setHoveredStep(step.id)}
                 onMouseLeave={() => isClickable && setHoveredStep(null)}
                 onClick={() => handleStepClick(step, stepIndex)}
@@ -160,11 +158,12 @@ const WizardProgress: React.FC<WizardProgressProps> = ({
                     "mt-2 text-sm font-medium text-center transition-colors duration-200",
                     {
                       "text-primary":
-                        step.status === "active" ||
-                        (step.status === "completed" && !isWizardCompleted),
+                        (step.status === "active" ||
+                          step.status === "completed") &&
+                        !disableNavigation,
                       "text-gray-500": step.status === "inactive",
-                      "text-gray-400":
-                        step.status === "completed" && isWizardCompleted,
+                      "text-primary/50":
+                        disableNavigation && step.status === "completed",
                       "hover:text-primary/80": isClickable,
                     }
                   )}

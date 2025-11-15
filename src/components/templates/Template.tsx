@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Header } from "../organisms";
 import { WizardProgress, WizardStep } from "../molecules";
 import { useWizardNavigation } from "../../lib/contexts";
+import { useWizardFlowGuard } from "../../lib/hooks";
 
 interface TemplateProps {
   /** Content to be rendered in the main container */
@@ -30,6 +31,10 @@ const Template: React.FC<TemplateProps> = ({
 }) => {
   const { t } = useTranslation();
   const { wizardStep } = useWizardNavigation();
+  const { hasApplicationNumber } = useWizardFlowGuard();
+
+  // Check if navigation should be disabled (when application is completed)
+  const shouldDisableNavigation = hasApplicationNumber();
 
   // Generate wizard steps with proper statuses based on wizardStep
   const getWizardSteps = (): WizardStep[] => [
@@ -63,7 +68,10 @@ const Template: React.FC<TemplateProps> = ({
       <main className="w-full">
         <div className="max-w-[1400px] mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
           <div className="mb-4 sm:mb-6 lg:mb-8">
-            <WizardProgress steps={steps} />
+            <WizardProgress
+              steps={steps}
+              disableNavigation={shouldDisableNavigation}
+            />
           </div>
 
           <div

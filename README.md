@@ -79,6 +79,200 @@ VITE_OPENAI_API_KEY=sk-your-actual-openai-api-key
 
 ## Architecture
 
+### Application Flow Diagrams
+
+I've broken down the application flow into clear, readable s sections for better visibility:
+
+#### 1. Application Initialization & Routing
+
+```mermaid
+flowchart TD
+    Start([User Visits App]) --> CheckStorage[Check localStorage<br/>for Application Data]
+    CheckStorage --> HasAppNumber{Application Number<br/>Exists?}
+
+    HasAppNumber -->|Yes| ForceSummary[Force Redirect<br/>to Summary Page]
+    ForceSummary --> Summary[Summary Page<br/>Navigation Disabled]
+
+    HasAppNumber -->|No| CheckProgress[Check Completed Steps<br/>Progress]
+    CheckProgress --> RedirectStep[Redirect to Correct Step<br/>Based on Progress]
+    RedirectStep --> Step1[Step 1]
+    RedirectStep --> Step2[Step 2]
+    RedirectStep --> Step3[Step 3]
+
+    %% URL Protection
+    URLAccess[Direct URL Access<br/>to Steps] --> CheckAppNumber{Application Number<br/>Exists?}
+    CheckAppNumber -->|Yes| BlockAccess[Block Access<br/>Redirect to Summary]
+    CheckAppNumber -->|No| AllowAccess[Allow Normal<br/>Flow Guard Check]
+    BlockAccess --> Summary
+    AllowAccess --> RedirectStep
+
+    style Start fill:#e3f2fd,color:#000
+    style CheckStorage fill:#fff8e1,color:#000
+    style ForceSummary fill:#ffebee,color:#000
+    style Summary fill:#e0f2f1,color:#000
+    style BlockAccess fill:#ffcdd2,color:#000
+```
+
+#### 2. Step 1: Personal Information Flow
+
+```mermaid
+flowchart TD
+    Step1[Step 1: Personal Information] --> TriggerCountries[Trigger Countries API<br/>on Component Mount]
+    TriggerCountries --> FetchCountries[Fetch Countries List<br/>External Free Service API]
+    FetchCountries --> PopulateDropdown[Populate Country<br/>Dropdown Options]
+
+    PopulateDropdown --> WizGen[Wizard Generator:<br/>Auto-fill from localStorage]
+    WizGen --> StorageLoad[Storage Utility:<br/>Load Saved Form Data]
+    StorageLoad --> UserFill[User Fills Personal Form<br/>with Countries Available]
+
+    UserFill --> Submit[User Submits Data]
+    Submit --> Validation{Zod Schema<br/>Validation}
+
+    Validation -->|Invalid| ErrorHandler[Form State<br/>Error Handler]
+    ErrorHandler --> ErrorMsg[Show Error Messages]
+    ErrorMsg --> UserFill
+
+    Validation -->|Valid| MockAPI[Wizard Generator:<br/>Submit to Mock API]
+    MockAPI --> YieldNext[Generator Yields<br/>Next Step]
+    YieldNext --> Step2[Navigate to Step 2]
+
+    style Step1 fill:#e8f5e8,color:#000
+    style TriggerCountries fill:#f1f8e9,color:#000
+    style FetchCountries fill:#f1f8e9,color:#000
+    style PopulateDropdown fill:#f1f8e9,color:#000
+    style MockAPI fill:#fce4ec,color:#000
+    style Step2 fill:#fff3e0,color:#000
+```
+
+#### 3. Step 2: Professional Information Flow
+
+```mermaid
+flowchart TD
+    Step2[Step 2: Professional Information] --> WizGen2[Wizard Generator:<br/>Auto-fill from localStorage]
+    WizGen2 --> StorageLoad2[Storage Utility:<br/>Load Saved Form Data]
+    StorageLoad2 --> UserFill2[User Fills Professional Form]
+
+    UserFill2 --> Submit2[User Submits Data]
+    Submit2 --> Validation2{Zod Schema<br/>Validation}
+
+    Validation2 -->|Invalid| ErrorHandler2[Form State<br/>Error Handler]
+    ErrorHandler2 --> ErrorMsg2[Show Error Messages]
+    ErrorMsg2 --> UserFill2
+
+    Validation2 -->|Valid| MockAPI2[Wizard Generator:<br/>Submit to Mock API]
+    MockAPI2 --> YieldNext2[Generator Yields<br/>Next Step]
+    YieldNext2 --> Step3[Navigate to Step 3]
+
+    style Step2 fill:#fff3e0,color:#000
+    style MockAPI2 fill:#fce4ec,color:#000
+    style Step3 fill:#f3e5f5,color:#000
+```
+
+#### 4. Step 3: Additional Information with AI Assistance
+
+```mermaid
+flowchart TD
+    Step3[Step 3: Additional Information] --> WizGen3[Wizard Generator:<br/>Auto-fill from localStorage]
+    WizGen3 --> StorageLoad3[Storage Utility:<br/>Load Saved Form Data]
+    StorageLoad3 --> FillChoice{User Fill Choice}
+
+    FillChoice -->|Manual| ManualFill[User Fills<br/>Information Manually]
+    FillChoice -->|AI Assistance| AIRequest[Ask AI to<br/>Generate Text]
+
+    AIRequest --> OpenAI[Trigger OpenAI API]
+    OpenAI --> DefaultPrompt[Generate Text with<br/>Default Prompt]
+    DefaultPrompt --> ShowAI[Show AI Generated Text]
+    ShowAI --> EditChoice{Edit Prompt?}
+
+    EditChoice -->|Yes| UserEdit[User Edits Prompt]
+    UserEdit --> Regenerate[Regenerate Text]
+    Regenerate --> OpenAI
+
+    EditChoice -->|No| AcceptEdit[User Edits<br/>Generated Text]
+    AcceptEdit --> AcceptFinal[User Accepts<br/>Final Text]
+    AcceptFinal --> ManualFill
+
+    ManualFill --> SubmitStep3[Submit Step 3 Data]
+    SubmitStep3 --> MockAPI3[Wizard Generator:<br/>Submit to Mock API]
+    MockAPI3 --> PushSummary[Push to Summary Page]
+
+    style Step3 fill:#f3e5f5,color:#000
+    style OpenAI fill:#ffecb3,color:#000
+    style MockAPI3 fill:#fce4ec,color:#000
+    style PushSummary fill:#e0f2f1,color:#000
+```
+
+#### 5. Summary Page & Navigation Restrictions
+
+```mermaid
+flowchart TD
+    Summary[Summary Page] --> GenNumber[Generate Dummy<br/>Application Number]
+    GenNumber --> PersistNumber[Persist Application Number<br/>to localStorage]
+    PersistNumber --> DisableNav[Disable Wizard Progress<br/>Step Navigation]
+    DisableNav --> ShowComplete[Show Complete Application Summary<br/>with Disabled Step Buttons]
+
+    ShowComplete --> UserAction{User Action}
+    UserAction -->|Click Step Button| BlockStep[Block Navigation<br/>Steps Disabled]
+    BlockStep --> ShowComplete
+
+    UserAction -->|Direct URL Access| URLProtection[URL Protection Active<br/>Redirect to Summary]
+    URLProtection --> ShowComplete
+
+    UserAction -->|Refresh Page| CheckRefresh[Check localStorage<br/>Application Number Exists]
+    CheckRefresh --> ShowComplete
+
+    UserAction -->|Start New Journey| ClearStorage[Clear localStorage<br/>All Persistent Data]
+    ClearStorage --> EnableNav[Re-enable Navigation<br/>Remove URL Protection]
+    EnableNav --> StartOver[Start Over<br/>from Beginning]
+    StartOver --> AppStart[Return to App Start]
+
+    style Summary fill:#e0f2f1,color:#000
+    style GenNumber fill:#e8eaf6,color:#000
+    style DisableNav fill:#ffcdd2,color:#000
+    style BlockStep fill:#ffcdd2,color:#000
+    style URLProtection fill:#ffcdd2,color:#000
+    style ClearStorage fill:#ffebee,color:#000
+    style EnableNav fill:#c8e6c9,color:#000
+    style AppStart fill:#e3f2fd,color:#000
+```
+
+#### 6. External Services & Architecture Overview
+
+```mermaid
+graph LR
+    subgraph "Frontend Components"
+        A[React Components]
+        B[Wizard Generator]
+        C[Form Validation]
+    end
+
+    subgraph "External APIs"
+        D[Countries API<br/>Free Service]
+        E[OpenAI API<br/>Text Generation]
+        F[Mock API<br/>Form Submission]
+    end
+
+    subgraph "Storage & State"
+        G[localStorage<br/>Persistence]
+        H[Context API<br/>State Management]
+        I[Zod Schema<br/>Error Handling]
+    end
+
+    A --> D
+    A --> E
+    B --> F
+    A --> G
+    A --> H
+    C --> I
+
+    style D fill:#f1f8e9,color:#000
+    style E fill:#ffecb3,color:#000
+    style F fill:#fce4ec,color:#000
+    style G fill:#fff8e1,color:#000
+    style H fill:#e8eaf6,color:#000
+    style I fill:#ffebee,color:#000
+```
+
 ### Project Structure
 
 ```
@@ -145,6 +339,69 @@ const nextStep = generator.next(currentFormData);
 - **Data Persistence:** Automatic localStorage integration for progress recovery
 - **Flexible Flow:** Easy to modify wizard steps and add conditional branching
 - **Memory Efficient:** Lazy evaluation of steps reduces memory footprint
+
+### Wizard Flow Guard & URL Navigation Protection
+
+The application implements a comprehensive flow protection system that prevents users from accessing incomplete steps via direct URL navigation.
+
+**Implementation:**
+
+```tsx
+/**
+ * Custom hook managing step completion state and URL restrictions
+ */
+const { markStepCompleted, canAccessRoute, redirectToAppropriateStep } =
+  useWizardFlowGuard();
+
+// Mark step as completed when form is successfully submitted
+const handleSubmit = async (formData) => {
+  const success = await submitStep(formData);
+  if (success) {
+    markStepCompleted(currentStep); // Only mark completed on successful submission
+    navigate("/next-step");
+  }
+};
+```
+
+**Features:**
+
+- **Completion Tracking:** Each step stores `isCompleted` flag in localStorage with timestamp
+- **URL Protection:** Direct navigation to `/step2` redirects to `/step1` if step 1 incomplete
+- **Progressive Access:** Users can only access the next incomplete step or previously completed steps
+- **Step Invalidation:** Automatically marks steps incomplete when users modify them after completion
+- **Application Number Security:** Summary page only generates application number after proper completion flow
+- **Reset Functionality:** New application clears all completion states
+
+**Flow Logic:**
+
+1. **Step 1** → Always accessible (entry point)
+2. **Step 2** → Only if Step 1 completed via form submission
+3. **Step 3** → Only if Steps 1-2 completed via form submission
+4. **Summary** → Only if all steps (1-3) completed via proper flow
+
+**Storage Structure:**
+
+```json
+{
+  "wizard-form-data": {
+    "personalInfo": {
+      "name": "John Doe",
+      "email": "john@example.com",
+      "isCompleted": true,
+      "completedAt": "2024-01-15T10:30:00.000Z"
+    },
+    "professionalInfo": {
+      "maritalStatus": "single",
+      "monthlyIncome": "50000",
+      "isCompleted": false
+    },
+    "additionalInfo": {
+      "currentFinancialSituation": "Need assistance with...",
+      "isCompleted": false
+    }
+  }
+}
+```
 
 ### HTTP Client with Authentication Interceptors
 
