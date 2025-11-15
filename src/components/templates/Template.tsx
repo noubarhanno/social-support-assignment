@@ -32,7 +32,7 @@ const Template: React.FC<TemplateProps> = ({
   const { t } = useTranslation();
   const { wizardStep } = useWizardNavigation();
   const { hasApplicationNumber } = useWizardFlowGuard();
-  
+
   // Check if navigation should be disabled (when application is completed)
   const shouldDisableNavigation = hasApplicationNumber();
 
@@ -68,8 +68,8 @@ const Template: React.FC<TemplateProps> = ({
       <main className="w-full">
         <div className="max-w-[1400px] mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
           <div className="mb-4 sm:mb-6 lg:mb-8">
-            <WizardProgress 
-              steps={steps} 
+            <WizardProgress
+              steps={steps}
               disableNavigation={shouldDisableNavigation}
             />
           </div>

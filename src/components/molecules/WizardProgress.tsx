@@ -63,10 +63,12 @@ const WizardProgress: React.FC<WizardProgressProps> = (props) => {
               "flex items-center justify-center w-10 h-10 rounded-full transition-all duration-200",
               {
                 // Normal completed state (clickable)
-                "bg-primary text-primary-foreground cursor-pointer hover:bg-primary/90 hover:scale-105": isClickable,
+                "bg-primary text-primary-foreground cursor-pointer hover:bg-primary/90 hover:scale-105":
+                  isClickable,
                 "shadow-lg": isHovered && isClickable,
                 // Disabled completed state (non-clickable) - lighter primary color
-                "bg-primary/40 text-primary-foreground/70 cursor-not-allowed": isDisabled,
+                "bg-primary/40 text-primary-foreground/70 cursor-not-allowed":
+                  isDisabled,
               }
             )}
           >
@@ -126,10 +128,14 @@ const WizardProgress: React.FC<WizardProgressProps> = (props) => {
             <React.Fragment key={step.id}>
               {/* Step */}
               <div
-                className={cn("flex flex-col items-center transition-opacity duration-200", {
-                  "cursor-pointer": isClickable,
-                  "cursor-not-allowed opacity-70": disableNavigation && step.status === "completed",
-                })}
+                className={cn(
+                  "flex flex-col items-center transition-opacity duration-200",
+                  {
+                    "cursor-pointer": isClickable,
+                    "cursor-not-allowed opacity-70":
+                      disableNavigation && step.status === "completed",
+                  }
+                )}
                 onMouseEnter={() => isClickable && setHoveredStep(step.id)}
                 onMouseLeave={() => isClickable && setHoveredStep(null)}
                 onClick={() => handleStepClick(step, stepIndex)}
@@ -152,9 +158,12 @@ const WizardProgress: React.FC<WizardProgressProps> = (props) => {
                     "mt-2 text-sm font-medium text-center transition-colors duration-200",
                     {
                       "text-primary":
-                        (step.status === "active" || step.status === "completed") && !disableNavigation,
+                        (step.status === "active" ||
+                          step.status === "completed") &&
+                        !disableNavigation,
                       "text-gray-500": step.status === "inactive",
-                      "text-primary/50": disableNavigation && step.status === "completed",
+                      "text-primary/50":
+                        disableNavigation && step.status === "completed",
                       "hover:text-primary/80": isClickable,
                     }
                   )}

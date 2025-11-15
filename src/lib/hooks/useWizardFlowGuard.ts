@@ -165,8 +165,6 @@ export const useWizardFlowGuard = () => {
     [getLastCompletedStep, areAllStepsCompleted]
   );
 
-
-
   /**
    * Reset all completion states (for new application)
    */
@@ -197,8 +195,13 @@ export const useWizardFlowGuard = () => {
    * Check if application number exists (indicates completed application)
    */
   const hasApplicationNumber = useCallback((): boolean => {
-    const appNumber = loadFromStorage<string | null>("application-number", null);
-    return appNumber !== null && appNumber !== undefined && appNumber.trim() !== "";
+    const appNumber = loadFromStorage<string | null>(
+      "application-number",
+      null
+    );
+    return (
+      appNumber !== null && appNumber !== undefined && appNumber.trim() !== ""
+    );
   }, []);
 
   /**
@@ -230,20 +233,26 @@ export const useWizardFlowGuard = () => {
    */
   const redirectToAppropriateStepWithAppNumberCheck = useCallback(() => {
     const currentPath = location.pathname;
-    
+
     // If application number exists and not on summary, redirect to summary
     if (hasApplicationNumber() && currentPath !== "/summary") {
       navigate("/summary", { replace: true });
       return;
     }
-    
+
     // Otherwise use normal flow guard logic
     if (!canAccessRoute(currentPath)) {
       const nextAllowed = getNextAllowedStep();
       const targetRoute = nextAllowed <= 3 ? `/step${nextAllowed}` : "/step1";
       navigate(targetRoute, { replace: true });
     }
-  }, [location.pathname, hasApplicationNumber, canAccessRoute, getNextAllowedStep, navigate]);
+  }, [
+    location.pathname,
+    hasApplicationNumber,
+    canAccessRoute,
+    getNextAllowedStep,
+    navigate,
+  ]);
 
   return {
     getStepCompletion,
