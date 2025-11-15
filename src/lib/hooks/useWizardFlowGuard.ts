@@ -165,18 +165,7 @@ export const useWizardFlowGuard = () => {
     [getLastCompletedStep, areAllStepsCompleted]
   );
 
-  /**
-   * Redirect to appropriate step based on completion state
-   */
-  const redirectToAppropriateStep = useCallback(() => {
-    const currentPath = location.pathname;
 
-    if (!canAccessRoute(currentPath)) {
-      const nextAllowed = getNextAllowedStep();
-      const targetRoute = nextAllowed <= 3 ? `/step${nextAllowed}` : "/step1";
-      navigate(targetRoute, { replace: true });
-    }
-  }, [location.pathname, canAccessRoute, getNextAllowedStep, navigate]);
 
   /**
    * Reset all completion states (for new application)
@@ -205,6 +194,14 @@ export const useWizardFlowGuard = () => {
   }, []);
 
   /**
+   * Check if application number exists (indicates completed application)
+   */
+  const hasApplicationNumber = useCallback((): boolean => {
+    const appNumber = loadFromStorage<string | null>("application-number", null);
+    return appNumber !== null && appNumber !== undefined && appNumber.trim() !== "";
+  }, []);
+
+  /**
    * Check if application number should be generated
    * Only true if all steps completed through proper flow
    */
@@ -212,16 +209,53 @@ export const useWizardFlowGuard = () => {
     return areAllStepsCompleted() && location.pathname === "/summary";
   }, [areAllStepsCompleted, location.pathname]);
 
+  /**
+   * Enhanced canAccessRoute that also checks for application number
+   * If application number exists, only allow access to summary page
+   */
+  const canAccessRouteWithAppNumberCheck = useCallback(
+    (route: string): boolean => {
+      // If application number exists, only allow summary page
+      if (hasApplicationNumber()) {
+        return route === "/summary";
+      }
+      // Otherwise, use normal flow guard logic
+      return canAccessRoute(route);
+    },
+    [hasApplicationNumber, canAccessRoute]
+  );
+
+  /**
+   * Enhanced redirect that considers application number
+   */
+  const redirectToAppropriateStepWithAppNumberCheck = useCallback(() => {
+    const currentPath = location.pathname;
+    
+    // If application number exists and not on summary, redirect to summary
+    if (hasApplicationNumber() && currentPath !== "/summary") {
+      navigate("/summary", { replace: true });
+      return;
+    }
+    
+    // Otherwise use normal flow guard logic
+    if (!canAccessRoute(currentPath)) {
+      const nextAllowed = getNextAllowedStep();
+      const targetRoute = nextAllowed <= 3 ? `/step${nextAllowed}` : "/step1";
+      navigate(targetRoute, { replace: true });
+    }
+  }, [location.pathname, hasApplicationNumber, canAccessRoute, getNextAllowedStep, navigate]);
+
   return {
     getStepCompletion,
     markStepCompleted,
     markStepIncomplete,
     getLastCompletedStep,
     areAllStepsCompleted,
-    canAccessRoute,
-    redirectToAppropriateStep,
+    canAccessRoute: canAccessRouteWithAppNumberCheck,
+    redirectToAppropriateStep: redirectToAppropriateStepWithAppNumberCheck,
     resetAllCompletions,
     shouldGenerateApplicationNumber,
     getNextAllowedStep,
+    hasApplicationNumber,
   };
 };

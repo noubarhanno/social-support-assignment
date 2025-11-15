@@ -4,6 +4,7 @@ import { useWizardFlowGuard } from "../../lib/hooks";
 /**
  * Component that enforces wizard flow restrictions
  * Redirects users to appropriate step based on completion state
+ * Now includes application number protection
  */
 const WizardFlowGuard = () => {
   const { redirectToAppropriateStep } = useWizardFlowGuard();
