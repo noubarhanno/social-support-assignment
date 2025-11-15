@@ -15,6 +15,13 @@ jest.mock("../lib/contexts", () => ({
   }),
 }));
 
+// Mock the RTL hook to avoid import.meta.env issues
+jest.mock("@/lib", () => ({
+  useRTL: () => ({
+    isRTL: false,
+  }),
+}));
+
 describe("WizardProgress", () => {
   const mockSteps: WizardStep[] = [
     {

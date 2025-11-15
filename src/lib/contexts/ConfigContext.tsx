@@ -6,6 +6,7 @@ import React, {
   useEffect,
 } from "react";
 import { saveToStorage, loadFromStorage } from "../utils/storage";
+import { STORAGE_KEYS } from "../utils/constants";
 
 /**
  * Wizard step numbers (0-based, 3 = completed)
@@ -36,12 +37,6 @@ type ConfigContextConsumer = {
 };
 
 const ConfigContext = createContext({} as ConfigContextConsumer);
-
-/**
- * Storage key for wizard progress persistence
- * Using the same key as the wizard generator for consistency
- */
-const WIZARD_PROGRESS_KEY = "wizard-progress";
 
 /**
  * Config Context Provider Props
@@ -86,14 +81,14 @@ const ConfigContextProvider: React.FC<ConfigContextProviderProps> = ({
    * Initialize the reducer with state loaded from localStorage
    */
   const [state, dispatch] = useReducer(reducer, {
-    wizardStep: loadFromStorage<WizardStep>(WIZARD_PROGRESS_KEY, 0),
+    wizardStep: loadFromStorage<WizardStep>(STORAGE_KEYS.WIZARD_PROGRESS, 0),
   });
 
   /**
    * Persist wizard step to localStorage whenever it changes
    */
   useEffect(() => {
-    saveToStorage(WIZARD_PROGRESS_KEY, state.wizardStep);
+    saveToStorage(STORAGE_KEYS.WIZARD_PROGRESS, state.wizardStep);
   }, [state.wizardStep]);
 
   /**
