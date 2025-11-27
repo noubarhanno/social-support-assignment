@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
+import { GENDER_OPTIONS } from "../utils/constants";
 import {
-  GENDER_OPTIONS,
   MARITAL_STATUS_OPTIONS,
   EMPLOYMENT_STATUS_OPTIONS,
   HOUSING_STATUS_OPTIONS,
-} from "../utils/constants";
+} from "../constants/formOptions";
 import {
   getSelectValidationMessage,
   getValidationMessage,

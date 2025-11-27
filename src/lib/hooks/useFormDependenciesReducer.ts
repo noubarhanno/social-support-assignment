@@ -1,11 +1,14 @@
 import { useReducer, useCallback, useEffect, useRef } from "react";
 import { useFormContext } from "react-hook-form";
+// TODO: Replace static constants with API calls
+// Currently using getCountrySelectOptions() and getStateSelectOptions() from constants
+// Should be replaced with async API calls: fetchCountries() and fetchStates()
 import {
-  fetchStateOptions,
-  fetchCountrySelectOptions,
+  getCountrySelectOptions,
+  getStateSelectOptions,
   type CountrySelectOption,
   type SelectOption,
-} from "../api/countries";
+} from "../constants";
 
 // State management using reducer pattern (modern approach)
 interface FormDependencyState {
@@ -126,37 +129,22 @@ export function useFormDependenciesReducer() {
 
   // Load countries on mount
   useEffect(() => {
-    let isMounted = true;
-
-    const loadCountries = async () => {
-      try {
-        dispatch({ type: "SET_LOADING_COUNTRIES", payload: true });
-        const countries = await fetchCountrySelectOptions();
-
-        if (isMounted) {
-          dispatch({ type: "SET_COUNTRIES", payload: countries });
-        }
-      } catch (error) {
-        if (isMounted) {
-          dispatch({ type: "SET_LOADING_COUNTRIES", payload: false });
-          setError("country", {
-            type: "api",
-            message: "Failed to load countries. Please try again.",
-          });
-        }
-      }
-    };
-
-    loadCountries();
-
-    return () => {
-      isMounted = false;
-    };
+    try {
+      dispatch({ type: "SET_LOADING_COUNTRIES", payload: true });
+      const countries = getCountrySelectOptions();
+      dispatch({ type: "SET_COUNTRIES", payload: countries });
+    } catch (error) {
+      dispatch({ type: "SET_LOADING_COUNTRIES", payload: false });
+      setError("country", {
+        type: "data",
+        message: "Failed to load countries. Please try again.",
+      });
+    }
   }, [setError]);
 
   // Handle country changes with automatic state clearing
   const handleCountryChange = useCallback(
-    async (newCountry: string) => {
+    (newCountry: string) => {
       // Prevent duplicate calls for the same country
       if (processingCountryRef.current === newCountry) {
         return;
@@ -187,7 +175,7 @@ export function useFormDependenciesReducer() {
 
       try {
         dispatch({ type: "SET_LOADING_STATES", payload: true });
-        const states = await fetchStateOptions(newCountry);
+        const states = getStateSelectOptions(newCountry);
         dispatch({ type: "SET_STATES", payload: states });
 
         // If this was initial load and we have saved values, restore them
@@ -199,7 +187,7 @@ export function useFormDependenciesReducer() {
           }
         }
 
-        // Set initial load flag to false AFTER async operation completes
+        // Set initial load flag to false
         if (isInitialLoadRef.current) {
           isInitialLoadRef.current = false;
         }
@@ -207,7 +195,7 @@ export function useFormDependenciesReducer() {
         // Reset processing flag
         processingCountryRef.current = null;
       } catch (error) {
-        console.error("❌ Error fetching states:", error);
+        console.error("❌ Error loading states:", error);
         dispatch({ type: "CLEAR_STATES" });
 
         // Set flag to false even on error

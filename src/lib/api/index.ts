@@ -1,4 +1,4 @@
 // API services exports
-export * from "./countries";
+// Note: countries.ts is deprecated - use constants/countries.ts instead
 export * from "./externalMockedApi";
 export * from "./openai";
