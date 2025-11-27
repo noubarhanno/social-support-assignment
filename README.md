@@ -117,9 +117,8 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    Step1[Step 1: Personal Information] --> TriggerCountries[Trigger Countries API<br/>on Component Mount]
-    TriggerCountries --> FetchCountries[Fetch Countries List<br/>External Free Service API]
-    FetchCountries --> PopulateDropdown[Populate Country<br/>Dropdown Options]
+    Step1[Step 1: Personal Information] --> LoadCountries[Load Countries<br/>from Static Constants]
+    LoadCountries --> PopulateDropdown[Populate Country<br/>Dropdown Options]
 
     PopulateDropdown --> WizGen[Wizard Generator:<br/>Auto-fill from localStorage]
     WizGen --> StorageLoad[Storage Utility:<br/>Load Saved Form Data]
@@ -137,8 +136,7 @@ flowchart TD
     YieldNext --> Step2[Navigate to Step 2]
 
     style Step1 fill:#e8f5e8,color:#000
-    style TriggerCountries fill:#f1f8e9,color:#000
-    style FetchCountries fill:#f1f8e9,color:#000
+    style LoadCountries fill:#f1f8e9,color:#000
     style PopulateDropdown fill:#f1f8e9,color:#000
     style MockAPI fill:#fce4ec,color:#000
     style Step2 fill:#fff3e0,color:#000
@@ -247,12 +245,12 @@ graph LR
     end
 
     subgraph "External APIs"
-        D[Countries API<br/>Free Service]
         E[OpenAI API<br/>Text Generation]
         F[Mock API<br/>Form Submission]
     end
 
-    subgraph "Storage & State"
+    subgraph "Static Data & State"
+        D[Countries & States<br/>Static Constants]
         G[localStorage<br/>Persistence]
         H[Context API<br/>State Management]
         I[Zod Schema<br/>Error Handling]
@@ -610,22 +608,32 @@ const MyComponent = () => {
 - **Rate Limiting:** Graceful handling with retry-after headers
 - **Streaming Errors:** Robust stream processing with fallback mechanisms
 
-### Countries & States Service
+### Countries & States Static Constants
 
-**Implementation:** Centralized API service with proper error handling and caching for geographical data.
+**Implementation:** Centralized static constants with comprehensive geographical data for reliable form dropdowns.
 
 **Features:**
 
-- **Memoized Operations:** Expensive filtering and sorting operations cached for performance
-- **Error Recovery:** Graceful fallback when API services unavailable
-- **Smart Loading:** Component-level loading states for better UX
-- **Data Transformation:** Consistent data format across different API responses
+- **Static Data:** 50 countries with ISO2/ISO3 codes and flag URLs
+- **State Mappings:** Comprehensive state/province data for 10+ major countries (US, Canada, Australia, UK, Germany, France, Italy, Spain, Mexico, Brazil, India, Japan)
+- **Synchronous Operations:** Instant dropdown population without API latency
+- **Helper Functions:** `getCountrySelectOptions()`, `getStateSelectOptions(country)`, `countryHasStates(country)`
+- **Type Safety:** Full TypeScript support with Country, State, and SelectOption interfaces
+- **No External Dependencies:** Eliminates API reliability issues and network latency
 
-**Performance Optimizations:**
+**Form Options:**
 
-- Data fetching moved to organism level (not molecule components)
-- Efficient re-renders with proper dependency arrays
-- Lazy loading of state/city data based on user selections
+- **Marital Status:** 5 options (Single, Married, Divorced, Widowed, Separated)
+- **Employment Status:** 7 options (Employed Full-time, Part-time, Self-employed, Unemployed, Student, Retired, Unable to Work)
+- **Housing Status:** 6 options (Own Home, Renting, Living with Family, Homeless, Temporary Housing, Other)
+- **Translation Support:** All options include helper functions for i18n integration
+
+**Performance Benefits:**
+
+- Instant data availability on component mount
+- Zero network latency
+- No API failure scenarios to handle
+- Reduced complexity in form dependency logic
 
 ### Form Validation with Zod
 
