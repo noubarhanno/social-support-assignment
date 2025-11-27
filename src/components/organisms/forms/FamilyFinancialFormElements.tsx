@@ -4,10 +4,10 @@ import { useTranslation } from "react-i18next";
 import { FormInput } from "../../molecules/FormInput";
 import { FormSelect, type SelectOption } from "../../molecules/FormSelect";
 import {
-  MARITAL_STATUS_OPTIONS,
-  EMPLOYMENT_STATUS_OPTIONS,
-  HOUSING_STATUS_OPTIONS,
-} from "../../../lib/utils/constants";
+  getMaritalStatusOptions,
+  getEmploymentStatusOptions,
+  getHousingStatusOptions,
+} from "../../../lib/constants/formOptions";
 
 // Form data structure is now defined in the validation schema
 import type { FamilyFinancialFormData } from "../../../lib/schema/validation";
@@ -50,98 +50,19 @@ export const FamilyFinancialFormElements: React.FC = () => {
 
   // Memoized marital status options for performance
   const maritalStatusOptions: SelectOption[] = useMemo(
-    () => [
-      {
-        value: MARITAL_STATUS_OPTIONS.SINGLE,
-        label: t("forms.familyFinancial.maritalStatusOptions.single"),
-      },
-      {
-        value: MARITAL_STATUS_OPTIONS.MARRIED,
-        label: t("forms.familyFinancial.maritalStatusOptions.married"),
-      },
-      {
-        value: MARITAL_STATUS_OPTIONS.DIVORCED,
-        label: t("forms.familyFinancial.maritalStatusOptions.divorced"),
-      },
-      {
-        value: MARITAL_STATUS_OPTIONS.WIDOWED,
-        label: t("forms.familyFinancial.maritalStatusOptions.widowed"),
-      },
-      {
-        value: MARITAL_STATUS_OPTIONS.SEPARATED,
-        label: t("forms.familyFinancial.maritalStatusOptions.separated"),
-      },
-    ],
+    () => getMaritalStatusOptions(t),
     [t]
   );
 
   // Memoized employment status options for performance
   const employmentStatusOptions: SelectOption[] = useMemo(
-    () => [
-      {
-        value: EMPLOYMENT_STATUS_OPTIONS.EMPLOYED_FULL_TIME,
-        label: t(
-          "forms.familyFinancial.employmentStatusOptions.employedFullTime"
-        ),
-      },
-      {
-        value: EMPLOYMENT_STATUS_OPTIONS.EMPLOYED_PART_TIME,
-        label: t(
-          "forms.familyFinancial.employmentStatusOptions.employedPartTime"
-        ),
-      },
-      {
-        value: EMPLOYMENT_STATUS_OPTIONS.SELF_EMPLOYED,
-        label: t("forms.familyFinancial.employmentStatusOptions.selfEmployed"),
-      },
-      {
-        value: EMPLOYMENT_STATUS_OPTIONS.UNEMPLOYED,
-        label: t("forms.familyFinancial.employmentStatusOptions.unemployed"),
-      },
-      {
-        value: EMPLOYMENT_STATUS_OPTIONS.RETIRED,
-        label: t("forms.familyFinancial.employmentStatusOptions.retired"),
-      },
-      {
-        value: EMPLOYMENT_STATUS_OPTIONS.STUDENT,
-        label: t("forms.familyFinancial.employmentStatusOptions.student"),
-      },
-      {
-        value: EMPLOYMENT_STATUS_OPTIONS.DISABLED,
-        label: t("forms.familyFinancial.employmentStatusOptions.disabled"),
-      },
-    ],
+    () => getEmploymentStatusOptions(t),
     [t]
   );
 
   // Memoized housing status options for performance
   const housingStatusOptions: SelectOption[] = useMemo(
-    () => [
-      {
-        value: HOUSING_STATUS_OPTIONS.OWNED,
-        label: t("forms.familyFinancial.housingStatusOptions.owned"),
-      },
-      {
-        value: HOUSING_STATUS_OPTIONS.RENTED,
-        label: t("forms.familyFinancial.housingStatusOptions.rented"),
-      },
-      {
-        value: HOUSING_STATUS_OPTIONS.LIVING_WITH_FAMILY,
-        label: t("forms.familyFinancial.housingStatusOptions.livingWithFamily"),
-      },
-      {
-        value: HOUSING_STATUS_OPTIONS.HOMELESS,
-        label: t("forms.familyFinancial.housingStatusOptions.homeless"),
-      },
-      {
-        value: HOUSING_STATUS_OPTIONS.TEMPORARY_HOUSING,
-        label: t("forms.familyFinancial.housingStatusOptions.temporaryHousing"),
-      },
-      {
-        value: HOUSING_STATUS_OPTIONS.OTHER,
-        label: t("forms.familyFinancial.housingStatusOptions.other"),
-      },
-    ],
+    () => getHousingStatusOptions(t),
     [t]
   );
 

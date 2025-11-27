@@ -3,7 +3,7 @@ import { useController, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Search, X, Check, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { CountrySelectOption } from "../../lib/api/countries";
+import { CountrySelectOption } from "../../lib/constants/countries";
 import { useRTL } from "../../lib/hooks/useRTL";
 
 export interface FormCountrySelectProps {
