@@ -1,7 +1,7 @@
 /**
  * States/Provinces data mapped to countries
  * Static data to replace external API dependency
- * 
+ *
  * TODO: Replace with proper API integration
  * This static data should eventually be fetched from a reliable geographical API service
  * The current implementation only includes major countries and may need expansion

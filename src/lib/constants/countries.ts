@@ -1,7 +1,7 @@
 /**
  * Countries data with ISO codes
  * Static data to replace external API dependency
- * 
+ *
  * TODO: Replace with proper API integration
  * This static data should eventually be fetched from a reliable countries API service
  * Consider using:

@@ -1,8 +1,8 @@
 /**
  * Form select options constants
  * Centralized constants for all form dropdown options
- * 
- * NOTE: These form options (marital status, employment status, housing status) 
+ *
+ * NOTE: These form options (marital status, employment status, housing status)
  * are intentionally kept as static constants as they rarely change.
  * However, if your application needs dynamic options or multi-tenant support,
  * consider moving these to a configuration API.
